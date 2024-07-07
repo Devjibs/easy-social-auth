@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { ISocialUser } from '../interfaces/social-user.interface';
+import { GrantType } from '../enums/grant-type.enum';
+import { SocialAuthResponse } from '../interfaces/social-auth-response.interface';
 
 export abstract class AuthStrategy {
   constructor(
@@ -9,7 +11,7 @@ export abstract class AuthStrategy {
     protected readonly userInfoEndpoint: string,
     protected readonly tokenEndpoint: string,
     protected readonly authUrl: string,
-    protected readonly grantType: string = 'authorization_code'
+    protected readonly grantType: GrantType = GrantType.AUTHORIZATION_CODE
   ) {}
 
   generateAuthUrl(state?: string, scope?: string): string {
@@ -22,7 +24,7 @@ export abstract class AuthStrategy {
     return url.toString();
   }
 
-  async exchangeCodeForToken(code: string, additionalParams: Record<string, string> = {}): Promise<string> {
+  async exchangeCodeForToken(code: string, additionalParams: Record<string, string> = {}): Promise<SocialAuthResponse<string>> {
     try {
       const { data } = await axios.post(this.tokenEndpoint, {
         code,
@@ -32,40 +34,40 @@ export abstract class AuthStrategy {
         grant_type: this.grantType,
         ...additionalParams,
       });
-      return data.access_token;
+      return { status: true, data: data.access_token };
     } catch (error: any) {
-      throw new Error(`Failed to exchange code for token: ${error.response?.data?.error_description || error.message}`);
+      return { status: false, error: error.response?.data?.error_description || error.message };
     }
   }
 
-  async refreshAccessToken(refreshToken: string): Promise<string> {
+  async refreshAccessToken(refreshToken: string): Promise<SocialAuthResponse<string>> {
     try {
       const { data } = await axios.post(this.tokenEndpoint, {
         refresh_token: refreshToken,
         client_id: this.clientId,
         client_secret: this.clientSecret,
-        grant_type: 'refresh_token',
+        grant_type: GrantType.REFRESH_TOKEN,
       });
-      return data.access_token;
+      return { status: true, data: data.access_token };
     } catch (error: any) {
-      throw new Error(`Failed to refresh access token: ${error.response?.data?.error_description || error.message}`);
+      return { status: false, error: error.response?.data?.error_description || error.message };
     }
   }
 
-  async exchangePasswordForToken(username: string, password: string): Promise<string> {
+  async exchangePasswordForToken(username: string, password: string): Promise<SocialAuthResponse<string>> {
     try {
       const { data } = await axios.post(this.tokenEndpoint, {
         username,
         password,
         client_id: this.clientId,
         client_secret: this.clientSecret,
-        grant_type: 'password',
+        grant_type: GrantType.PASSWORD,
       });
-      return data.access_token;
+      return { status: true, data: data.access_token };
     } catch (error: any) {
-      throw new Error(`Failed to exchange password for token: ${error.response?.data?.error_description || error.message}`);
+      return { status: false, error: error.response?.data?.error_description || error.message };
     }
   }
 
-  abstract getUserData(accessToken: string, accessTokenSecret?: string): Promise<ISocialUser>;
+  abstract getUserData(accessToken: string): Promise<SocialAuthResponse<ISocialUser>>;
 }

@@ -3,8 +3,10 @@ import { FacebookStrategy } from './strategies/facebook.strategy';
 import { AuthType } from './enums/auth-type.enum';
 import { IGoogleConfig, IFacebookConfig } from './interfaces/config.interface';
 import { ISocialUser } from './interfaces/social-user.interface';
+import { SocialAuthResponse } from './interfaces/social-auth-response.interface';
+import { GrantType } from './enums/grant-type.enum';
 
-export class AuthService {
+export class SocialAuthService {
   private googleStrategy: GoogleStrategy;
   private facebookStrategy: FacebookStrategy;
 
@@ -24,7 +26,7 @@ export class AuthService {
     }
   }
 
-  exchangeCodeForToken(authType: AuthType, code: string, additionalParams?: Record<string, string>): Promise<string> {
+  exchangeCodeForToken(authType: AuthType, code: string, additionalParams?: Record<string, string>): Promise<SocialAuthResponse<string>> {
     switch (authType) {
       case AuthType.GOOGLE:
         return this.googleStrategy.exchangeCodeForToken(code, additionalParams);
@@ -35,7 +37,7 @@ export class AuthService {
     }
   }
 
-  refreshAccessToken(authType: AuthType, refreshToken: string): Promise<string> {
+  refreshAccessToken(authType: AuthType, refreshToken: string): Promise<SocialAuthResponse<string>> {
     switch (authType) {
       case AuthType.GOOGLE:
         return this.googleStrategy.refreshAccessToken(refreshToken);
@@ -46,7 +48,7 @@ export class AuthService {
     }
   }
 
-  exchangePasswordForToken(authType: AuthType, username: string, password: string): Promise<string> {
+  exchangePasswordForToken(authType: AuthType, username: string, password: string): Promise<SocialAuthResponse<string>> {
     switch (authType) {
       case AuthType.GOOGLE:
         return this.googleStrategy.exchangePasswordForToken(username, password);
@@ -57,7 +59,7 @@ export class AuthService {
     }
   }
 
-  getUserData(authType: AuthType, accessToken: string, accessTokenSecret?: string): Promise<ISocialUser> {
+  getUserData(authType: AuthType, accessToken: string, accessTokenSecret?: string): Promise<SocialAuthResponse<ISocialUser>> {
     switch (authType) {
       case AuthType.GOOGLE:
         return this.googleStrategy.getUserData(accessToken);

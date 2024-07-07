@@ -1,4 +1,4 @@
-export interface BaseConfig {
+interface BaseConfig {
   clientId: string;
   clientSecret: string;
   redirectUri: string;

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ISocialUser } from '../interfaces/social-user.interface';
-import { AuthStrategy } from './auth.strategy';
+import { AuthStrategy } from './social-auth.strategy';
+import { SocialAuthResponse } from '../interfaces/social-auth-response.interface';
 import { IGoogleConfig } from '../interfaces/config.interface';
 
 export class GoogleStrategy extends AuthStrategy {
@@ -15,20 +16,26 @@ export class GoogleStrategy extends AuthStrategy {
     );
   }
 
-  async getUserData(accessToken: string): Promise<ISocialUser> {
+  async getUserData(accessToken: string): Promise<SocialAuthResponse<ISocialUser>> {
     try {
       const { data } = await axios.get(this.userInfoEndpoint, {
         headers: { Authorization: `Bearer ${accessToken}` }
       });
       return {
-        id: data.sub,
-        email: data.email,
-        firstName: data.given_name,
-        lastName: data.family_name,
-        picture: data.picture,
+        status: true,
+        data: {
+          id: data.sub,
+          email: data.email,
+          firstName: data.given_name,
+          lastName: data.family_name,
+          picture: data.picture,
+
+          //return this if nor any of the above props
+          additionalData: data
+        }
       };
     } catch (error: any) {
-      throw new Error(`Failed to get user data: ${error.response?.data?.error_description || error.message}`);
+      return { status: false, error: error.response?.data?.error_description || error.message };
     }
   }
 }

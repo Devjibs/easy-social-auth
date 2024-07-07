@@ -1,4 +1,4 @@
-import { AuthService } from '../src/auth.service';
+import { SocialAuthService } from '../src/social-auth.service';
 import { AuthType } from '../src/enums/auth-type.enum';
 import { config } from '../src/config';
 import axios from 'axios';
@@ -7,12 +7,12 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-describe('AuthService', () => {
-  let authService: AuthService;
+describe('SocialAuthService', () => {
+  let socialAuthService: SocialAuthService;
   let mock: MockAdapter;
 
   beforeAll(() => {
-    authService = new AuthService(config.google, config.facebook);
+    socialAuthService = new SocialAuthService(config.google, config.facebook);
     mock = new MockAdapter(axios);
   });
 
@@ -21,12 +21,12 @@ describe('AuthService', () => {
   });
 
   it('should generate Google auth URL', () => {
-    const authUrl = authService.generateAuthUrl(AuthType.GOOGLE);
+    const authUrl = socialAuthService.generateAuthUrl(AuthType.GOOGLE);
     expect(authUrl).toContain(config.google.authUrl);
   });
 
   it('should generate Facebook auth URL', () => {
-    const authUrl = authService.generateAuthUrl(AuthType.FACEBOOK);
+    const authUrl = socialAuthService.generateAuthUrl(AuthType.FACEBOOK);
     expect(authUrl).toContain(config.facebook.authUrl);
   });
 
@@ -35,8 +35,9 @@ describe('AuthService', () => {
     const mockToken = 'mockToken';
     mock.onPost(config.google.tokenEndpoint).reply(200, { access_token: mockToken });
 
-    const token = await authService.exchangeCodeForToken(AuthType.GOOGLE, mockCode);
-    expect(token).toEqual(mockToken);
+    const response = await socialAuthService.exchangeCodeForToken(AuthType.GOOGLE, mockCode);
+    expect(response.status).toBe(true);
+    expect(response.data).toEqual(mockToken);
   });
 
   it('should exchange code for Facebook token', async () => {
@@ -44,8 +45,9 @@ describe('AuthService', () => {
     const mockToken = 'mockToken';
     mock.onPost(config.facebook.tokenEndpoint).reply(200, { access_token: mockToken });
 
-    const token = await authService.exchangeCodeForToken(AuthType.FACEBOOK, mockCode);
-    expect(token).toEqual(mockToken);
+    const response = await socialAuthService.exchangeCodeForToken(AuthType.FACEBOOK, mockCode);
+    expect(response.status).toBe(true);
+    expect(response.data).toEqual(mockToken);
   });
 
   it('should refresh Google access token', async () => {
@@ -53,8 +55,9 @@ describe('AuthService', () => {
     const mockNewToken = 'mockNewToken';
     mock.onPost(config.google.tokenEndpoint).reply(200, { access_token: mockNewToken });
 
-    const newToken = await authService.refreshAccessToken(AuthType.GOOGLE, mockRefreshToken);
-    expect(newToken).toEqual(mockNewToken);
+    const response = await socialAuthService.refreshAccessToken(AuthType.GOOGLE, mockRefreshToken);
+    expect(response.status).toBe(true);
+    expect(response.data).toEqual(mockNewToken);
   });
 
   it('should refresh Facebook access token', async () => {
@@ -62,8 +65,9 @@ describe('AuthService', () => {
     const mockNewToken = 'mockNewToken';
     mock.onPost(config.facebook.tokenEndpoint).reply(200, { access_token: mockNewToken });
 
-    const newToken = await authService.refreshAccessToken(AuthType.FACEBOOK, mockRefreshToken);
-    expect(newToken).toEqual(mockNewToken);
+    const response = await socialAuthService.refreshAccessToken(AuthType.FACEBOOK, mockRefreshToken);
+    expect(response.status).toBe(true);
+    expect(response.data).toEqual(mockNewToken);
   });
 
   it('should exchange password for Google token', async () => {
@@ -72,8 +76,9 @@ describe('AuthService', () => {
     const mockToken = 'mockToken';
     mock.onPost(config.google.tokenEndpoint).reply(200, { access_token: mockToken });
 
-    const token = await authService.exchangePasswordForToken(AuthType.GOOGLE, mockUsername, mockPassword);
-    expect(token).toEqual(mockToken);
+    const response = await socialAuthService.exchangePasswordForToken(AuthType.GOOGLE, mockUsername, mockPassword);
+    expect(response.status).toBe(true);
+    expect(response.data).toEqual(mockToken);
   });
 
   it('should exchange password for Facebook token', async () => {
@@ -82,8 +87,9 @@ describe('AuthService', () => {
     const mockToken = 'mockToken';
     mock.onPost(config.facebook.tokenEndpoint).reply(200, { access_token: mockToken });
 
-    const token = await authService.exchangePasswordForToken(AuthType.FACEBOOK, mockUsername, mockPassword);
-    expect(token).toEqual(mockToken);
+    const response = await socialAuthService.exchangePasswordForToken(AuthType.FACEBOOK, mockUsername, mockPassword);
+    expect(response.status).toBe(true);
+    expect(response.data).toEqual(mockToken);
   });
 
   it('should get Google user data', async () => {
@@ -91,13 +97,15 @@ describe('AuthService', () => {
     const mockUserData = { sub: '1', email: 'test@example.com', given_name: 'Test', family_name: 'User', picture: 'picture_url' };
     mock.onGet(config.google.userInfoEndpoint).reply(200, mockUserData);
 
-    const userData = await authService.getUserData(AuthType.GOOGLE, mockToken);
-    expect(userData).toEqual({
+    const response = await socialAuthService.getUserData(AuthType.GOOGLE, mockToken);
+    expect(response.status).toBe(true);
+    expect(response.data).toEqual({
       id: '1',
       email: 'test@example.com',
       firstName: 'Test',
       lastName: 'User',
-      picture: 'picture_url'
+      picture: 'picture_url',
+      additionalData: mockUserData
     });
   });
 
@@ -106,13 +114,15 @@ describe('AuthService', () => {
     const mockUserData = { id: '1', email: 'test@example.com', first_name: 'Test', last_name: 'User', picture: { data: { url: 'picture_url' } } };
     mock.onGet(config.facebook.userInfoEndpoint).reply(200, mockUserData);
 
-    const userData = await authService.getUserData(AuthType.FACEBOOK, mockToken);
-    expect(userData).toEqual({
+    const response = await socialAuthService.getUserData(AuthType.FACEBOOK, mockToken);
+    expect(response.status).toBe(true);
+    expect(response.data).toEqual({
       id: '1',
       email: 'test@example.com',
       firstName: 'Test',
       lastName: 'User',
-      picture: 'picture_url'
+      picture: 'picture_url',
+      additionalData: mockUserData
     });
   });
 });

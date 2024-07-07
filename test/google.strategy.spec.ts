@@ -35,8 +35,9 @@ describe('GoogleStrategy', () => {
     const mockToken = 'mockToken';
     mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockToken });
 
-    const token = await googleStrategy.exchangeCodeForToken(mockCode);
-    expect(token).toEqual(mockToken);
+    const response = await googleStrategy.exchangeCodeForToken(mockCode);
+    expect(response.status).toBe(true);
+    expect(response.data).toEqual(mockToken);
   });
 
   it('should refresh access token', async () => {
@@ -44,8 +45,9 @@ describe('GoogleStrategy', () => {
     const mockNewToken = 'mockNewToken';
     mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockNewToken });
 
-    const newToken = await googleStrategy.refreshAccessToken(mockRefreshToken);
-    expect(newToken).toEqual(mockNewToken);
+    const response = await googleStrategy.refreshAccessToken(mockRefreshToken);
+    expect(response.status).toBe(true);
+    expect(response.data).toEqual(mockNewToken);
   });
 
   it('should exchange password for token', async () => {
@@ -54,8 +56,9 @@ describe('GoogleStrategy', () => {
     const mockToken = 'mockToken';
     mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockToken });
 
-    const token = await googleStrategy.exchangePasswordForToken(mockUsername, mockPassword);
-    expect(token).toEqual(mockToken);
+    const response = await googleStrategy.exchangePasswordForToken(mockUsername, mockPassword);
+    expect(response.status).toBe(true);
+    expect(response.data).toEqual(mockToken);
   });
 
   it('should get user data', async () => {
@@ -63,13 +66,15 @@ describe('GoogleStrategy', () => {
     const mockUserData = { sub: '1', email: 'test@example.com', given_name: 'Test', family_name: 'User', picture: 'picture_url' };
     mock.onGet(mockConfig.userInfoEndpoint).reply(200, mockUserData);
 
-    const userData = await googleStrategy.getUserData(mockToken);
-    expect(userData).toEqual({
+    const response = await googleStrategy.getUserData(mockToken);
+    expect(response.status).toBe(true);
+    expect(response.data).toEqual({
       id: '1',
       email: 'test@example.com',
       firstName: 'Test',
       lastName: 'User',
-      picture: 'picture_url'
+      picture: 'picture_url',
+      additionalData: mockUserData
     });
   });
 });
