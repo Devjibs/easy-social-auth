@@ -39,13 +39,33 @@ describe('GoogleStrategy', () => {
     expect(token).toEqual(mockToken);
   });
 
+  it('should refresh access token', async () => {
+    const mockRefreshToken = 'mockRefreshToken';
+    const mockNewToken = 'mockNewToken';
+    mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockNewToken });
+
+    const newToken = await googleStrategy.refreshAccessToken(mockRefreshToken);
+    expect(newToken).toEqual(mockNewToken);
+  });
+
+  it('should exchange password for token', async () => {
+    const mockUsername = 'username';
+    const mockPassword = 'password';
+    const mockToken = 'mockToken';
+    mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockToken });
+
+    const token = await googleStrategy.exchangePasswordForToken(mockUsername, mockPassword);
+    expect(token).toEqual(mockToken);
+  });
+
   it('should get user data', async () => {
     const mockToken = 'mockToken';
-    const mockUserData = { email: 'test@example.com', given_name: 'Test', family_name: 'User', picture: 'picture_url' };
+    const mockUserData = { sub: '1', email: 'test@example.com', given_name: 'Test', family_name: 'User', picture: 'picture_url' };
     mock.onGet(mockConfig.userInfoEndpoint).reply(200, mockUserData);
 
     const userData = await googleStrategy.getUserData(mockToken);
     expect(userData).toEqual({
+      id: '1',
       email: 'test@example.com',
       firstName: 'Test',
       lastName: 'User',

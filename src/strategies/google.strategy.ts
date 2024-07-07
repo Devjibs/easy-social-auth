@@ -1,6 +1,6 @@
-import { AuthStrategy } from './auth.strategy';
-import { ISocialUser } from '../interfaces/social-user.interface';
 import axios from 'axios';
+import { ISocialUser } from '../interfaces/social-user.interface';
+import { AuthStrategy } from './auth.strategy';
 import { IGoogleConfig } from '../interfaces/config.interface';
 
 export class GoogleStrategy extends AuthStrategy {
@@ -18,9 +18,10 @@ export class GoogleStrategy extends AuthStrategy {
   async getUserData(accessToken: string): Promise<ISocialUser> {
     try {
       const { data } = await axios.get(this.userInfoEndpoint, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${accessToken}` }
       });
       return {
+        id: data.sub,
         email: data.email,
         firstName: data.given_name,
         lastName: data.family_name,

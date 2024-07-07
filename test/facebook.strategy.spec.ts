@@ -39,13 +39,33 @@ describe('FacebookStrategy', () => {
     expect(token).toEqual(mockToken);
   });
 
+  it('should refresh access token', async () => {
+    const mockRefreshToken = 'mockRefreshToken';
+    const mockNewToken = 'mockNewToken';
+    mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockNewToken });
+
+    const newToken = await facebookStrategy.refreshAccessToken(mockRefreshToken);
+    expect(newToken).toEqual(mockNewToken);
+  });
+
+  it('should exchange password for token', async () => {
+    const mockUsername = 'username';
+    const mockPassword = 'password';
+    const mockToken = 'mockToken';
+    mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockToken });
+
+    const token = await facebookStrategy.exchangePasswordForToken(mockUsername, mockPassword);
+    expect(token).toEqual(mockToken);
+  });
+
   it('should get user data', async () => {
     const mockToken = 'mockToken';
-    const mockUserData = { email: 'test@example.com', first_name: 'Test', last_name: 'User', picture: { data: { url: 'picture_url' } } };
+    const mockUserData = { id: '1', email: 'test@example.com', first_name: 'Test', last_name: 'User', picture: { data: { url: 'picture_url' } } };
     mock.onGet(mockConfig.userInfoEndpoint).reply(200, mockUserData);
 
     const userData = await facebookStrategy.getUserData(mockToken);
     expect(userData).toEqual({
+      id: '1',
       email: 'test@example.com',
       firstName: 'Test',
       lastName: 'User',

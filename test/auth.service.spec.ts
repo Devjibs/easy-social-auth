@@ -48,13 +48,52 @@ describe('AuthService', () => {
     expect(token).toEqual(mockToken);
   });
 
+  it('should refresh Google access token', async () => {
+    const mockRefreshToken = 'mockRefreshToken';
+    const mockNewToken = 'mockNewToken';
+    mock.onPost(config.google.tokenEndpoint).reply(200, { access_token: mockNewToken });
+
+    const newToken = await authService.refreshAccessToken(AuthType.GOOGLE, mockRefreshToken);
+    expect(newToken).toEqual(mockNewToken);
+  });
+
+  it('should refresh Facebook access token', async () => {
+    const mockRefreshToken = 'mockRefreshToken';
+    const mockNewToken = 'mockNewToken';
+    mock.onPost(config.facebook.tokenEndpoint).reply(200, { access_token: mockNewToken });
+
+    const newToken = await authService.refreshAccessToken(AuthType.FACEBOOK, mockRefreshToken);
+    expect(newToken).toEqual(mockNewToken);
+  });
+
+  it('should exchange password for Google token', async () => {
+    const mockUsername = 'username';
+    const mockPassword = 'password';
+    const mockToken = 'mockToken';
+    mock.onPost(config.google.tokenEndpoint).reply(200, { access_token: mockToken });
+
+    const token = await authService.exchangePasswordForToken(AuthType.GOOGLE, mockUsername, mockPassword);
+    expect(token).toEqual(mockToken);
+  });
+
+  it('should exchange password for Facebook token', async () => {
+    const mockUsername = 'username';
+    const mockPassword = 'password';
+    const mockToken = 'mockToken';
+    mock.onPost(config.facebook.tokenEndpoint).reply(200, { access_token: mockToken });
+
+    const token = await authService.exchangePasswordForToken(AuthType.FACEBOOK, mockUsername, mockPassword);
+    expect(token).toEqual(mockToken);
+  });
+
   it('should get Google user data', async () => {
     const mockToken = 'mockToken';
-    const mockUserData = { email: 'test@example.com', given_name: 'Test', family_name: 'User', picture: 'picture_url' };
+    const mockUserData = { sub: '1', email: 'test@example.com', given_name: 'Test', family_name: 'User', picture: 'picture_url' };
     mock.onGet(config.google.userInfoEndpoint).reply(200, mockUserData);
 
     const userData = await authService.getUserData(AuthType.GOOGLE, mockToken);
     expect(userData).toEqual({
+      id: '1',
       email: 'test@example.com',
       firstName: 'Test',
       lastName: 'User',
@@ -64,11 +103,12 @@ describe('AuthService', () => {
 
   it('should get Facebook user data', async () => {
     const mockToken = 'mockToken';
-    const mockUserData = { email: 'test@example.com', first_name: 'Test', last_name: 'User', picture: { data: { url: 'picture_url' } } };
+    const mockUserData = { id: '1', email: 'test@example.com', first_name: 'Test', last_name: 'User', picture: { data: { url: 'picture_url' } } };
     mock.onGet(config.facebook.userInfoEndpoint).reply(200, mockUserData);
 
     const userData = await authService.getUserData(AuthType.FACEBOOK, mockToken);
     expect(userData).toEqual({
+      id: '1',
       email: 'test@example.com',
       firstName: 'Test',
       lastName: 'User',

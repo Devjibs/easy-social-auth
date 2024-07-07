@@ -1,61 +1,70 @@
 import { GoogleStrategy } from './strategies/google.strategy';
 import { FacebookStrategy } from './strategies/facebook.strategy';
-import { ISocialUser } from './interfaces/social-user.interface';
 import { AuthType } from './enums/auth-type.enum';
 import { IGoogleConfig, IFacebookConfig } from './interfaces/config.interface';
+import { ISocialUser } from './interfaces/social-user.interface';
 
 export class AuthService {
-  private googleStrategy?: GoogleStrategy;
-  private facebookStrategy?: FacebookStrategy;
+  private googleStrategy: GoogleStrategy;
+  private facebookStrategy: FacebookStrategy;
 
-  constructor(
-    googleConfig?: IGoogleConfig,
-    facebookConfig?: IFacebookConfig
-  ) {
-    if (googleConfig) {
-      this.googleStrategy = new GoogleStrategy(googleConfig);
-    }
-    if (facebookConfig) {
-      this.facebookStrategy = new FacebookStrategy(facebookConfig);
-    }
+  constructor(googleConfig: IGoogleConfig, facebookConfig: IFacebookConfig) {
+    this.googleStrategy = new GoogleStrategy(googleConfig);
+    this.facebookStrategy = new FacebookStrategy(facebookConfig);
   }
 
   generateAuthUrl(authType: AuthType, state?: string, scope?: string): string {
     switch (authType) {
       case AuthType.GOOGLE:
-        if (!this.googleStrategy) throw new Error('Google strategy not configured');
         return this.googleStrategy.generateAuthUrl(state, scope);
       case AuthType.FACEBOOK:
-        if (!this.facebookStrategy) throw new Error('Facebook strategy not configured');
         return this.facebookStrategy.generateAuthUrl(state, scope);
       default:
-        throw new Error('Unsupported authentication type');
+        throw new Error('Unsupported auth type');
     }
   }
 
-  async exchangeCodeForToken(authType: AuthType, code: string): Promise<string> {
+  exchangeCodeForToken(authType: AuthType, code: string, additionalParams?: Record<string, string>): Promise<string> {
     switch (authType) {
       case AuthType.GOOGLE:
-        if (!this.googleStrategy) throw new Error('Google strategy not configured');
-        return this.googleStrategy.exchangeCodeForToken(code);
+        return this.googleStrategy.exchangeCodeForToken(code, additionalParams);
       case AuthType.FACEBOOK:
-        if (!this.facebookStrategy) throw new Error('Facebook strategy not configured');
-        return this.facebookStrategy.exchangeCodeForToken(code);
+        return this.facebookStrategy.exchangeCodeForToken(code, additionalParams);
       default:
-        throw new Error('Unsupported authentication type');
+        throw new Error('Unsupported auth type');
     }
   }
 
-  async getUserData(authType: AuthType, accessToken: string): Promise<ISocialUser> {
+  refreshAccessToken(authType: AuthType, refreshToken: string): Promise<string> {
     switch (authType) {
       case AuthType.GOOGLE:
-        if (!this.googleStrategy) throw new Error('Google strategy not configured');
+        return this.googleStrategy.refreshAccessToken(refreshToken);
+      case AuthType.FACEBOOK:
+        return this.facebookStrategy.refreshAccessToken(refreshToken);
+      default:
+        throw new Error('Unsupported auth type');
+    }
+  }
+
+  exchangePasswordForToken(authType: AuthType, username: string, password: string): Promise<string> {
+    switch (authType) {
+      case AuthType.GOOGLE:
+        return this.googleStrategy.exchangePasswordForToken(username, password);
+      case AuthType.FACEBOOK:
+        return this.facebookStrategy.exchangePasswordForToken(username, password);
+      default:
+        throw new Error('Unsupported auth type');
+    }
+  }
+
+  getUserData(authType: AuthType, accessToken: string, accessTokenSecret?: string): Promise<ISocialUser> {
+    switch (authType) {
+      case AuthType.GOOGLE:
         return this.googleStrategy.getUserData(accessToken);
       case AuthType.FACEBOOK:
-        if (!this.facebookStrategy) throw new Error('Facebook strategy not configured');
         return this.facebookStrategy.getUserData(accessToken);
       default:
-        throw new Error('Unsupported authentication type');
+        throw new Error('Unsupported auth type');
     }
   }
 }

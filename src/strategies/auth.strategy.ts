@@ -38,14 +38,34 @@ export abstract class AuthStrategy {
     }
   }
 
-  abstract getUserData(accessToken: string, accessTokenSecret?: string): Promise<ISocialUser>;
-
-  validateUrl(url: string): boolean {
+  async refreshAccessToken(refreshToken: string): Promise<string> {
     try {
-      new URL(url);
-      return true;
-    } catch {
-      return false;
+      const { data } = await axios.post(this.tokenEndpoint, {
+        refresh_token: refreshToken,
+        client_id: this.clientId,
+        client_secret: this.clientSecret,
+        grant_type: 'refresh_token',
+      });
+      return data.access_token;
+    } catch (error: any) {
+      throw new Error(`Failed to refresh access token: ${error.response?.data?.error_description || error.message}`);
     }
   }
+
+  async exchangePasswordForToken(username: string, password: string): Promise<string> {
+    try {
+      const { data } = await axios.post(this.tokenEndpoint, {
+        username,
+        password,
+        client_id: this.clientId,
+        client_secret: this.clientSecret,
+        grant_type: 'password',
+      });
+      return data.access_token;
+    } catch (error: any) {
+      throw new Error(`Failed to exchange password for token: ${error.response?.data?.error_description || error.message}`);
+    }
+  }
+
+  abstract getUserData(accessToken: string, accessTokenSecret?: string): Promise<ISocialUser>;
 }
