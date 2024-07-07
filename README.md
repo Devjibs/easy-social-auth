@@ -11,9 +11,8 @@ npm install social-auth
 ## Usage
 Environment Variables
 
+### Create a .env file with the following variables:
 ```env
-npm install social-auth
-Create a .env file with the following variables:
 
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
@@ -61,32 +60,37 @@ async function authenticateWithFacebook(code: string) {
 
 
 ## API
-```
 `generateAuthUrl(authType: AuthType, state?: string, scope?: string)`: `string`
+```
 Generates the authorization URL for the specified authentication type.
+```
 
 Parameters:
-
     `authType` (`AuthType`): The type of authentication (e.g., AuthType.GOOGLE, AuthType.FACEBOOK).
     `state` (`string`, optional): An optional state parameter to include in the URL.
     `scope` (`string`, optional): An optional scope parameter to include in the URL.
+
 
 Returns:
     `string`: The generated authorization URL.
     `exchangeCodeForToken(authType: AuthType, code: string, verifier?: string): Promise<string>`
 
+
+```
 Exchanges an authorization code for an access token.
+```
 
 Parameters:
-
     `authType` (`AuthType`): The type of authentication (e.g., `AuthType.GOOGLE`, `AuthType.FACEBOOK`).
     `code` (`string`): The authorization code received from the authentication provider.
 
 Returns:
     `Promise<string>`: A promise that resolves to the access token.
 ```
+```
 
 ### Example:
+
 ```typescript
 async function getGoogleAccessToken(code: string) {
   try {
@@ -107,7 +111,6 @@ async function getFacebookAccessToken(code: string) {
 }
 ```
 
-```
 `getUserData(authType: AuthType, accessToken: string, accessTokenSecret?: string): Promise<SocialUser>`
 Retrieves user data for the specified authentication type using the access token.
 
@@ -119,8 +122,10 @@ Parameters:
 Returns:
 `Promise<SocialUser>`: A promise that resolves to the user data.
 ```
+```
 
 ### Example:
+
 ```typescript
 async function getGoogleUserData(accessToken: string) {
   try {
@@ -141,6 +146,6 @@ async function getFacebookUserData(accessToken: string) {
 }
 ```
 
-```
+
 This documentation provides detailed information on how to install, configure, and use the `social-auth` package, along with examples of how to use each method. It also includes detailed API documentation for the methods available in the `AuthService` class.
-```
+
