@@ -10,7 +10,7 @@
   "keywords": [],
   "author": "Habeeb Ajide",
   "license": "MIT",
-  "description": "A flexible, standalone package for social authentication using Google, Facebook, and Twitter.",
+  "description": "A flexible, standalone package for social authentication using Google and Facebook.",
   "dependencies": {
     "axios": "^1.7.2",
     "dotenv": "^16.4.5"
