@@ -5,7 +5,7 @@ A flexible, standalone package for social authentication using Google and Facebo
 ## Installation
 
 ```bash
-npm install social-auth
+npm install easy-social-auth
 ```
 
 ## Usage
@@ -30,9 +30,9 @@ FACEBOOK_USER_INFO_ENDPOINT=https://graph.facebook.com/me?fields=id,name,email
 ## Example
 
 ```typescript
-import { SocialAuthService } from 'social-auth';
-import { AuthType } from 'social-auth/enums/auth-type.enum';
-import { config } from 'social-auth/config';
+import { SocialAuthService } from 'easy-social-auth';
+import { AuthType } from 'easy-social-auth/enums/auth-type.enum';
+import { config } from 'easy-social-auth/config';
 import dotenv from 'dotenv';
 
 dotenv.config();

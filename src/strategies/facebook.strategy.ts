@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { ISocialUser } from '../interfaces/social-user.interface';
-import { AuthStrategy } from './social-auth.strategy';
-import { SocialAuthResponse } from '../interfaces/social-auth-response.interface';
+import { AuthStrategy } from './easy-social-auth.strategy';
+import { SocialAuthResponse } from '../interfaces/easy-social-auth-response.interface';
 import { IFacebookConfig } from '../interfaces/config.interface';
 
 export class FacebookStrategy extends AuthStrategy {

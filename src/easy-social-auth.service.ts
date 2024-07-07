@@ -3,7 +3,7 @@ import { FacebookStrategy } from './strategies/facebook.strategy';
 import { AuthType } from './enums/auth-type.enum';
 import { IGoogleConfig, IFacebookConfig } from './interfaces/config.interface';
 import { ISocialUser } from './interfaces/social-user.interface';
-import { SocialAuthResponse } from './interfaces/social-auth-response.interface';
+import { SocialAuthResponse } from './interfaces/easy-social-auth-response.interface';
 import { GrantType } from './enums/grant-type.enum';
 
 export class SocialAuthService {

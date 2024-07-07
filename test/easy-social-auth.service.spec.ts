@@ -1,4 +1,4 @@
-import { SocialAuthService } from '../src/social-auth.service';
+import { SocialAuthService } from '../src/easy-social-auth.service';
 import { AuthType } from '../src/enums/auth-type.enum';
 import { config } from '../src/config';
 import axios from 'axios';
