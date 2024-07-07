@@ -1,5 +1,5 @@
 {
-  "name": "social-auth",
+  "name": "easy-social-auth",
   "version": "1.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
