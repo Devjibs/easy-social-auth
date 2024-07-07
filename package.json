@@ -7,7 +7,12 @@
     "build": "tsc",
     "test": "jest"
   },
-  "keywords": [],
+  "keywords": [
+    "authentication",
+    "google-auth",
+    "facebook-auth",
+    "oauth"
+  ],
   "author": "Habeeb Ajide",
   "license": "MIT",
   "description": "A flexible, standalone package for social authentication using Google and Facebook.",
@@ -22,5 +27,8 @@
     "jest": "^29.7.0",
     "ts-jest": "^29.1.5",
     "typescript": "^5.5.3"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
