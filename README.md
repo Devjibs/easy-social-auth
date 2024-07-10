@@ -28,6 +28,12 @@ FACEBOOK_APP_ID=your-facebook-app-id
 FACEBOOK_APP_SECRET=your-facebook-app-secret
 FACEBOOK_TOKEN_ENDPOINT=https://graph.facebook.com/v9.0/oauth/access_token
 FACEBOOK_USER_INFO_ENDPOINT=https://graph.facebook.com/me?fields=id,name,email
+
+TWITTER_CONSUMER_KEY=your-twitter-consumer-key
+TWITTER_CONSUMER_SECRET=your-twitter-consumer-secret
+TWITTER_TOKEN_ENDPOINT=https://api.twitter.com/oauth2/token
+TWITTER_USER_INFO_ENDPOINT=https://api.twitter.com/2/account/verify_credentials.json
+TWITTER_AUTH_URL=https://api.twitter.com/oauth2/authorize
 ```
 
 ## Example
@@ -68,6 +74,24 @@ if (socialAuthServiceFacebook.facebookStrategy) {
       console.log('Facebook User Data:', userData);
     } else {
       console.error('Facebook Token Exchange Error:', tokenResponse.error);
+    }
+  }
+}
+
+// only the Twitter strategy will initialize if only its env values are provided
+const socialAuthServiceTwitter = new SocialAuthService();
+
+if (socialAuthServiceTwitter.twitterStrategy) {
+  const twitterAuthUrl = socialAuthServiceTwitter.twitterStrategy.generateAuthUrl('your-twitter-redirect-uri');
+  console.log('Twitter Auth URL:', twitterAuthUrl);
+
+  async function authenticateWithTwitter() {
+    const tokenResponse = await socialAuthServiceTwitter.twitterStrategy.requestToken();
+    if (tokenResponse.status) {
+      const userData = await socialAuthServiceTwitter.twitterStrategy.getUserData(tokenResponse.data!);
+      console.log('Twitter User Data:', userData);
+    } else {
+      console.error('Twitter Token Request Error:', tokenResponse.error);
     }
   }
 }
