@@ -33,7 +33,7 @@ FACEBOOK_USER_INFO_ENDPOINT=https://graph.facebook.com/me?fields=id,name,email
 import { SocialAuthService } from 'easy-social-auth';
 import { IGoogleConfig, IFacebookConfig } from 'easy-social-auth/interfaces/config.interface';
 
-// Instantiate only the Google strategy
+// only the Google strategy will initialize if only it's env values are provided
 const socialAuthService = new SocialAuthService();
 
 if (socialAuthService.googleStrategy) {
@@ -51,8 +51,8 @@ if (socialAuthService.googleStrategy) {
   }
 }
 
-// Instantiate only the Facebook strategy
-const socialAuthServiceFacebook = new SocialAuthService(undefined, facebookConfig);
+// only the Facebook strategy will initialize if only it's env values are provided
+const socialAuthServiceFacebook = new SocialAuthService();
 
 if (socialAuthServiceFacebook.facebookStrategy) {
   const facebookAuthUrl = socialAuthServiceFacebook.facebookStrategy.generateAuthUrl('your-facebook-redirect-uri');
