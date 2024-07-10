@@ -20,17 +20,12 @@ export class GoogleStrategy extends AuthStrategy {
       const { data } = await axios.get(this.userInfoEndpoint, {
         headers: { Authorization: `Bearer ${accessToken}` }
       });
-      return {
+      if (data) return {
         status: true,
-        data: {
-          id: data.sub,
-          email: data.email,
-          firstName: data.given_name,
-          lastName: data.family_name,
-          picture: data.picture,
-          additionalData: data
-        }
+        data: data
       };
+
+      return { status: false, error: "unable to retrieve user data" };
     } catch (error: any) {
       return { status: false, error: error.response?.data?.error_description || error.message };
     }
