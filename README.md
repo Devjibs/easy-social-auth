@@ -5,9 +5,11 @@
 [![GitHub issues](https://img.shields.io/github/issues/devjibs/easy-social-auth)](https://github.com/devjibs/easy-social-auth/issues)
 [![GitHub stars](https://img.shields.io/github/stars/devjibs/easy-social-auth)](https://github.com/devjibs/easy-social-auth/stargazers)
 
-- Google ![Google Logo](https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_2013_Google.png) 
-- Facebook ![Facebook Logo](https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg) 
-- Twitter ![Twitter Logo](https://upload.wikimedia.org/wikipedia/en/6/60/Twitter_Logo_as_of_2021.svg) 
+## Supported Social Authentication Providers
+
+- Google <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_2013_Google.png" alt="Google Logo" width="20" height="20">
+- Facebook <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo" width="20" height="20">
+- Twitter <img src="https://upload.wikimedia.org/wikipedia/en/6/60/Twitter_Logo_as_of_2021.svg" alt="Twitter Logo" width="20" height="20">
 
 
 A flexible, standalone package for social authentication using Google and Facebook.
