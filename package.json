@@ -1,6 +1,6 @@
 {
-  "name": "@devjibs/easy-social-auth",
-  "version": "1.0.0",
+  "name": "easy-social-auth",
+  "version": "1.0.6",
   "description": "A flexible, standalone package for social authentication using Google and Facebook.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -19,14 +19,14 @@
   "license":"MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/devjibs/easy-social-auth"
+    "url": "git+https://github.com/devjibs/easy-social-auth.git"
   },
   "bugs": {
     "url": "https://github.com/devjibs/easy-social-auth/issues"
   },
   "homepage":"https://github.com/devjibs/easy-social-auth#readme",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://registry.npmjs.org"
   },
   "dependencies": {
     "axios": "^1.7.2"
