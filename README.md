@@ -7,10 +7,9 @@
 
 ## Supported Social Authentication Providers
 
-- Google <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_2013_Google.png" alt="Google Logo" width="45" height="20">
-- Facebook <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo" width="20" height="20">
-- Twitter <img src="https://upload.wikimedia.org/wikipedia/en/6/60/Twitter_Logo_as_of_2021.svg" alt="Twitter Logo" width="20" height="20">
-
+- Google ![Google Icon](https://img.icons8.com/color/48/000000/google-logo.png)
+- Facebook ![Facebook Icon](https://img.icons8.com/color/48/000000/facebook-new.png)
+- Twitter ![Twitter Icon](https://img.icons8.com/color/48/000000/twitter--v1.png)
 
 A flexible, standalone package for social authentication using Google and Facebook.
 
