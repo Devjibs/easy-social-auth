@@ -1,5 +1,10 @@
 # Easy Social Auth
 
+[![npm version](https://img.shields.io/npm/v/easy-social-auth)](https://www.npmjs.com/package/easy-social-auth)
+[![npm downloads](https://img.shields.io/npm/dm/easy-social-auth)](https://www.npmjs.com/package/easy-social-auth)
+[![GitHub issues](https://img.shields.io/github/issues/devjibs/easy-social-auth)](https://github.com/devjibs/easy-social-auth/issues)
+[![GitHub stars](https://img.shields.io/github/stars/devjibs/easy-social-auth)](https://github.com/devjibs/easy-social-auth/stargazers)
+
 A flexible, standalone package for social authentication using Google and Facebook.
 
 ## Installation
@@ -16,13 +21,11 @@ Environment Variables
 
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
-GOOGLE_REDIRECT_URI=your-google-redirect-uri
 GOOGLE_TOKEN_ENDPOINT=https://oauth2.googleapis.com/token
 GOOGLE_USER_INFO_ENDPOINT=https://www.googleapis.com/oauth2/v2/userinfo
 
 FACEBOOK_APP_ID=your-facebook-app-id
 FACEBOOK_APP_SECRET=your-facebook-app-secret
-FACEBOOK_REDIRECT_URI=your-facebook-redirect-uri
 FACEBOOK_TOKEN_ENDPOINT=https://graph.facebook.com/v9.0/oauth/access_token
 FACEBOOK_USER_INFO_ENDPOINT=https://graph.facebook.com/me?fields=id,name,email
 ```
