@@ -1,0 +1,22 @@
+# Exclude test files and directories
+test/
+__tests__/
+coverage/
+
+# Exclude configuration files
+*.config.js
+*.config.json
+
+# Exclude TypeScript source files
+src/**/*.ts
+
+# Exclude environment files
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Exclude other unnecessary files
+.DS_Store
+node_modules/

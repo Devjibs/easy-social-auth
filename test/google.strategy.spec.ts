@@ -10,10 +10,9 @@ describe('GoogleStrategy', () => {
   const mockConfig: IGoogleConfig = {
     clientId: 'client-id',
     clientSecret: 'client-secret',
-    redirectUri: 'redirect-uri',
     tokenEndpoint: 'https://oauth2.googleapis.com/token',
     userInfoEndpoint: 'https://www.googleapis.com/oauth2/v3/userinfo',
-    authUrl: 'https://accounts.google.com/o/oauth2/auth'
+    authUrl: 'https://accounts.google.com/o/oauth2/v2/auth'
   };
 
   beforeAll(() => {
@@ -26,7 +25,7 @@ describe('GoogleStrategy', () => {
   });
 
   it('should generate auth URL', () => {
-    const authUrl = googleStrategy.generateAuthUrl();
+    const authUrl = googleStrategy.generateAuthUrl('redirect-uri');
     expect(authUrl).toContain(mockConfig.authUrl);
   });
 
@@ -35,7 +34,7 @@ describe('GoogleStrategy', () => {
     const mockToken = 'mockToken';
     mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockToken });
 
-    const response = await googleStrategy.exchangeCodeForToken(mockCode);
+    const response = await googleStrategy.exchangeCodeForToken(mockCode, 'redirect-uri');
     expect(response.status).toBe(true);
     expect(response.data).toEqual(mockToken);
   });

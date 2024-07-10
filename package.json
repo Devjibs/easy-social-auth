@@ -1,11 +1,12 @@
 {
   "name": "easy-social-auth",
-  "version": "1.0.3",
+  "version": "1.0.0",
   "description": "A flexible, standalone package for social authentication using Google and Facebook.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc",
     "test": "jest"
   },
   "keywords": [
@@ -14,11 +15,10 @@
     "facebook-auth",
     "oauth"
   ],
-  "author": "Your Name",
+  "author": "Habeeb Ajide",
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.7.2",
-    "dotenv": "^16.4.5"
+    "axios": "^1.7.2"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",

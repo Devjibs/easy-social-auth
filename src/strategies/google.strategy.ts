@@ -1,15 +1,14 @@
 import axios from 'axios';
 import { ISocialUser } from '../interfaces/social-user.interface';
-import { AuthStrategy } from './easy-social-auth.strategy';
-import { SocialAuthResponse } from '../interfaces/easy-social-auth-response.interface';
 import { IGoogleConfig } from '../interfaces/config.interface';
+import { SocialAuthResponse } from '../interfaces/easy-social-auth-response.interface';
+import { AuthStrategy } from './easy-social-auth.strategy';
 
 export class GoogleStrategy extends AuthStrategy {
   constructor(config: IGoogleConfig) {
     super(
       config.clientId,
       config.clientSecret,
-      config.redirectUri,
       config.userInfoEndpoint,
       config.tokenEndpoint,
       config.authUrl
@@ -29,8 +28,6 @@ export class GoogleStrategy extends AuthStrategy {
           firstName: data.given_name,
           lastName: data.family_name,
           picture: data.picture,
-
-          //return this if nor any of the above props
           additionalData: data
         }
       };

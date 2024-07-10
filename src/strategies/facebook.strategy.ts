@@ -1,15 +1,14 @@
 import axios from 'axios';
 import { ISocialUser } from '../interfaces/social-user.interface';
-import { AuthStrategy } from './easy-social-auth.strategy';
-import { SocialAuthResponse } from '../interfaces/easy-social-auth-response.interface';
 import { IFacebookConfig } from '../interfaces/config.interface';
+import { SocialAuthResponse } from '../interfaces/easy-social-auth-response.interface';
+import { AuthStrategy } from './easy-social-auth.strategy';
 
 export class FacebookStrategy extends AuthStrategy {
   constructor(config: IFacebookConfig) {
     super(
       config.clientId,
       config.clientSecret,
-      config.redirectUri,
       config.userInfoEndpoint,
       config.tokenEndpoint,
       config.authUrl

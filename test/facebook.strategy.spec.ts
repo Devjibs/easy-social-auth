@@ -10,7 +10,6 @@ describe('FacebookStrategy', () => {
   const mockConfig: IFacebookConfig = {
     clientId: 'client-id',
     clientSecret: 'client-secret',
-    redirectUri: 'redirect-uri',
     tokenEndpoint: 'https://graph.facebook.com/v9.0/oauth/access_token',
     userInfoEndpoint: 'https://graph.facebook.com/me?fields=id,name,email',
     authUrl: 'https://www.facebook.com/v9.0/dialog/oauth'
@@ -26,7 +25,7 @@ describe('FacebookStrategy', () => {
   });
 
   it('should generate auth URL', () => {
-    const authUrl = facebookStrategy.generateAuthUrl();
+    const authUrl = facebookStrategy.generateAuthUrl('redirect-uri');
     expect(authUrl).toContain(mockConfig.authUrl);
   });
 
@@ -35,7 +34,7 @@ describe('FacebookStrategy', () => {
     const mockToken = 'mockToken';
     mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockToken });
 
-    const response = await facebookStrategy.exchangeCodeForToken(mockCode);
+    const response = await facebookStrategy.exchangeCodeForToken(mockCode, 'redirect-uri');
     expect(response.status).toBe(true);
     expect(response.data).toEqual(mockToken);
   });

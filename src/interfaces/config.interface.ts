@@ -1,7 +1,6 @@
 interface BaseConfig {
   clientId: string;
   clientSecret: string;
-  redirectUri: string;
   tokenEndpoint: string;
   userInfoEndpoint: string;
   authUrl: string;

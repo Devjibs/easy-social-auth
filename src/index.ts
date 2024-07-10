@@ -1,5 +1,4 @@
 export * from './easy-social-auth.service';
-export * from './config';
 export * from './enums/auth-type.enum';
 export * from './enums/grant-type.enum';
 export * from './interfaces/config.interface';
@@ -8,3 +7,4 @@ export * from './interfaces/easy-social-auth-response.interface';
 export * from './strategies/easy-social-auth.strategy';
 export * from './strategies/google.strategy';
 export * from './strategies/facebook.strategy';
+export * from './config';
