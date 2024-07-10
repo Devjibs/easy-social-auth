@@ -25,7 +25,7 @@ export abstract class AuthStrategy {
   protected async exchangeToken(params: Record<string, string>): Promise<SocialAuthResponse<string>> {
     try {
       const { data } = await axios.post(this.tokenEndpoint, params);
-      return { status: true, data: data.access_token };
+      return { status: true, data: data?.access_token };
     } catch (error: any) {
       return { status: false, error: error.response?.data?.error_description || error.message };
     }

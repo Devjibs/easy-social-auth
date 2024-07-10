@@ -1,5 +1,5 @@
 import { SocialAuthService } from '../src/easy-social-auth.service';
-import { IGoogleConfig, IFacebookConfig } from '../src/interfaces/config.interface';
+import { IGoogleConfig, IFacebookConfig, ITwitterConfig } from '../src/interfaces/config.interface';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
@@ -23,6 +23,14 @@ describe('SocialAuthService', () => {
     authUrl: 'https://www.facebook.com/v9.0/dialog/oauth'
   };
 
+  const twitterConfig: ITwitterConfig = {
+    clientId: 'client-id',
+    clientSecret: 'client-secret',
+    tokenEndpoint: 'https://api.twitter.com/oauth2/token',
+    userInfoEndpoint: 'https://api.twitter.com/2/account/verify_credentials.json',
+    authUrl: 'https://api.twitter.com/oauth2/authorize'
+  };
+
   beforeAll(() => {
     mock = new MockAdapter(axios);
   });
@@ -41,6 +49,11 @@ describe('SocialAuthService', () => {
     expect(socialAuthService.facebookStrategy).toBeDefined();
   });
 
+  it('should instantiate Twitter strategy if config is provided', () => {
+    socialAuthService = new SocialAuthService();
+    expect(socialAuthService.twitterStrategy).toBeDefined();
+  });
+
   it('should generate Google auth URL', () => {
     socialAuthService = new SocialAuthService();
     if (socialAuthService.googleStrategy) {
@@ -54,6 +67,14 @@ describe('SocialAuthService', () => {
     if (socialAuthService.facebookStrategy) {
       const authUrl = socialAuthService.facebookStrategy.generateAuthUrl('redirect_uri');
       expect(authUrl).toContain(facebookConfig.authUrl);
+    }
+  });
+
+  it('should generate Twitter auth URL', () => {
+    socialAuthService = new SocialAuthService();
+    if (socialAuthService.twitterStrategy) {
+      const authUrl = socialAuthService.twitterStrategy.generateAuthUrl('redirect_uri');
+      expect(authUrl).toContain(twitterConfig.authUrl);
     }
   });
 
@@ -78,6 +99,19 @@ describe('SocialAuthService', () => {
       mock.onPost(facebookConfig.tokenEndpoint).reply(200, { access_token: mockToken });
 
       const response = await socialAuthService.facebookStrategy.exchangeCodeForToken(mockCode, 'redirect_uri');
+      expect(response.status).toBe(true);
+      expect(response.data).toEqual(mockToken);
+    }
+  });
+
+  it('should exchange code for Twitter token', async () => {
+    socialAuthService = new SocialAuthService();
+    if (socialAuthService.twitterStrategy) {
+      const mockCode = 'mockCode';
+      const mockToken = 'mockToken';
+      mock.onPost(twitterConfig.tokenEndpoint).reply(200, { access_token: mockToken });
+
+      const response = await socialAuthService.twitterStrategy.exchangeCodeForToken(mockCode, 'redirect_uri');
       expect(response.status).toBe(true);
       expect(response.data).toEqual(mockToken);
     }
@@ -109,6 +143,19 @@ describe('SocialAuthService', () => {
     }
   });
 
+  it('should refresh Twitter access token', async () => {
+    socialAuthService = new SocialAuthService();
+    if (socialAuthService.twitterStrategy) {
+      const mockRefreshToken = 'mockRefreshToken';
+      const mockNewToken = 'mockNewToken';
+      mock.onPost(twitterConfig.tokenEndpoint).reply(200, { access_token: mockNewToken });
+
+      const response = await socialAuthService.twitterStrategy.refreshAccessToken(mockRefreshToken);
+      expect(response.status).toBe(true);
+      expect(response.data).toEqual(mockNewToken);
+    }
+  });
+
   it('should get Google user data', async () => {
     socialAuthService = new SocialAuthService();
     if (socialAuthService.googleStrategy) {
@@ -130,6 +177,19 @@ describe('SocialAuthService', () => {
       mock.onGet(facebookConfig.userInfoEndpoint).reply(200, mockUserData);
 
       const response = await socialAuthService.facebookStrategy.getUserData(mockToken);
+      expect(response.status).toBe(true);
+      expect(response.data).toBeDefined();
+    }
+  });
+
+  it('should get Twitter user data', async () => {
+    socialAuthService = new SocialAuthService();
+    if (socialAuthService.twitterStrategy) {
+      const mockToken = 'mockToken';
+      const mockUserData = { id: '1', name: 'Test User', email: 'test@example.com' };
+      mock.onGet(twitterConfig.userInfoEndpoint).reply(200, mockUserData);
+
+      const response = await socialAuthService.twitterStrategy.getUserData(mockToken);
       expect(response.status).toBe(true);
       expect(response.data).toBeDefined();
     }
