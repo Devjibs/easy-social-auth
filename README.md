@@ -74,7 +74,6 @@ if (socialAuthServiceFacebook.facebookStrategy) {
 
 ## API
 ### Generate Auth Url
-``
 `generateAuthUrl(redirectUri: string, scope?: string): string`
 Generates the authorization URL for the specified authentication type.
 
@@ -84,10 +83,9 @@ Parameters:
 
 Returns:
     `string`: The generated authorization URL.
-``
+
 
 ### Exchange Code for Token
-``
 `exchangeCodeForToken(code: string, redirectUri: string, additionalParams?: Record<string, string>): Promise<SocialAuthResponse<string>>`
 Exchanges an authorization code for an access token.
 
@@ -98,10 +96,9 @@ Parameters:
 
 Returns:
     `Promise<SocialAuthResponse<string>>`: A promise that resolves to the `SocialAuthResponse` containing the access token.
-``
+
 
 ### Refresh Access Token
-``
 `refreshAccessToken(refreshToken: string): Promise<SocialAuthResponse<string>>`
 Refreshes an access token using a refresh token.
 
@@ -110,10 +107,9 @@ Parameters:
 
 Returns:
     `Promise<SocialAuthResponse<string>>`: A promise that resolves to the `SocialAuthResponse` containing the new access token.
-``
+
 
 ### Exchange Password for Token
-``
 `exchangePasswordForToken(username: string, password: string): Promise<SocialAuthResponse<string>>`
 Exchanges a username and password for an access token.
 
@@ -123,7 +119,7 @@ Parameters:
 
 Returns:
     `Promise<SocialAuthResponse<string>>`: A promise that resolves to the `SocialAuthResponse` containing the access token.
-``
+
 
 ### Get User Data
 `getUserData(accessToken: string): Promise<SocialAuthResponse<ISocialUser>>`
