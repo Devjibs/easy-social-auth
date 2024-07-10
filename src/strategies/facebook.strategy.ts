@@ -20,17 +20,12 @@ export class FacebookStrategy extends AuthStrategy {
       const { data } = await axios.get(this.userInfoEndpoint, {
         headers: { Authorization: `Bearer ${accessToken}` }
       });
-      return {
+      if (data) return {
         status: true,
-        data: {
-          id: data.id,
-          email: data.email,
-          firstName: data.first_name,
-          lastName: data.last_name,
-          picture: data.picture.data.url,
-          additionalData: data
-        }
+        data: data
       };
+
+      return { status: false, error: "unable to retrieve user data" };
     } catch (error: any) {
       return { status: false, error: error.response?.data?.error_description || error.message };
     }
