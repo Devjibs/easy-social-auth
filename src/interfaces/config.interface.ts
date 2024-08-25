@@ -9,3 +9,7 @@ interface BaseConfig {
 export interface IGoogleConfig extends BaseConfig {}
 export interface IFacebookConfig extends BaseConfig {}
 export interface ITwitterConfig extends BaseConfig {}
+export interface IInstagramConfig extends BaseConfig {
+  refreshTokenEndpoint: string;
+  longLivedTokenEndpoint: string;
+}
