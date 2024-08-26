@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { ISocialUser } from '../interfaces/social-user.interface';
 import { IInstagramConfig } from '../interfaces/config.interface';
 import { SocialAuthResponse } from '../interfaces/easy-social-auth-response.interface';
 import { AuthStrategy } from './easy-social-auth.strategy';
 import { GrantType } from '../enums/grant-type.enum';
+import { InstagramPaging } from '../interfaces/ig-paging.interface';
 
 export class InstagramStrategy extends AuthStrategy {
     constructor(private config: IInstagramConfig) {
@@ -46,7 +46,7 @@ export class InstagramStrategy extends AuthStrategy {
         }
     }
 
-    async getUserData(accessToken: string): Promise<SocialAuthResponse<ISocialUser>> {
+    async getUserData(accessToken: string): Promise<SocialAuthResponse<any>> {
         try {
             const url = new URL(this.config.userInfoEndpoint);
             url.searchParams.set('access_token', accessToken);
@@ -55,6 +55,23 @@ export class InstagramStrategy extends AuthStrategy {
             if (data) return { status: true, data: data };
 
             return { status: false, error: "unable to retrieve user data" };
+        } catch (error: any) {
+            return { status: false, error: error.response?.data?.error_description || error.message };
+        }
+    }
+
+    async getUserMedia(accessToken: string, paging?: InstagramPaging): Promise<SocialAuthResponse<any>> {
+        try {
+            const url = new URL(this.config.userMediaEndpoint);
+            url.searchParams.set('access_token', accessToken);
+            if (paging && paging?.before) url.searchParams.set('before', paging.before);
+            if (paging && paging?.after) url.searchParams.set('after', paging.after);
+            if (paging && paging?.next) url.searchParams.set('next', paging.next);
+
+            const { data } = await axios.get(url.toString());
+            if (data) return { status: true, data: data };
+
+            return { status: false, error: "unable to retrieve user media" };
         } catch (error: any) {
             return { status: false, error: error.response?.data?.error_description || error.message };
         }

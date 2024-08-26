@@ -28,7 +28,8 @@ export const config = {
     tokenEndpoint: process.env.INSTAGRAM_ACCESS_TOKEN_URL || 'https://api.instagram.com/oauth/access_token',
     longLivedTokenEndpoint: process.env.INSTAGRAM_LONG_LIVED_ACCESS_TOKEN_URL || 'https://graph.instagram.com/access_token',
     refreshTokenEndpoint: process.env.INSTAGRAM_REFRESH_TOKEN_URL || 'https://graph.instagram.com/refresh_access_token',
-    userInfoEndpoint: process.env.TWITTER_USER_INFO_ENDPOINT || 'https://graph.instagram.com/me?fields=id,username,account_type',
+    userInfoEndpoint: process.env.INSTAGRAM_USER_INFO_ENDPOINT || 'https://graph.instagram.com/me?fields=id,username,account_type',
+    userMediaEndpoint: process.env.INSTAGRAM_USER_MEDIA_ENDPOINT || 'https://graph.instagram.com/me/media?fields=id,media_type,media_url,thumbnail_url,permalink,caption',
     authUrl: 'https://api.instagram.com/oauth/authorize'
   } as IInstagramConfig
 };
