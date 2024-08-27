@@ -27,6 +27,7 @@ export const config = {
     clientSecret: process.env.TIKTOK_CLIENT_SECRET || '',
     tokenEndpoint: process.env.TIKTOK_TOKEN_ENDPOINT || 'https://open.tiktokapis.com/v2/oauth/token',
     userInfoEndpoint: process.env.TIKTOK_USER_INFO_ENDPOINT || 'https://open.tiktokapis.com/v2/user/info?fields=open_id,union_id,avatar_url,display_name,follower_count,following_count',
+    userVideosEndpoint: process.env.TIKTOK_USER_VIDEOS_ENDPOINT || 'https://open.tiktokapis.com/v2/video/list?fields=id,create_time,cover_image_url,share_url,video_description,duration,title,embed_html,embed_link,like_count,comment_count,share_count,view_count',
     authUrl: 'https://www.tiktok.com/v2/auth/authorize',
   } as ITiktokConfig
 };
