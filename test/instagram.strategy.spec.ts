@@ -13,8 +13,7 @@ describe('InstagramStrategy', () => {
     tokenEndpoint: 'https://api.instagram.com/oauth/access_token',
     longLivedTokenEndpoint:'https://graph.instagram.com/access_token',
     refreshTokenEndpoint: 'https://graph.instagram.com/refresh_access_token',
-    userInfoEndpoint: 'https://graph.instagram.com/me?fields=id,username,account_type',
-    userMediaEndpoint: 'https://graph.instagram.com/me/media?fields=id,media_type,media_url,thumbnail_url,permalink,caption',
+    userInfoEndpoint: 'https://graph.instagram.com/me',
     authUrl: 'https://api.instagram.com/oauth/authorize'
   };
 
@@ -58,23 +57,6 @@ describe('InstagramStrategy', () => {
     mock.onGet(new RegExp(mockConfig.userInfoEndpoint)).reply(200, mockUserData);
 
     const response = await instagramStrategy.getUserData(mockToken);
-    expect(response.status).toBe(true);
-    expect(response.data).toBeDefined();
-  });
-
-  it('should get user media', async () => {
-    const mockToken = 'mockToken';
-    const mockMediaData = { data: [{
-        id: "000000",
-        media_type: "image/png",
-        media_url: "www.image.com/image.png",
-        username: "lordoftriton",
-        timestamp: ""
-    }], paging: { cursors: { after: "after_cursor", before: "before_cursor" }, next: "next" } };
-
-    mock.onGet(new RegExp(mockConfig.userMediaEndpoint)).reply(200, mockMediaData);
-
-    const response = await instagramStrategy.getUserMedia(mockToken, { before: mockMediaData.paging.cursors.before });
     expect(response.status).toBe(true);
     expect(response.data).toBeDefined();
   });

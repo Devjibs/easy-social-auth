@@ -12,5 +12,4 @@ export interface ITwitterConfig extends BaseConfig {}
 export interface IInstagramConfig extends BaseConfig {
   refreshTokenEndpoint: string;
   longLivedTokenEndpoint: string;
-  userMediaEndpoint: string;
 }
