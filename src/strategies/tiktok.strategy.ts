@@ -30,24 +30,4 @@ export class TiktokStrategy extends AuthStrategy {
       return { status: false, error: error.response?.data?.error_description || error.message };
     }
   }
-
-  async getUserVideos(accessToken: string, cursor?: number, max_count?: number): Promise<SocialAuthResponse<any>> {
-    try {
-      const url = new URL(this.config.userVideosEndpoint);
-      if (cursor) url.searchParams.set('cursor', cursor.toString());
-      if (max_count) url.searchParams.set('max_count', max_count.toString());
-
-      const { data } = await axios.get(url.toString(), {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      });
-      if (data) return {
-        status: true,
-        data: data
-      };
-
-      return { status: false, error: "unable to retrieve user videos" };
-    } catch (error: any) {
-      return { status: false, error: error.response?.data?.error_description || error.message };
-    }
-  }
 }
