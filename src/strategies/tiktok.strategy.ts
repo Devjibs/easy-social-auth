@@ -15,6 +15,15 @@ export class TiktokStrategy extends AuthStrategy {
     );
   }
 
+  generateAuthUrl(redirectUri: string, scope?: string): string {
+    const url = new URL(this.authUrl);
+    url.searchParams.set('client_key', this.clientId);
+    url.searchParams.set('redirect_uri', redirectUri);
+    url.searchParams.set('response_type', 'code');
+    if (scope) url.searchParams.set('scope', scope);
+    return url.toString();
+  }
+
   async getUserData(accessToken: string): Promise<SocialAuthResponse<any>> {
     try {
       const { data } = await axios.get(this.userInfoEndpoint, {
