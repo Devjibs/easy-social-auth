@@ -15,9 +15,30 @@ export class InstagramStrategy extends AuthStrategy {
         );
     }
 
+    async exchangeCodeForToken(code: string, redirectUri: string, additionalParams: Record<string, string> = {}): Promise<SocialAuthResponse<string>> {
+        try {
+            const params = new FormData();
+            params.append('client_id', this.clientId);
+            params.append('client_secret', this.clientSecret);
+            params.append('grant_type', this.grantType);
+            params.append('redirect_uri', redirectUri);
+            params.append('code', code);
+
+            Object.keys(additionalParams).forEach((param) => {
+                params.append(param, additionalParams[param]);
+            })
+
+            const { data } = await axios.post(this.tokenEndpoint, params);
+            return { status: true, data: data?.access_token };
+        } catch (error: any) {
+            return { status: false, error: error.response?.data?.error_description || error.message };
+        }
+      }
+
     async exchangeTokenForLongLivedToken(accessToken: string): Promise<SocialAuthResponse<string>> {
         try {
             const url = new URL(this.config.longLivedTokenEndpoint);
+            url.searchParams.set('client_secret', this.clientSecret);
             url.searchParams.set('grant_type', GrantType.INSTAGRAM_EXCHANGE_TOKEN);
             url.searchParams.set('access_token', accessToken);
 
