@@ -23,10 +23,10 @@ export const config = {
     authUrl: 'https://api.twitter.com/oauth2/authorize',
   } as ITwitterConfig,
   tiktok: {
-    clientId: process.env.TIKTOK_CLIENT_KEY || 'awal2p31qx6u6exh',
-    clientSecret: process.env.TIKTOK_CLIENT_SECRET || '7VOSI50zVjhX7xa6Y5365z3X1C1wjx5u',
-    tokenEndpoint: process.env.TIKTOK_TOKEN_ENDPOINT || 'https://open.tiktokapis.com/v2/oauth/token',
-    userInfoEndpoint: process.env.TIKTOK_USER_INFO_ENDPOINT || 'https://open.tiktokapis.com/v2/user/info?fields=open_id,union_id,avatar_url,display_name,follower_count,following_count',
-    authUrl: 'https://www.tiktok.com/v2/auth/authorize',
+    clientId: process.env.TIKTOK_CLIENT_KEY || '',
+    clientSecret: process.env.TIKTOK_CLIENT_SECRET || '',
+    tokenEndpoint: process.env.TIKTOK_TOKEN_ENDPOINT || 'https://open.tiktokapis.com/v2/oauth/token/',
+    userInfoEndpoint: process.env.TIKTOK_USER_INFO_ENDPOINT || 'https://open.tiktokapis.com/v2/user/info/?fields=open_id,union_id,avatar_url,display_name',
+    authUrl: 'https://www.tiktok.com/v2/auth/authorize/',
   } as ITiktokConfig
 };
