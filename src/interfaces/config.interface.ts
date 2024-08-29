@@ -13,3 +13,4 @@ export interface IInstagramConfig extends BaseConfig {
   refreshTokenEndpoint: string;
   longLivedTokenEndpoint: string;
 }
+export interface ITiktokConfig extends BaseConfig {}
