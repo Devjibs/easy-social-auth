@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { IFacebookConfig, IGoogleConfig, ISpotifyConfig, ITiktokConfig, ITwitterConfig } from './interfaces/config.interface';
-=======
-import { IFacebookConfig, IGoogleConfig, ITiktokConfig, ITwitterConfig } from './interfaces/config.interface';
->>>>>>> 5f9625b3f3473b0b4551c21aa121584a03726126
 
 export const config = {
   google: {
