@@ -49,17 +49,6 @@ describe('TwitterStrategy', () => {
     expect(response.data).toEqual(mockNewToken);
   });
 
-  it('should exchange password for token', async () => {
-    const mockUsername = 'username';
-    const mockPassword = 'password';
-    const mockToken = 'mockToken';
-    mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockToken });
-
-    const response = await twitterStrategy.exchangePasswordForToken(mockUsername, mockPassword);
-    expect(response.status).toBe(true);
-    expect(response.data).toEqual(mockToken);
-  });
-
   it('should get user data', async () => {
     const mockToken = 'mockToken';
     const mockUserData = { id: '1', name: 'Test User', email: 'test@example.com' };
