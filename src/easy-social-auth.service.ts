@@ -14,6 +14,6 @@ export class SocialAuthService {
     if (config.google) this.googleStrategy = new GoogleStrategy(config.google);
     if (config.facebook) this.facebookStrategy = new FacebookStrategy(config.facebook);
     if (config.twitter) this.twitterStrategy = new TwitterStrategy(config.twitter);
-    if (config.spotify) this.spotifyStrategy = new TwitterStrategy(config.spotify);
+    if (config.spotify) this.spotifyStrategy = new SpotifyStrategy(config.spotify);
   }
 }

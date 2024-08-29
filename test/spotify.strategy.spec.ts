@@ -31,22 +31,22 @@ describe('SpotifyStrategy', () => {
 
   it('should exchange code for token', async () => {
     const mockCode = 'mockCode';
-    const mockToken = 'mockToken';
-    mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockToken });
+    const mockTokenResponse = { access_token: "mockNewToken" };
+    mock.onPost(mockConfig.tokenEndpoint).reply(200, mockTokenResponse);
 
     const response = await spotifyStrategy.exchangeCodeForToken(mockCode, 'redirect-uri');
     expect(response.status).toBe(true);
-    expect(response.data).toEqual(mockToken);
+    expect(response.data).toEqual(mockTokenResponse);
   });
 
   it('should refresh access token', async () => {
     const mockRefreshToken = 'mockRefreshToken';
-    const mockNewToken = 'mockNewToken';
-    mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockNewToken });
+    const mockNewTokenResponse = { access_token: "mockNewToken" };
+    mock.onPost(mockConfig.tokenEndpoint).reply(200, mockNewTokenResponse);
 
     const response = await spotifyStrategy.refreshAccessToken(mockRefreshToken);
     expect(response.status).toBe(true);
-    expect(response.data).toEqual(mockNewToken);
+    expect(response.data).toEqual(mockNewTokenResponse);
   });
 
   it('should get user data', async () => {
