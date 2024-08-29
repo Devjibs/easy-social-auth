@@ -1,4 +1,4 @@
-import { IFacebookConfig, IGoogleConfig, ITwitterConfig } from './interfaces/config.interface';
+import { IFacebookConfig, IGoogleConfig, ITiktokConfig, ITwitterConfig } from './interfaces/config.interface';
 
 export const config = {
   google: {
@@ -21,5 +21,12 @@ export const config = {
     tokenEndpoint: process.env.TWITTER_TOKEN_ENDPOINT || 'https://api.twitter.com/oauth2/token',
     userInfoEndpoint: process.env.TWITTER_USER_INFO_ENDPOINT || 'https://api.twitter.com/2/account/verify_credentials.json',
     authUrl: 'https://api.twitter.com/oauth2/authorize',
-  } as ITwitterConfig
+  } as ITwitterConfig,
+  tiktok: {
+    clientId: process.env.TIKTOK_CLIENT_KEY || '',
+    clientSecret: process.env.TIKTOK_CLIENT_SECRET || '',
+    tokenEndpoint: process.env.TIKTOK_TOKEN_ENDPOINT || 'https://open.tiktokapis.com/v2/oauth/token/',
+    userInfoEndpoint: process.env.TIKTOK_USER_INFO_ENDPOINT || 'https://open.tiktokapis.com/v2/user/info/?fields=open_id,union_id,avatar_url,display_name',
+    authUrl: 'https://www.tiktok.com/v2/auth/authorize/',
+  } as ITiktokConfig
 };
