@@ -8,4 +8,5 @@ export * from './strategies/easy-social-auth.strategy';
 export * from './strategies/google.strategy';
 export * from './strategies/facebook.strategy';
 export * from './strategies/twitter.strategy';
+export * from './strategies/spotify.strategy'
 export * from './config';
