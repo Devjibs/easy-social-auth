@@ -34,7 +34,7 @@ describe('InstagramStrategy', () => {
   it('should exchange code for token', async () => {
     const mockCode = 'mockCode';
     const mockToken = 'mockToken';
-    mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockToken });
+    mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockToken, status: true });
 
     const response = await instagramStrategy.exchangeCodeForToken(mockCode, 'redirect-uri');
     expect(response.status).toBe(true);
