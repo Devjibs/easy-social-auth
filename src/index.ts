@@ -7,4 +7,5 @@ export * from './interfaces/easy-social-auth-response.interface';
 export * from './strategies/easy-social-auth.strategy';
 export * from './strategies/google.strategy';
 export * from './strategies/facebook.strategy';
+export * from './strategies/tiktok.strategy';
 export * from './config';
