@@ -1,4 +1,4 @@
-import { IFacebookConfig, IGoogleConfig, ISpotifyConfig, ITiktokConfig, ITwitterConfig } from './interfaces/config.interface';
+import { IFacebookConfig, IGoogleConfig, ISpotifyConfig, IInstagramConfig, ITiktokConfig, ITwitterConfig } from './interfaces/config.interface';
 
 export const config = {
   google: {
@@ -22,6 +22,15 @@ export const config = {
     userInfoEndpoint: process.env.TWITTER_USER_INFO_ENDPOINT || 'https://api.twitter.com/2/account/verify_credentials.json',
     authUrl: 'https://api.twitter.com/oauth2/authorize',
   } as ITwitterConfig,
+  instagram: {
+    clientId: process.env.INSTAGRAM_CLIENT_ID || '',
+    clientSecret: process.env.INSTAGRAM_CLIENT_SECRET || '',
+    tokenEndpoint: process.env.INSTAGRAM_ACCESS_TOKEN_URL || 'https://api.instagram.com/oauth/access_token',
+    longLivedTokenEndpoint: process.env.INSTAGRAM_LONG_LIVED_ACCESS_TOKEN_URL || 'https://graph.instagram.com/access_token',
+    refreshTokenEndpoint: process.env.INSTAGRAM_REFRESH_TOKEN_URL || 'https://graph.instagram.com/refresh_access_token',
+    userInfoEndpoint: process.env.INSTAGRAM_USER_INFO_ENDPOINT || 'https://graph.instagram.com/me?fields=id,username,account_type',
+    authUrl: 'https://api.instagram.com/oauth/authorize'
+  } as IInstagramConfig,
   spotify: {
     clientId: process.env.SPOTIFY_CLIENT_ID || '',
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET || '',
