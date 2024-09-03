@@ -11,9 +11,12 @@
   <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google Logo" width="40" height="40">
   <img src="https://img.icons8.com/color/48/000000/facebook-new.png" alt="Facebook Logo" width="40" height="40">
   <img src="https://img.icons8.com/ios-filled/50/000000/x.png" alt="X Logo" width="40" height="35">
+  <img src="https://img.icons8.com/fluency/48/000000/instagram-new.png" alt="Instagram Logo" width="40" height="40">
+  <img src="https://img.icons8.com/fluency/48/000000/tiktok.png" alt="TikTok Logo" width="40" height="40">
+  <img src="https://img.icons8.com/fluency/48/000000/spotify.png" alt="Spotify Logo" width="40" height="40">
 </p>
 
-A flexible, standalone package for social authentication using Google, Facebook and Twitter(X).
+A flexible, standalone package for social authentication using Google, Facebook, Instagram, Tiktok, Spotify, and Twitter(X).
 
 ## Installation
 
@@ -48,7 +51,6 @@ TWITTER_AUTH_URL=https://api.twitter.com/oauth2/authorize
 
 ```typescript
 import { SocialAuthService } from 'easy-social-auth';
-import { IGoogleConfig, IFacebookConfig } from 'easy-social-auth/interfaces/config.interface';
 
 // only the Google strategy will initialize if only it's env values are provided
 const socialAuthService = new SocialAuthService();
