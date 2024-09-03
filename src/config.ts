@@ -1,4 +1,4 @@
-import { IFacebookConfig, IGoogleConfig, IInstagramConfig, ITiktokConfig, ITwitterConfig } from './interfaces/config.interface';
+import { IFacebookConfig, IGoogleConfig, ISpotifyConfig, IInstagramConfig, ITiktokConfig, ITwitterConfig } from './interfaces/config.interface';
 
 export const config = {
   google: {
@@ -31,6 +31,13 @@ export const config = {
     userInfoEndpoint: process.env.INSTAGRAM_USER_INFO_ENDPOINT || 'https://graph.instagram.com/me?fields=id,username,account_type',
     authUrl: 'https://api.instagram.com/oauth/authorize'
   } as IInstagramConfig,
+  spotify: {
+    clientId: process.env.SPOTIFY_CLIENT_ID || '',
+    clientSecret: process.env.SPOTIFY_CLIENT_SECRET || '',
+    tokenEndpoint: process.env.TWITTER_TOKEN_ENDPOINT || 'https://accounts.spotify.com/api/token',
+    userInfoEndpoint: process.env.TWITTER_USER_INFO_ENDPOINT || 'https://api.spotify.com/v1/me',
+    authUrl: 'https://accounts.spotify.com/authorize',
+  } as ISpotifyConfig,
   tiktok: {
     clientId: process.env.TIKTOK_CLIENT_KEY || '',
     clientSecret: process.env.TIKTOK_CLIENT_SECRET || '',
