@@ -3,8 +3,9 @@ import { FacebookStrategy } from './strategies/facebook.strategy';
 import { TwitterStrategy } from './strategies/twitter.strategy';
 import { InstagramStrategy } from './strategies/instagram.strategy';
 import { TiktokStrategy } from './strategies/tiktok.strategy';
-import { config } from './config';
 import { SpotifyStrategy } from './strategies/spotify.strategy';
+import { LinkedinStrategy } from './strategies/linkedin.strategy';
+import { config } from './config';
 
 export class SocialAuthService {
   public googleStrategy?: GoogleStrategy;
@@ -13,6 +14,7 @@ export class SocialAuthService {
   public instagramStrategy?: InstagramStrategy;
   public spotifyStrategy?: SpotifyStrategy;
   public tiktokStrategy?: TiktokStrategy;
+  public linkedinStrategy?: LinkedinStrategy;
 
   constructor() {
     if (config.google) this.googleStrategy = new GoogleStrategy(config.google);
@@ -21,5 +23,6 @@ export class SocialAuthService {
     if (config.instagram) this.instagramStrategy = new InstagramStrategy(config.instagram);
     if (config.spotify) this.spotifyStrategy = new SpotifyStrategy(config.spotify);
     if (config.tiktok) this.tiktokStrategy = new TiktokStrategy(config.tiktok);
+    if (config.linkedin) this.linkedinStrategy = new LinkedinStrategy(config.linkedin);
   }
 }
