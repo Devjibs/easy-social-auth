@@ -1,4 +1,4 @@
-import { IFacebookConfig, IGoogleConfig, ISpotifyConfig, IInstagramConfig, ITiktokConfig, ITwitterConfig } from './interfaces/config.interface';
+import { IFacebookConfig, IGoogleConfig, ISpotifyConfig, IInstagramConfig, ITiktokConfig, ITwitterConfig, ILinkedinConfig } from './interfaces/config.interface';
 
 export const config = {
   google: {
@@ -44,5 +44,12 @@ export const config = {
     tokenEndpoint: process.env.TIKTOK_TOKEN_ENDPOINT || 'https://open.tiktokapis.com/v2/oauth/token/',
     userInfoEndpoint: process.env.TIKTOK_USER_INFO_ENDPOINT || 'https://open.tiktokapis.com/v2/user/info/?fields=open_id,union_id,avatar_url,display_name',
     authUrl: 'https://www.tiktok.com/v2/auth/authorize/',
-  } as ITiktokConfig
+  } as ITiktokConfig,
+  linkedin: {
+    clientId: process.env.TIKTOK_CLIENT_KEY || '',
+    clientSecret: process.env.TIKTOK_CLIENT_SECRET || '',
+    tokenEndpoint: process.env.TIKTOK_TOKEN_ENDPOINT || 'https://www.linkedin.com/oauth/v2/accessToken',
+    userInfoEndpoint: process.env.TIKTOK_USER_INFO_ENDPOINT || 'https://api.linkedin.com/v2/me',
+    authUrl: 'https://www.linkedin.com/oauth/v2/authorization',
+  } as ILinkedinConfig
 };
