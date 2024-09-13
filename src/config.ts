@@ -34,8 +34,8 @@ export const config = {
   spotify: {
     clientId: process.env.SPOTIFY_CLIENT_ID || '',
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET || '',
-    tokenEndpoint: process.env.TWITTER_TOKEN_ENDPOINT || 'https://accounts.spotify.com/api/token',
-    userInfoEndpoint: process.env.TWITTER_USER_INFO_ENDPOINT || 'https://api.spotify.com/v1/me',
+    tokenEndpoint: process.env.SPOTIFY_TOKEN_ENDPOINT || 'https://accounts.spotify.com/api/token',
+    userInfoEndpoint: process.env.SPOTIFY_USER_INFO_ENDPOINT || 'https://api.spotify.com/v1/me',
     authUrl: 'https://accounts.spotify.com/authorize',
   } as ISpotifyConfig,
   tiktok: {
@@ -46,10 +46,10 @@ export const config = {
     authUrl: 'https://www.tiktok.com/v2/auth/authorize/',
   } as ITiktokConfig,
   linkedin: {
-    clientId: process.env.TIKTOK_CLIENT_KEY || '',
-    clientSecret: process.env.TIKTOK_CLIENT_SECRET || '',
-    tokenEndpoint: process.env.TIKTOK_TOKEN_ENDPOINT || 'https://www.linkedin.com/oauth/v2/accessToken',
-    userInfoEndpoint: process.env.TIKTOK_USER_INFO_ENDPOINT || 'https://api.linkedin.com/v2/me',
+    clientId: process.env.LINKEDIN_CLIENT_KEY || '',
+    clientSecret: process.env.LINKEDIN_CLIENT_SECRET || '',
+    tokenEndpoint: process.env.LINKEDIN_TOKEN_ENDPOINT || 'https://www.linkedin.com/oauth/v2/accessToken',
+    userInfoEndpoint: process.env.LINKEDIN_USER_INFO_ENDPOINT || 'https://api.linkedin.com/v2/me',
     authUrl: 'https://www.linkedin.com/oauth/v2/authorization',
   } as ILinkedinConfig
 };

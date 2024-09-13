@@ -14,9 +14,10 @@
   <img src="https://img.icons8.com/fluency/48/000000/instagram-new.png" alt="Instagram Logo" width="40" height="40">
   <img src="https://img.icons8.com/fluency/48/000000/tiktok.png" alt="TikTok Logo" width="40" height="40">
   <img src="https://img.icons8.com/fluency/48/000000/spotify.png" alt="Spotify Logo" width="40" height="40">
+  <img src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn Logo" width="40" height="40">
 </p>
 
-A flexible, standalone package for social authentication using Google, Facebook, Instagram, Tiktok, Spotify, and Twitter(X).
+A flexible, standalone package for social authentication using Google, Facebook, Instagram, Tiktok, Spotify, LinkedIn, and Twitter(X).
 
 ## Installation
 
@@ -45,6 +46,28 @@ TWITTER_CONSUMER_SECRET=your-twitter-consumer-secret
 TWITTER_TOKEN_ENDPOINT=https://api.twitter.com/oauth2/token
 TWITTER_USER_INFO_ENDPOINT=https://api.twitter.com/2/account/verify_credentials.json
 TWITTER_AUTH_URL=https://api.twitter.com/oauth2/authorize
+
+INSTAGRAM_CLIENT_ID=your-instagram-client-id
+INSTAGRAM_CLIENT_SECRET=your-instagram-client-secret
+INSTAGRAM_ACCESS_TOKEN_URL=https://api.instagram.com/oauth/access_token
+INSTAGRAM_LONG_LIVED_ACCESS_TOKEN_URL=https://graph.instagram.com/access_token
+INSTAGRAM_REFRESH_TOKEN_URL=https://graph.instagram.com/refresh_access_token
+INSTAGRAM_USER_INFO_ENDPOINT=https://graph.instagram.com/me?fields=id,username,account_type
+
+SPOTIFY_CLIENT_ID=your-spotify-client-id
+SPOTIFY_CLIENT_SECRET=your-spotify-client-secret
+SPOTIFY_TOKEN_ENDPOINT=https://accounts.spotify.com/api/token
+SPOTIFY_USER_INFO_ENDPOINT=https://api.spotify.com/v1/me
+
+TIKTOK_CLIENT_KEY=your-tiktok-client-key,
+TIKTOK_CLIENT_SECRET=your-tiktok-client-secret
+TIKTOK_TOKEN_ENDPOINT=https://open.tiktokapis.com/v2/oauth/token/
+TIKTOK_USER_INFO_ENDPOINT=https://open.tiktokapis.com/v2/user/info/?fields=open_id,union_id,avatar_url,display_name
+
+LINKEDIN_CLIENT_KEY=your-linkedin-client-key
+LINKEDIN_CLIENT_SECRET=your-linkedin-client-secret
+LINKEDIN_TOKEN_ENDPOINT=https://www.linkedin.com/oauth/v2/accessToken
+LINKEDIN_USER_INFO_ENDPOINT=https://api.linkedin.com/v2/me
 ```
 
 ## Example
@@ -102,6 +125,78 @@ if (socialAuthServiceTwitter.twitterStrategy) {
       console.log('Twitter User Data:', userData);
     } else {
       console.error('Twitter Token Request Error:', tokenResponse.error);
+    }
+  }
+}
+
+// only the Instagram strategy will initialize if only its env values are provided
+const socialAuthServiceInstagram = new SocialAuthService();
+
+if (socialAuthServiceInstagram.instagramStrategy) {
+  const instagramAuthUrl = socialAuthServiceInstagram.instagramStrategy.generateAuthUrl('your-instagram-redirect-uri');
+  console.log('Instagram Auth URL:', instagramAuthUrl);
+
+  async function authenticateWithInstagram() {
+    const tokenResponse = await socialAuthServiceInstagram.instagramStrategy.exchangeCodeForToken(code, 'your-instagram-redirect-uri');
+    if (tokenResponse.status) {
+      const userData = await socialAuthServiceInstagram.instagramStrategy.getUserData(tokenResponse.data!);
+      console.log('Instagram User Data:', userData);
+    } else {
+      console.error('Instagram Token Request Error:', tokenResponse.error);
+    }
+  }
+}
+
+// only the Spotify strategy will initialize if only its env values are provided
+const socialAuthServiceSpotify = new SocialAuthService();
+
+if (socialAuthServiceSpotify.spotifyStrategy) {
+  const spotifyAuthUrl = socialAuthServiceSpotify.spotifyStrategy.generateAuthUrl('your-spotify-redirect-uri');
+  console.log('Spotify Auth URL:', spotifyAuthUrl);
+
+  async function authenticateWithSpotify() {
+    const tokenResponse = await socialAuthServiceSpotify.spotifyStrategy.exchangeCodeForToken(code, 'your-spotify-redirect-uri');
+    if (tokenResponse.status) {
+      const userData = await socialAuthServiceSpotify.spotifyStrategy.getUserData(tokenResponse.data!);
+      console.log('Spotify User Data:', userData);
+    } else {
+      console.error('Spotify Token Request Error:', tokenResponse.error);
+    }
+  }
+}
+
+// only the Tiktok strategy will initialize if only its env values are provided
+const socialAuthServiceTiktok = new SocialAuthService();
+
+if (socialAuthServiceTiktok.tiktokStrategy) {
+  const tiktokAuthUrl = socialAuthServiceTiktok.tiktokStrategy.generateAuthUrl('your-tiktok-redirect-uri');
+  console.log('Tiktok Auth URL:', tiktokAuthUrl);
+
+  async function authenticateWithTiktok() {
+    const tokenResponse = await socialAuthServiceTiktok.tiktokStrategy.exchangeCodeForToken(code, 'your-tiktok-redirect-uri');
+    if (tokenResponse.status) {
+      const userData = await socialAuthServiceTiktok.tiktokStrategy.getUserData(tokenResponse.data!);
+      console.log('Tiktok User Data:', userData);
+    } else {
+      console.error('Tiktok Token Request Error:', tokenResponse.error);
+    }
+  }
+}
+
+// only the LinkedIn strategy will initialize if only its env values are provided
+const socialAuthServiceLinkedIn = new SocialAuthService();
+
+if (socialAuthServiceLinkedIn.linkedInStrategy) {
+  const linkedInAuthUrl = socialAuthServiceLinkedIn.linkedInStrategy.generateAuthUrl('your-linkedIn-redirect-uri');
+  console.log('LinkedIn Auth URL:', linkedInAuthUrl);
+
+  async function authenticateWithLinkedIn() {
+    const tokenResponse = await socialAuthServiceLinkedIn.linkedInStrategy.exchangeCodeForToken(code, 'your-linkedIn-redirect-uri');
+    if (tokenResponse.status) {
+      const userData = await socialAuthServiceLinkedIn.linkedInStrategy.getUserData(tokenResponse.data!);
+      console.log('LinkedIn User Data:', userData);
+    } else {
+      console.error('LinkedIn Token Request Error:', tokenResponse.error);
     }
   }
 }
