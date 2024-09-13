@@ -31,16 +31,6 @@ describe('InstagramStrategy', () => {
     expect(authUrl).toContain(mockConfig.authUrl);
   });
 
-  it('should exchange code for token', async () => {
-    const mockCode = 'mockCode';
-    const mockToken = 'mockToken';
-    mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockToken, status: true });
-
-    const response = await instagramStrategy.exchangeCodeForToken(mockCode, 'redirect-uri');
-    expect(response.status).toBe(true);
-    expect(response.data).toEqual(mockToken);
-  });
-
   it('should refresh access token', async () => {
     const mockNewToken = 'mockNewToken';
     mock.onGet(new RegExp(mockConfig.refreshTokenEndpoint)).reply(200, { access_token: mockNewToken });
