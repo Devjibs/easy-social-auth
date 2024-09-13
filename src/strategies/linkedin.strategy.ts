@@ -3,6 +3,7 @@ import { ISocialUser } from '../interfaces/social-user.interface';
 import { ILinkedinConfig } from '../interfaces/config.interface';
 import { SocialAuthResponse } from '../interfaces/easy-social-auth-response.interface';
 import { AuthStrategy } from './easy-social-auth.strategy';
+import { GrantType } from '../enums/grant-type.enum';
 
 export class LinkedinStrategy extends AuthStrategy {
   constructor(config: ILinkedinConfig) {
@@ -30,6 +31,16 @@ export class LinkedinStrategy extends AuthStrategy {
     } catch (error: any) {
       return { status: false, error: error.response?.data?.error_description || error.message };
     }
+  }
+
+  async exchangeCodeForToken(code: string, redirectUri: string): Promise<SocialAuthResponse<any>> {
+    return await this.exchangeToken({
+      client_id: this.clientId,
+      client_secret: this.clientSecret,
+      grant_type: GrantType.AUTHORIZATION_CODE,
+      redirect_uri: redirectUri,
+      code
+    });
   }
 
   async getUserData(accessToken: string): Promise<SocialAuthResponse<ISocialUser>> {
