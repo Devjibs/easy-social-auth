@@ -15,6 +15,23 @@ export class LinkedinStrategy extends AuthStrategy {
     );
   }
 
+  async exchangeToken(params: Record<string, string>): Promise<SocialAuthResponse<any>> {
+    try {
+      const form = new URLSearchParams();
+      Object.keys(params).forEach((key) => { form.append(key, params[key]) });
+
+      const { data } = await axios.post(this.tokenEndpoint, form, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Cache-Control': 'no-cache' }
+      });
+
+      if (data) return { status: true, data: data };
+
+      return { status: false, error: "unable to retrieve token" };
+    } catch (error: any) {
+      return { status: false, error: error.response?.data?.error_description || error.message };
+    }
+  }
+
   async getUserData(accessToken: string): Promise<SocialAuthResponse<ISocialUser>> {
     try {
       const { data } = await axios.get(this.userInfoEndpoint, {
