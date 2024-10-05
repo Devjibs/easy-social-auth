@@ -1,6 +1,6 @@
 {
   "name": "easy-social-auth",
-  "version": "1.0.81",
+  "version": "1.0.82",
   "description": "A flexible, standalone package for social authentication using Google, Facebook & Twitter",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -16,7 +16,7 @@
     "oauth"
   ],
   "author": "Habeeb Ajide",
-  "license":"MIT",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/devjibs/easy-social-auth.git"
@@ -24,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/devjibs/easy-social-auth/issues"
   },
-  "homepage":"https://github.com/devjibs/easy-social-auth#readme",
+  "homepage": "https://github.com/devjibs/easy-social-auth#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
