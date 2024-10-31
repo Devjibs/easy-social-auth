@@ -44,7 +44,7 @@ export class TiktokStrategy extends AuthStrategy {
   }
 
   generateAuthUrl(redirectUri: string, scope?: string): string {
-    const csrfState = Math.random().toString(36).substring(2);
+    const csrfState = `tiktok_${Math.random().toString(36).substring(2)}`;
 
     let url = this.authUrl;
 
