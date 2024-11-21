@@ -12,7 +12,7 @@ export class TwitterStrategy extends AuthStrategy {
       config.clientSecret,
       config.userInfoEndpoint,
       config.tokenEndpoint,
-      config.authUrl
+      config.authUrl,
     );
   }
 
@@ -32,7 +32,35 @@ export class TwitterStrategy extends AuthStrategy {
     }
   }
 
-  async requestToken(): Promise<SocialAuthResponse<string>> {
+  async exchangeCodeForToken(
+    code: string,
+    redirectUri: string,
+    additionalParams: Record<string, string> = {}
+  ): Promise<SocialAuthResponse<string>> {
+      try{
+        const { data } = await axios.post(this.tokenEndpoint, null, {
+          headers: {
+            Authorization: `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          params: {
+            grant_type: GrantType.AUTHORIZATION_CODE,
+            code: code,
+            redirect_uri: redirectUri,
+            code_verifier: additionalParams?.code_verifier
+          }
+        });
+        return { status: true, data: data?.access_token };
+      } catch (error: any) {
+        return { status: false, error: error.response?.data?.error_description || error.message };
+      }
+  }
+
+  async requestAppToken(): Promise<SocialAuthResponse<string>> {
+    const authToken = `${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`
+    console.log("ClientId: ", this.clientId);
+    console.log("ClientSecret: ", this.clientSecret);
+    console.log(authToken);
     try {
       const { data } = await axios.post(this.tokenEndpoint, null, {
         headers: {
@@ -43,7 +71,7 @@ export class TwitterStrategy extends AuthStrategy {
           grant_type: GrantType.CLIENT_CREDENTIALS
         }
       });
-      return { status: true, data: data?.access_token };
+      return { status: true, data: data };
     } catch (error: any) {
       return { status: false, error: error.response?.data?.error_description || error.message };
     }
