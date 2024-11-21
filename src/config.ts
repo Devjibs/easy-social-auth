@@ -7,6 +7,9 @@ import {
   ITwitterConfig,
   ILinkedinConfig,
 } from "./interfaces/config.interface";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 export const config = {
   google: {
