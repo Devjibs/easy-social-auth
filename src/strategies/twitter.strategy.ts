@@ -57,10 +57,6 @@ export class TwitterStrategy extends AuthStrategy {
   }
 
   async requestAppToken(): Promise<SocialAuthResponse<string>> {
-    const authToken = `${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`
-    console.log("ClientId: ", this.clientId);
-    console.log("ClientSecret: ", this.clientSecret);
-    console.log(authToken);
     try {
       const { data } = await axios.post(this.tokenEndpoint, null, {
         headers: {
