@@ -16,13 +16,17 @@ export abstract class AuthStrategy {
   generateAuthUrl(
     redirectUri: string,
     scope?: string,
-    responseType?: string
+    responseType?: string,
+    additionalParams: Record<string, string> = {}
   ): string {
     const url = new URL(this.authUrl);
     url.searchParams.set("client_id", this.clientId);
     url.searchParams.set("redirect_uri", redirectUri);
     url.searchParams.set("response_type", responseType ?? "code");
     if (scope) url.searchParams.set("scope", scope);
+    Object.keys(additionalParams).forEach((param) => {
+        url.searchParams.append(param, additionalParams[param]);
+      });
     return url.toString();
   }
 
