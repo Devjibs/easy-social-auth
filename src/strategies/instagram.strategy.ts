@@ -15,19 +15,6 @@ export class InstagramStrategy extends AuthStrategy {
     );
   }
 
-  generateAuthUrl(
-    redirectUri: string,
-    scope?: string,
-    responseType?: string
-  ): string {
-    const url = new URL(this.authUrl);
-    url.searchParams.set("client_id", this.clientId);
-    url.searchParams.set("redirect_uri", redirectUri);
-    url.searchParams.set("response_type", responseType ?? "code");
-    if (scope) url.searchParams.set("scope", scope);
-    return url.toString();
-  }
-
   async exchangeCodeForToken(
     code: string,
     redirectUri: string,
