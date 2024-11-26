@@ -6,7 +6,7 @@ import { AuthStrategy } from './easy-social-auth.strategy';
 import { GrantType } from '../enums/grant-type.enum';
 
 export class TwitterStrategy extends AuthStrategy {
-  constructor(config: ITwitterConfig) {
+  constructor(private config: ITwitterConfig) {
     super(
       config.clientId,
       config.clientSecret,
@@ -83,6 +83,24 @@ export class TwitterStrategy extends AuthStrategy {
         },
         params: {
           grant_type: GrantType.CLIENT_CREDENTIALS
+        }
+      });
+      return { status: true, data: data };
+    } catch (error: any) {
+      return { status: false, error: error.response?.data?.error_description || error.message };
+    }
+  }
+
+  async revokeAccessToken(token: string, token_type_hint?: string): Promise<SocialAuthResponse<any>> {
+    try {
+      const { data } = await axios.post(this.config.revokeAccessUrl, null, {
+        headers: {
+          Authorization: `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`,
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        },
+        params: {
+          token: token,
+          token_type_hint: token_type_hint || "access_token",
         }
       });
       return { status: true, data: data };
