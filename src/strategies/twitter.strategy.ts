@@ -56,6 +56,24 @@ export class TwitterStrategy extends AuthStrategy {
       }
   }
 
+  async refreshAccessToken(refreshToken: string): Promise<SocialAuthResponse<string>> {
+    try{
+      const { data } = await axios.post(this.tokenEndpoint, null, {
+        headers: {
+          Authorization: `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        params: {
+          grant_type: GrantType.REFRESH_TOKEN,
+          refresh_token: refreshToken,
+        }
+      });
+      return { status: true, data: data?.access_token };
+    } catch (error: any) {
+      return { status: false, error: error.response?.data?.error_description || error.message };
+    }
+  }
+
   async requestAppToken(): Promise<SocialAuthResponse<string>> {
     try {
       const { data } = await axios.post(this.tokenEndpoint, null, {
