@@ -47,6 +47,9 @@ export const config = {
     authUrl:
       process.env.TWITTER_AUTH_URL ||
       "https://api.twitter.com/oauth2/authorize",
+    revokeAccessUrl:
+      process.env.TWITTER_REVOKE_ACCESS_URL ||
+      "https://api.x.com/2/oauth2/revoke",
   } as ITwitterConfig,
   instagram: {
     clientId: process.env.INSTAGRAM_CLIENT_ID || "",
