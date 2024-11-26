@@ -12,7 +12,8 @@ describe('TwitterStrategy', () => {
     clientSecret: 'client-secret',
     tokenEndpoint: 'https://api.twitter.com/oauth2/token',
     userInfoEndpoint: 'https://api.twitter.com/2/account/verify_credentials.json',
-    authUrl: 'https://api.twitter.com/oauth2/authorize'
+    authUrl: 'https://api.twitter.com/oauth2/authorize',
+    revokeAccessUrl: 'https://api.x.com/2/oauth2/revoke',
   };
 
   beforeAll(() => {
