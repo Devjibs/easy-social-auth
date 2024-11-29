@@ -33,21 +33,23 @@ describe('TwitterStrategy', () => {
   it('should exchange code for token', async () => {
     const mockCode = 'mockCode';
     const mockToken = 'mockToken';
+    const receivedMockToken = {access_token: "mockToken"};
     mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockToken });
 
     const response = await twitterStrategy.exchangeCodeForToken(mockCode, 'redirect-uri');
     expect(response.status).toBe(true);
-    expect(response.data).toEqual(mockToken);
+    expect(response.data).toEqual(receivedMockToken);
   });
 
   it('should refresh access token', async () => {
     const mockRefreshToken = 'mockRefreshToken';
     const mockNewToken = 'mockNewToken';
+    const receivedMockToken = {access_token: "mockNewToken"};
     mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockNewToken });
 
     const response = await twitterStrategy.refreshAccessToken(mockRefreshToken);
     expect(response.status).toBe(true);
-    expect(response.data).toEqual(mockNewToken);
+    expect(response.data).toEqual(receivedMockToken);
   });
 
   it('should get user data', async () => {
