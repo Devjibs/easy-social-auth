@@ -50,7 +50,7 @@ export class TwitterStrategy extends AuthStrategy {
             code_verifier: additionalParams?.code_verifier
           }
         });
-        return { status: true, data: data?.access_token };
+        return { status: true, data: data };
       } catch (error: any) {
         return { status: false, error: error.response?.data?.error_description || error.message };
       }
@@ -68,13 +68,13 @@ export class TwitterStrategy extends AuthStrategy {
           refresh_token: refreshToken,
         }
       });
-      return { status: true, data: data?.access_token };
+      return { status: true, data: data };
     } catch (error: any) {
       return { status: false, error: error.response?.data?.error_description || error.message };
     }
   }
 
-  async requestAppToken(): Promise<SocialAuthResponse<string>> {
+  async requestAppToken(scope: string, clientType?: string): Promise<SocialAuthResponse<string>> {
     try {
       const { data } = await axios.post(this.tokenEndpoint, null, {
         headers: {
@@ -82,7 +82,10 @@ export class TwitterStrategy extends AuthStrategy {
           'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
         },
         params: {
-          grant_type: GrantType.CLIENT_CREDENTIALS
+          grant_type: GrantType.CLIENT_CREDENTIALS,
+          client_secret: this.clientSecret,
+          client_type: clientType || 'third_party_app',
+          scope: scope,
         }
       });
       return { status: true, data: data };
