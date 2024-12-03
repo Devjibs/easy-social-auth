@@ -36,17 +36,17 @@ export const config = {
       "https://www.facebook.com/v9.0/dialog/oauth",
   } as IFacebookConfig,
   twitter: {
-    clientId: process.env.TWITTER_CONSUMER_KEY || "",
-    clientSecret: process.env.TWITTER_CONSUMER_SECRET || "",
+    clientId: process.env.TWITTER_CLIENT_ID || "",
+    clientSecret: process.env.TWITTER_CLIENT_SECRET || "",
     tokenEndpoint:
       process.env.TWITTER_TOKEN_ENDPOINT ||
-      "https://api.twitter.com/oauth2/token",
+      "https://api.x.com/2/oauth2/token",
     userInfoEndpoint:
       process.env.TWITTER_USER_INFO_ENDPOINT ||
       "https://api.twitter.com/2/account/verify_credentials.json",
     authUrl:
       process.env.TWITTER_AUTH_URL ||
-      "https://api.twitter.com/oauth2/authorize",
+      "https://twitter.com/i/oauth2/authorize",
     revokeAccessUrl:
       process.env.TWITTER_REVOKE_ACCESS_URL ||
       "https://api.x.com/2/oauth2/revoke",
@@ -95,14 +95,14 @@ export const config = {
       "https://www.tiktok.com/v2/auth/authorize/",
   } as ITiktokConfig,
   linkedin: {
-    clientId: process.env.LINKEDIN_CLIENT_KEY || "",
+    clientId: process.env.LINKEDIN_CLIENT_ID || "",
     clientSecret: process.env.LINKEDIN_CLIENT_SECRET || "",
     tokenEndpoint:
       process.env.LINKEDIN_TOKEN_ENDPOINT ||
       "https://www.linkedin.com/oauth/v2/accessToken",
     userInfoEndpoint:
       process.env.LINKEDIN_USER_INFO_ENDPOINT ||
-      "https://api.linkedin.com/v2/me",
+      "https://api.linkedin.com/v2/userinfo",
     authUrl:
       process.env.LINKEDIN_AUTH_URL ||
       "https://www.linkedin.com/oauth/v2/authorization",
