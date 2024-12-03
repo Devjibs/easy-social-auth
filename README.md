@@ -46,11 +46,12 @@ FACEBOOK_TOKEN_ENDPOINT=https://graph.facebook.com/v9.0/oauth/access_token
 FACEBOOK_USER_INFO_ENDPOINT=https://graph.facebook.com/me?fields=id,name,email
 
 TWITTER_AUTH_URL=twitter-auth-url
-TWITTER_CONSUMER_KEY=your-twitter-consumer-key
-TWITTER_CONSUMER_SECRET=your-twitter-consumer-secret
+TWITTER_CLIENT_ID=your-twitter-client-key
+TWITTER_CLIENT_SECRET=your-twitter-client-secret
 TWITTER_TOKEN_ENDPOINT=https://api.twitter.com/oauth2/token
 TWITTER_USER_INFO_ENDPOINT=https://api.twitter.com/2/account/verify_credentials.json
 TWITTER_AUTH_URL=https://api.twitter.com/oauth2/authorize
+TWITTER_REVOKE_ACCESS_URL=https://api.x.com/2/oauth2/revoke
 
 INSTAGRAM_AUTH_URL=instagram-auth-url
 INSTAGRAM_CLIENT_ID=your-instagram-client-id
