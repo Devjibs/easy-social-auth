@@ -10,9 +10,9 @@ describe('TwitterStrategy', () => {
   const mockConfig: ITwitterConfig = {
     clientId: 'client-id',
     clientSecret: 'client-secret',
-    tokenEndpoint: 'https://api.twitter.com/oauth2/token',
+    tokenEndpoint: 'https://api.x.com/2/oauth2/token',
     userInfoEndpoint: 'https://api.twitter.com/2/account/verify_credentials.json',
-    authUrl: 'https://api.twitter.com/oauth2/authorize',
+    authUrl: 'https://twitter.com/i/oauth2/authorize',
     revokeAccessUrl: 'https://api.x.com/2/oauth2/revoke',
   };
 
