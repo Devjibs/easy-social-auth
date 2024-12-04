@@ -49,7 +49,7 @@ TWITTER_AUTH_URL=twitter-auth-url
 TWITTER_CLIENT_ID=your-twitter-client-key
 TWITTER_CLIENT_SECRET=your-twitter-client-secret
 TWITTER_TOKEN_ENDPOINT=https://api.twitter.com/oauth2/token
-TWITTER_USER_INFO_ENDPOINT=https://api.twitter.com/2/account/verify_credentials.json
+TWITTER_USER_INFO_ENDPOINT=https://api.x.com/2/users/me
 TWITTER_AUTH_URL=https://api.twitter.com/oauth2/authorize
 TWITTER_REVOKE_ACCESS_URL=https://api.x.com/2/oauth2/revoke
 
@@ -73,11 +73,11 @@ TIKTOK_CLIENT_SECRET=your-tiktok-client-secret
 TIKTOK_TOKEN_ENDPOINT=https://open.tiktokapis.com/v2/oauth/token/
 TIKTOK_USER_INFO_ENDPOINT=https://open.tiktokapis.com/v2/user/info/?fields=open_id,union_id,avatar_url,display_name
 
-LINKEDIN_AUTH_URL=linkedin-auth-url
+LINKEDIN_AUTH_URL=https://www.linkedin.com/oauth/v2/authorization
 LINKEDIN_CLIENT_KEY=your-linkedin-client-key
 LINKEDIN_CLIENT_SECRET=your-linkedin-client-secret
 LINKEDIN_TOKEN_ENDPOINT=https://www.linkedin.com/oauth/v2/accessToken
-LINKEDIN_USER_INFO_ENDPOINT=https://api.linkedin.com/v2/me
+LINKEDIN_USER_INFO_ENDPOINT=https://api.linkedin.com/v2/userinfo
 ```
 
 ## Example
@@ -145,13 +145,18 @@ const socialAuthServiceTwitter = new SocialAuthService();
 if (socialAuthServiceTwitter.twitterStrategy) {
   const twitterAuthUrl =
     socialAuthServiceTwitter.twitterStrategy.generateAuthUrl(
-      "your-twitter-redirect-uri"
+      "your-twitter-redirect-uri",
+      "scope (optional)",
+      "response-type (optional)",
     );
   console.log("Twitter Auth URL:", twitterAuthUrl);
 
   async function authenticateWithTwitter() {
     const tokenResponse =
-      await socialAuthServiceTwitter.twitterStrategy.requestToken();
+      await socialAuthServiceTwitter.twitterStrategy.exchangeCodeForToken(
+        "code-gotten-from-auth-url",
+        "your-twitter-redirect-uri"
+      );
     if (tokenResponse.status) {
       const userData =
         await socialAuthServiceTwitter.twitterStrategy.getUserData(
@@ -252,7 +257,9 @@ const socialAuthServiceLinkedIn = new SocialAuthService();
 if (socialAuthServiceLinkedIn.linkedInStrategy) {
   const linkedInAuthUrl =
     socialAuthServiceLinkedIn.linkedInStrategy.generateAuthUrl(
-      "your-linkedIn-redirect-uri"
+      "your-linkedIn-redirect-uri",
+      "scope (optional)",
+      "response-type (optional)",
     );
   console.log("LinkedIn Auth URL:", linkedInAuthUrl);
 
