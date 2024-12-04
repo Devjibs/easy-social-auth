@@ -70,7 +70,10 @@ export class TwitterStrategy extends AuthStrategy {
 
       const body = new URLSearchParams(params).toString();
       const { data } = await axios.post(this.tokenEndpoint, body, { headers });
-      return { status: true, data };
+      return { 
+        status: true,
+        data: data,
+      };
     } catch (error: any) {
       return {
         status: false,
@@ -95,7 +98,10 @@ export class TwitterStrategy extends AuthStrategy {
           refresh_token: refreshToken,
         },
       });
-      return data;
+      return { 
+        status: true,
+        data: data,
+      };
     } catch (error: any) {
       return {
         status: false,
