@@ -4,9 +4,10 @@ import { ITwitterConfig } from "../interfaces/config.interface";
 import { SocialAuthResponse } from "../interfaces/easy-social-auth-response.interface";
 import { AuthStrategy } from "./easy-social-auth.strategy";
 import { GrantType } from "../enums/grant-type.enum";
+import crypto from "crypto";
 
 export class TwitterStrategy extends AuthStrategy {
-  constructor(private config: ITwitterConfig) {
+  constructor(private readonly config: ITwitterConfig) {
     super(
       config.clientId,
       config.clientSecret,
@@ -15,6 +16,8 @@ export class TwitterStrategy extends AuthStrategy {
       config.authUrl
     );
   }
+
+  // ======= OAuth 2.0 Methods (Unchanged) =======
 
   async getUserData(
     accessToken: string
@@ -70,7 +73,7 @@ export class TwitterStrategy extends AuthStrategy {
 
       const body = new URLSearchParams(params).toString();
       const { data } = await axios.post(this.tokenEndpoint, body, { headers });
-      return { 
+      return {
         status: true,
         data: data,
       };
@@ -98,7 +101,7 @@ export class TwitterStrategy extends AuthStrategy {
           refresh_token: refreshToken,
         },
       });
-      return { 
+      return {
         status: true,
         data: data,
       };
@@ -125,7 +128,7 @@ export class TwitterStrategy extends AuthStrategy {
         params: {
           grant_type: GrantType.CLIENT_CREDENTIALS,
           client_secret: this.clientSecret,
-          client_type: clientType || "third_party_app",
+          client_type: clientType ?? "third_party_app",
           scope: scope,
         },
       });
@@ -152,7 +155,7 @@ export class TwitterStrategy extends AuthStrategy {
         },
         params: {
           token: token,
-          token_type_hint: token_type_hint || "access_token",
+          token_type_hint: token_type_hint ?? "access_token",
         },
       });
       return { status: true, data: data };
@@ -162,5 +165,147 @@ export class TwitterStrategy extends AuthStrategy {
         error: error.response?.data?.error_description || error.message,
       };
     }
+  }
+
+  // ======= New OAuth 1.0a Methods =======
+
+  async getRequestOAuth_1_0_Token(
+    callbackUrl: string
+  ): Promise<SocialAuthResponse<any>> {
+    try {
+      const params = {
+        oauth_callback: callbackUrl,
+        oauth_consumer_key: this.clientId,
+        oauth_nonce: this.generateNonce(),
+        oauth_signature_method: "HMAC-SHA1",
+        oauth_timestamp: this.generateTimestamp(),
+        oauth_version: "1.0",
+      };
+
+      const signature = this.generateSignature(
+        "POST",
+        this.config.OAuth_1_0_TokenUrl,
+        params
+      );
+
+      const response = await axios.post(this.config.OAuth_1_0_TokenUrl, null, {
+        headers: {
+          Authorization: this.buildAuthHeader({
+            ...params,
+            oauth_signature: signature,
+          }),
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+
+      const data = new URLSearchParams(response.data);
+      return {
+        status: true,
+        data: {
+          oauth_token: data.get("oauth_token"),
+          oauth_token_secret: data.get("oauth_token_secret"),
+        },
+      };
+    } catch (error: any) {
+      return {
+        status: false,
+        error: error.response?.data || error.message,
+      };
+    }
+  }
+
+  getAuthorizationUrl(oauthToken: string): string {
+    return `${this.config.authUrl}?oauth_token=${oauthToken}`;
+  }
+
+  async getOAuth_1_0_AccessToken(
+    oauthToken: string,
+    oauthVerifier: string
+  ): Promise<SocialAuthResponse<any>> {
+    try {
+      const params = {
+        oauth_consumer_key: this.clientId,
+        oauth_token: oauthToken,
+        oauth_nonce: this.generateNonce(),
+        oauth_signature_method: "HMAC-SHA1",
+        oauth_timestamp: this.generateTimestamp(),
+        oauth_verifier: oauthVerifier,
+        oauth_version: "1.0",
+      };
+
+      const signature = this.generateSignature(
+        "POST",
+        this.config.OAuth_1_0_TokenUrl,
+        params
+      );
+
+      const response = await axios.post(this.config.OAuth_1_0_TokenUrl, null, {
+        headers: {
+          Authorization: this.buildAuthHeader({
+            ...params,
+            oauth_signature: signature,
+          }),
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+
+      const data = new URLSearchParams(response.data);
+      return {
+        status: true,
+        data: {
+          oauth_token: data.get("oauth_token"),
+          oauth_token_secret: data.get("oauth_token_secret"),
+        },
+      };
+    } catch (error: any) {
+      return {
+        status: false,
+        error: error.response?.data || error.message,
+      };
+    }
+  }
+
+  private buildAuthHeader(params: Record<string, string>): string {
+    return (
+      "OAuth " +
+      Object.entries(params)
+        .map(
+          ([key, value]) =>
+            `${encodeURIComponent(key)}="${encodeURIComponent(value)}"`
+        )
+        .join(", ")
+    );
+  }
+
+  private generateNonce(): string {
+    return Math.random().toString(36).substring(2, 15);
+  }
+
+  private generateTimestamp(): string {
+    return Math.floor(Date.now() / 1000).toString();
+  }
+
+  private generateSignature(
+    method: string,
+    url: string,
+    params: Record<string, string>
+  ): string {
+    const sortedParams = Object.keys(params)
+      .sort((a, b) => a.localeCompare(b))
+      .map(
+        (key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`
+      )
+      .join("&");
+
+    const baseString = `${method.toUpperCase()}&${encodeURIComponent(
+      url
+    )}&${encodeURIComponent(sortedParams)}`;
+
+    const signingKey = `${encodeURIComponent(this.clientSecret)}&`;
+
+    return crypto
+      .createHmac("sha1", signingKey)
+      .update(baseString)
+      .digest("base64");
   }
 }

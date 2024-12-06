@@ -1,6 +1,6 @@
 {
   "name": "easy-social-auth",
-  "version": "1.0.8312",
+  "version": "1.0.8313",
   "description": "A flexible, standalone package for social authentication using Google, Facebook & Twitter",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
