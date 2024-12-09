@@ -14,7 +14,11 @@ describe("TwitterStrategy", () => {
     userInfoEndpoint: "https://api.x.com/1.1/account/verify_credentials.json",
     authUrl: "https://api.x.com/oauth/authorize",
     revokeAccessUrl: "https://api.x.com/2/oauth2/revoke",
-    OAuth_1_0_TokenUrl: "https://api.x.com/oauth/request_token",
+    OAuth_1_0_AccessTokenUrl: "https://api.x.com/oauth/access_token",
+    OAuth_1_0_AuthUrl: "https://api.x.com/oauth/authorize",
+    OAuth_1_0_RequestTokenUrl: "https://api.x.com/oauth/request_token",
+    apiKey: "api-key",
+    consumerSecret: "consumer-secret",
   };
 
   beforeAll(() => {
@@ -79,7 +83,7 @@ describe("TwitterStrategy", () => {
     const mockToken = "mockRequestToken";
     const mockTokenSecret = "mockTokenSecret";
     mock
-      .onPost(mockConfig.OAuth_1_0_TokenUrl)
+      .onPost(mockConfig.OAuth_1_0_RequestTokenUrl)
       .reply(
         200,
         `oauth_token=${mockToken}&oauth_token_secret=${mockTokenSecret}&oauth_callback_confirmed=true`
@@ -106,7 +110,7 @@ describe("TwitterStrategy", () => {
     const oauthVerifier = "mockVerifier";
 
     mock
-      .onPost(mockConfig.OAuth_1_0_TokenUrl)
+      .onPost(mockConfig.OAuth_1_0_AccessTokenUrl)
       .reply(
         200,
         `oauth_token=${mockToken}&oauth_token_secret=${mockTokenSecret}`

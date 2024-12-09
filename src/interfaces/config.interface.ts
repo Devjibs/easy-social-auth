@@ -10,7 +10,11 @@ export interface IGoogleConfig extends BaseConfig {}
 export interface IFacebookConfig extends BaseConfig {}
 export interface ITwitterConfig extends BaseConfig {
   revokeAccessUrl: string;
-  OAuth_1_0_TokenUrl: string;
+  OAuth_1_0_AuthUrl: string;
+  OAuth_1_0_AccessTokenUrl: string;
+  OAuth_1_0_RequestTokenUrl: string;
+  apiKey: string;
+  consumerSecret: string;
 }
 export interface IInstagramConfig extends BaseConfig {
   refreshTokenEndpoint: string;
