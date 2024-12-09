@@ -175,7 +175,7 @@ export class TwitterStrategy extends AuthStrategy {
     try {
       const params = {
         oauth_callback: callbackUrl,
-        oauth_consumer_key: this.clientId,
+        oauth_consumer_key: this.config.apiKey,
         oauth_nonce: this.generateNonce(),
         oauth_signature_method: "HMAC-SHA1",
         oauth_timestamp: this.generateTimestamp(),
@@ -184,11 +184,11 @@ export class TwitterStrategy extends AuthStrategy {
 
       const signature = this.generateSignature(
         "POST",
-        this.config.OAuth_1_0_TokenUrl,
+        this.config.OAuth_1_0_RequestTokenUrl,
         params
       );
 
-      const response = await axios.post(this.config.OAuth_1_0_TokenUrl, null, {
+      const response = await axios.post(this.config.OAuth_1_0_RequestTokenUrl, null, {
         headers: {
           Authorization: this.buildAuthHeader({
             ...params,
@@ -215,7 +215,7 @@ export class TwitterStrategy extends AuthStrategy {
   }
 
   getAuthorizationUrl(oauthToken: string): string {
-    return `${this.config.authUrl}?oauth_token=${oauthToken}`;
+    return `${this.config.OAuth_1_0_AuthUrl}?oauth_token=${oauthToken}`;
   }
 
   async getOAuth_1_0_AccessToken(
@@ -235,11 +235,11 @@ export class TwitterStrategy extends AuthStrategy {
 
       const signature = this.generateSignature(
         "POST",
-        this.config.OAuth_1_0_TokenUrl,
+        this.config.OAuth_1_0_AccessTokenUrl,
         params
       );
 
-      const response = await axios.post(this.config.OAuth_1_0_TokenUrl, null, {
+      const response = await axios.post(this.config.OAuth_1_0_AccessTokenUrl, null, {
         headers: {
           Authorization: this.buildAuthHeader({
             ...params,
@@ -301,7 +301,7 @@ export class TwitterStrategy extends AuthStrategy {
       url
     )}&${encodeURIComponent(sortedParams)}`;
 
-    const signingKey = `${encodeURIComponent(this.clientSecret)}&`;
+    const signingKey = `${encodeURIComponent(this.config.consumerSecret)}&`;
 
     return crypto
       .createHmac("sha1", signingKey)
