@@ -45,11 +45,19 @@ export const config = {
       "https://api.twitter.com/2/account/verify_credentials.json",
     authUrl:
       process.env.TWITTER_AUTH_URL || "https://twitter.com/i/oauth2/authorize",
+    OAuth_1_0_AuthUrl:
+      process.env.TWITTER_OAUTH_1_0_URL || "https://api.x.com/oauth/authorize",
     revokeAccessUrl:
       process.env.TWITTER_REVOKE_ACCESS_URL ||
       "https://api.x.com/2/oauth2/revoke",
-    OAuth_1_0_TokenUrl:
-      process.env.OAUTH_1_0_TOKEN_URL || "https://api.x.com/oauth/access_token",
+    OAuth_1_0_AccessTokenUrl:
+      process.env.OAUTH_1_0_ACCESS_TOKEN_URL || "https://api.x.com/oauth/access_token",
+    OAuth_1_0_RequestTokenUrl:
+      process.env.OAUTH_1_0_REQUEST_TOKEN_URL || "https://api.x.com/oauth/request_token",
+    apiKey:
+      process.env.TWITTER_CONSUMER_KEY || "",
+    consumerSecret:
+      process.env.TWITTER_CONSUMER_SECRET || "",
   } as ITwitterConfig,
   instagram: {
     clientId: process.env.INSTAGRAM_CLIENT_ID || "",
