@@ -53,6 +53,11 @@ TWITTER_TOKEN_ENDPOINT=https://api.twitter.com/oauth2/token
 TWITTER_USER_INFO_ENDPOINT=https://api.x.com/2/users/me
 TWITTER_AUTH_URL=https://api.twitter.com/oauth2/authorize
 TWITTER_REVOKE_ACCESS_URL=https://api.x.com/2/oauth2/revoke
+OAUTH_1_0_ACCESS_TOKEN_URL=https://api.x.com/oauth/access_token
+OAUTH_1_0_REQUEST_TOKEN_URL=https://api.x.com/oauth/request_token
+TWITTER_OAUTH_1_0_URL=https://api.x.com/oauth/authorize
+TWITTER_CONSUMER_KEY=your-consumer-key
+TWITTER_CONSUMER_SECRET=your-consumer-secret
 
 INSTAGRAM_AUTH_URL=instagram-auth-url
 INSTAGRAM_CLIENT_ID=your-instagram-client-id
