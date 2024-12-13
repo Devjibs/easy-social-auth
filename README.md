@@ -211,10 +211,6 @@ console.log("Linkedin Auth URL:", linkedinAuthUrl);
 const linkedinTokenResponse = await socialAuthServiceLinkedin.linkedinStrategy.exchangeCodeForToken("auth_code", "http://localhost:3000/auth/linkedin");
 console.log("Linkedin Token Response:", linkedinTokenResponse);
 
-// Refresh Access Token
-const refreshedLinkedinToken = await socialAuthServiceLinkedin.linkedinStrategy.refreshAccessToken(linkedinTokenResponse.data);
-console.log("Linkedin Refresh Token Response:", linkedinRefreshedToken);
-
 // Request App Token
 const linkedinAppToken = await socialAuthServiceLinkedin.linkedinStrategy.requestAppToken();
 console.log("Linkedin App Token Response:", linkedinAppToken);
@@ -330,6 +326,39 @@ console.log("Google Auth URL:", googleAuthUrl);
 // Authenticate with Facebook
 const fbAuthUrl = facebookStrategy.generateAuthUrl("http://localhost:3000/auth/facebook");
 console.log("Facebook Auth URL:", fbAuthUrl);
+```
+
+### Example with Custom Config
+
+```typescript
+import { LinkedinStrategy, ILinkedinConfig } from "easy-social-auth";
+
+const customConfig: ILinkedinConfig = {
+  clientId: YOUR_LINKEDIN_CLIENT_ID,
+  clientSecret: YOUR_LINKEDIN_CLIENT_SECRET,
+  tokenEndpoint: "https://www.linkedin.com/oauth/v2/accessToken",
+  userInfoEndpoint: "https://api.linkedin.com/v2/userinfo",
+  authUrl: "https://www.linkedin.com/oauth/v2/authorization",
+} 
+
+linkedinStrategy = new LinkedinStrategy(customConfig);
+// Generate Auth URL
+const linkedinAuthUrl = linkedinStrategy.generateAuthUrl("http://localhost:3000/auth/linkedin");
+console.log("Linkedin Auth URL:", linkedinAuthUrl);
+
+// Exchange Code for Token
+const linkedinTokenResponse = await linkedinStrategy.exchangeCodeForToken("auth_code", "http://localhost:3000/auth/linkedin");
+console.log("Linkedin Token Response:", linkedinTokenResponse);
+
+// Request App Token
+const linkedinAppToken = await linkedinStrategy.requestAppToken();
+console.log("Linkedin App Token Response:", linkedinAppToken);
+
+// Fetch User Data
+if (linkedinTokenResponse.status) {
+  const userData = await linkedinStrategy.getUserData(linkedinTokenResponse.data!);
+  console.log("Linkedin User Data:", userData);
+}
 ```
 
 ## API
