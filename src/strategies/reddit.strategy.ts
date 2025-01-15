@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { IRedditConfig } from "../interfaces/config.interface";
 import { SocialAuthResponse } from "../interfaces/easy-social-auth-response.interface";
 import { ISocialUser } from "../interfaces/social-user.interface";
@@ -16,24 +16,36 @@ export class RedditStrategy extends AuthStrategy {
     );
   }
 
+  private async makeRequest<T>(
+    requestConfig: AxiosRequestConfig
+  ): Promise<SocialAuthResponse<T>> {
+    try {
+      const { data } = await axios(requestConfig);
+      if (data) return { status: true, data: data };
+
+      return { status: false, error: "No response data received." };
+    } catch (error: any) {
+      return {
+        status: false,
+        error: error.response?.data?.error_description || error.message,
+      };
+    }
+  }
+
+
   private async postToTokenEndPoint(
     params: Record<string, string>
   ): Promise<SocialAuthResponse<any>> {
-    try{
-      const { data } = await axios.post(this.tokenEndpoint, null, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Basic ' + Buffer.from(this.clientId + ':' + this.clientSecret).toString('base64'),
-        },
-        params,
+      const  headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic ' + Buffer.from(this.clientId + ':' + this.clientSecret).toString('base64'),
+      }
+      return this.makeRequest({
+        method: "post",
+        url: this.tokenEndpoint,
+        headers: headers,
+        params: params,
       });
-
-      if (data) return { status: true, data: data };
-
-      return { status: false, error: "unable to retrieve token" };
-    } catch (error: any) {
-      return { status: false, error: error.response?.data?.error_description || error.message };
-    }
   }
 
   async exchangeCodeForToken(
@@ -55,18 +67,13 @@ export class RedditStrategy extends AuthStrategy {
   }
 
   async getUserData(accessToken: string): Promise<SocialAuthResponse<ISocialUser>> {
-    try {
-      const { data } = await axios.get(this.userInfoEndpoint, {
-        headers: { Authorization: `Bearer ${accessToken}` }
+      const headers = { 
+        Authorization: `Bearer ${accessToken}` 
+      }
+      return this.makeRequest({
+        method: "get",
+        url: this.userInfoEndpoint,
+        headers: headers,
       });
-      if (data) return {
-        status: true,
-        data: data
-      };
-
-      return { status: false, error: "unable to retrieve user data" };
-    } catch (error: any) {
-      return { status: false, error: error.response?.data?.error_description || error.message || error.errors };
-    }
   }
 }
