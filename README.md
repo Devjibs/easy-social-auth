@@ -15,6 +15,7 @@
   <img src="https://img.icons8.com/fluency/48/000000/tiktok.png" alt="TikTok Logo" width="40" height="40">
   <img src="https://img.icons8.com/fluency/48/000000/spotify.png" alt="Spotify Logo" width="40" height="40">
   <img src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn Logo" width="40" height="40">
+  <img src="https://img.icons8.com/color/48/000000/reddit.png" alt="Reddit Logo" width="40" height="40">
 </p>
 
 A flexible, standalone package for social authentication using Google, Facebook, Instagram, Tiktok, Spotify, LinkedIn, and Twitter(X).
@@ -30,6 +31,7 @@ npm install easy-social-auth
 Environment Variables
 
 ### Setup and Configuration
+
 To get started, configure your environment variables. Each platform requires specific client IDs, secrets, and endpoints. Below is a template for the .env file:
 
 ```env
@@ -85,13 +87,16 @@ LINKEDIN_CLIENT_SECRET=your-linkedin-client-secret
 LINKEDIN_TOKEN_ENDPOINT=https://www.linkedin.com/oauth/v2/accessToken
 LINKEDIN_USER_INFO_ENDPOINT=https://api.linkedin.com/v2/userinfo
 ```
+
 **Note: Ensure your redirect URIs are registered in the respective developer consoles.**
 
 ## Example
 
 Usage
+
 1. Initialize a Strategy
-Import and configure a strategy with the required provider credentials:
+   Import and configure a strategy with the required provider credentials:
+
 ```typescript
 import { GoogleStrategy } from "easy-social-auth";
 
@@ -103,21 +108,27 @@ const googleStrategy = new GoogleStrategy({
   userInfoEndpoint: process.env.GOOGLE_USER_INFO_ENDPOINT,
 });
 
-const authUrl = googleStrategy.generateAuthUrl("http://localhost:3000/auth/google");
+const authUrl = googleStrategy.generateAuthUrl(
+  "http://localhost:3000/auth/google"
+);
 console.log("Google Auth URL:", authUrl);
 ```
 
 2. Exchange Code for Token
-After the user is redirected back to your app:
+   After the user is redirected back to your app:
 
 ```typescript
-const tokenResponse = await googleStrategy.exchangeCodeForToken("code", "http://localhost:3000/auth/google");
+const tokenResponse = await googleStrategy.exchangeCodeForToken(
+  "code",
+  "http://localhost:3000/auth/google"
+);
 if (tokenResponse.status) {
   console.log("Access Token:", tokenResponse.data);
 }
 ```
+
 3. Fetch User Data
-Retrieve user information using the access token:
+   Retrieve user information using the access token:
 
 ```typescript
 const userData = await googleStrategy.getUserData(tokenResponse.data!);
@@ -125,20 +136,28 @@ if (userData.status) {
   console.log("User Data:", userData.data);
 }
 ```
+
 ### Examples for each strategy
 
 #### Google
+
 ```typescript
-import { SocialAuthService } from 'easy-social-auth';
+import { SocialAuthService } from "easy-social-auth";
 
 const socialAuthServiceGoogle = new SocialAuthService();
 
 // Generate Auth URL
-const googleAuthUrl = socialAuthServiceGoogle.googleStrategy.generateAuthUrl("http://localhost:3000/auth/google");
+const googleAuthUrl = socialAuthServiceGoogle.googleStrategy.generateAuthUrl(
+  "http://localhost:3000/auth/google"
+);
 console.log("Google Auth URL:", googleAuthUrl);
 
 // Exchange Code for Token
-const googleTokenResponse = await socialAuthServiceGoogle.googleStrategy.exchangeCodeForToken("auth_code", "http://localhost:3000/auth/google");
+const googleTokenResponse =
+  await socialAuthServiceGoogle.googleStrategy.exchangeCodeForToken(
+    "auth_code",
+    "http://localhost:3000/auth/google"
+  );
 console.log("Google Token Response:", googleTokenResponse);
 
 // Fetch User Data
@@ -149,120 +168,180 @@ if (googleTokenResponse.status) {
 ```
 
 #### Facebook
+
 ```typescript
-import { SocialAuthService } from 'easy-social-auth';
+import { SocialAuthService } from "easy-social-auth";
 
 const socialAuthServiceFacebook = new SocialAuthService();
 
 // Generate Auth URL
-const facebookAuthUrl = socialAuthServiceFacebook.facebookStrategy.generateAuthUrl("http://localhost:3000/auth/facebook");
+const facebookAuthUrl =
+  socialAuthServiceFacebook.facebookStrategy.generateAuthUrl(
+    "http://localhost:3000/auth/facebook"
+  );
 console.log("Facebook Auth URL:", facebookAuthUrl);
 
 // Exchange Code for Token
-const facebookTokenResponse = await socialAuthServiceFacebook.facebookStrategy.exchangeCodeForToken("auth_code", "http://localhost:3000/auth/facebook");
+const facebookTokenResponse =
+  await socialAuthServiceFacebook.facebookStrategy.exchangeCodeForToken(
+    "auth_code",
+    "http://localhost:3000/auth/facebook"
+  );
 console.log("Facebook Token Response:", facebookTokenResponse);
 
 // Fetch User Data
 if (facebookTokenResponse.status) {
-  const userData = await facebookStrategy.getUserData(facebookTokenResponse.data!);
+  const userData = await facebookStrategy.getUserData(
+    facebookTokenResponse.data!
+  );
   console.log("facebook User Data:", userData);
 }
 ```
+
 #### Instagram
+
 ```typescript
-import { SocialAuthService } from 'easy-social-auth';
+import { SocialAuthService } from "easy-social-auth";
 
 const socialAuthServiceInstagram = new SocialAuthService();
 
 // Generate Auth URL
-const instagramAuthUrl = socialAuthServiceInstagram.instagramStrategy.generateAuthUrl("http://localhost:3000/auth/instagram");
+const instagramAuthUrl =
+  socialAuthServiceInstagram.instagramStrategy.generateAuthUrl(
+    "http://localhost:3000/auth/instagram"
+  );
 console.log("instagram Auth URL:", instagramAuthUrl);
 
 // Exchange Code for Token
-const instagramTokenResponse = await socialAuthServiceInstagram.instagramStrategy.exchangeCodeForToken("auth_code", "http://localhost:3000/auth/instagram");
+const instagramTokenResponse =
+  await socialAuthServiceInstagram.instagramStrategy.exchangeCodeForToken(
+    "auth_code",
+    "http://localhost:3000/auth/instagram"
+  );
 console.log("Instagram Token Response:", instagramTokenResponse);
 
 // Exchange token for long lined token
-const instagramLongLivedTokenResponse = await socialAuthServiceInstagram.instagramStrategy.exchangeTokenforLongLivedToken(instagramTokenResponse.data);
+const instagramLongLivedTokenResponse =
+  await socialAuthServiceInstagram.instagramStrategy.exchangeTokenforLongLivedToken(
+    instagramTokenResponse.data
+  );
 console.log("Instagram Token Response:", instagramLongLivedTokenResponse);
 
 // Refresh Access Token
-const refreshedInstagramToken = await socialAuthServiceInstagram.instagramStrategy.refreshAccessToken(instagramTokenResponse.data);
+const refreshedInstagramToken =
+  await socialAuthServiceInstagram.instagramStrategy.refreshAccessToken(
+    instagramTokenResponse.data
+  );
 console.log("Instagram Refresh Token Response:", instagramRefreshedToken);
 
 // Fetch User Data
 if (instagramTokenResponse.status) {
-  const userData = await instagramStrategy.getUserData(instagramTokenResponse.data!);
+  const userData = await instagramStrategy.getUserData(
+    instagramTokenResponse.data!
+  );
   console.log("Instagram User Data:", userData);
 }
 ```
 
 #### LinkedIn
+
 ```typescript
-import { SocialAuthService } from 'easy-social-auth';
+import { SocialAuthService } from "easy-social-auth";
 
 const socialAuthServiceLinkedIn = new SocialAuthService();
 
 // Generate Auth URL
-const linkedinAuthUrl = socialAuthServiceLinkedin.linkedinStrategy.generateAuthUrl("http://localhost:3000/auth/linkedin");
+const linkedinAuthUrl =
+  socialAuthServiceLinkedin.linkedinStrategy.generateAuthUrl(
+    "http://localhost:3000/auth/linkedin"
+  );
 console.log("Linkedin Auth URL:", linkedinAuthUrl);
 
 // Exchange Code for Token
-const linkedinTokenResponse = await socialAuthServiceLinkedin.linkedinStrategy.exchangeCodeForToken("auth_code", "http://localhost:3000/auth/linkedin");
+const linkedinTokenResponse =
+  await socialAuthServiceLinkedin.linkedinStrategy.exchangeCodeForToken(
+    "auth_code",
+    "http://localhost:3000/auth/linkedin"
+  );
 console.log("Linkedin Token Response:", linkedinTokenResponse);
 
 // Request App Token
-const linkedinAppToken = await socialAuthServiceLinkedin.linkedinStrategy.requestAppToken();
+const linkedinAppToken =
+  await socialAuthServiceLinkedin.linkedinStrategy.requestAppToken();
 console.log("Linkedin App Token Response:", linkedinAppToken);
 
 // Fetch User Data
 if (linkedinTokenResponse.status) {
-  const userData = await linkedinStrategy.getUserData(linkedinTokenResponse.data!);
+  const userData = await linkedinStrategy.getUserData(
+    linkedinTokenResponse.data!
+  );
   console.log("Linkedin User Data:", userData);
 }
 ```
 
 #### Spotify
+
 ```typescript
-import { SocialAuthService } from 'easy-social-auth';
+import { SocialAuthService } from "easy-social-auth";
 
 const socialAuthServiceSpotify = new SocialAuthService();
 
 // Generate Auth URL
-const spotifyAuthUrl = socialAuthServiceSpotify.spotifyStrategy.generateAuthUrl("http://localhost:3000/auth/spotify");
+const spotifyAuthUrl = socialAuthServiceSpotify.spotifyStrategy.generateAuthUrl(
+  "http://localhost:3000/auth/spotify"
+);
 console.log("Spotify Auth URL:", spotifyAuthUrl);
 
 // Exchange Code for Token
-const spotifyTokenResponse = await socialAuthServiceSpotify.spotifyStrategy.exchangeCodeForToken("auth_code", "http://localhost:3000/auth/spotify");
+const spotifyTokenResponse =
+  await socialAuthServiceSpotify.spotifyStrategy.exchangeCodeForToken(
+    "auth_code",
+    "http://localhost:3000/auth/spotify"
+  );
 console.log("Spotify Token Response:", spotifyTokenResponse);
 
 // Refresh Access Token
-const refreshedSpotifyToken = await socialAuthServiceSpotify.spotifyStrategy.refreshAccessToken(spotifyTokenResponse.data.refreshToken);
+const refreshedSpotifyToken =
+  await socialAuthServiceSpotify.spotifyStrategy.refreshAccessToken(
+    spotifyTokenResponse.data.refreshToken
+  );
 console.log("Spotify Refresh Token Response:", spotifyRefreshedToken);
 
 // Fetch User Data
 if (spotifyTokenResponse.status) {
-  const userData = await spotifyStrategy.getUserData(spotifyTokenResponse.data!);
+  const userData = await spotifyStrategy.getUserData(
+    spotifyTokenResponse.data!
+  );
   console.log("Spotify User Data:", userData);
 }
 ```
 
 #### Tiktok
+
 ```typescript
-import { SocialAuthService } from 'easy-social-auth';
+import { SocialAuthService } from "easy-social-auth";
 
 const socialAuthServiceTiktok = new SocialAuthService();
 
 // Generate Auth URL
-const tiktokAuthUrl = socialAuthServiceTiktok.tiktokStrategy.generateAuthUrl("http://localhost:3000/auth/tiktok");
+const tiktokAuthUrl = socialAuthServiceTiktok.tiktokStrategy.generateAuthUrl(
+  "http://localhost:3000/auth/tiktok"
+);
 console.log("Tiktok Auth URL:", tiktokAuthUrl);
 
 // Exchange Code for Token
-const tiktokTokenResponse = await socialAuthServiceTiktok.tiktokStrategy.exchangeCodeForToken("auth_code", "http://localhost:3000/auth/tiktok");
+const tiktokTokenResponse =
+  await socialAuthServiceTiktok.tiktokStrategy.exchangeCodeForToken(
+    "auth_code",
+    "http://localhost:3000/auth/tiktok"
+  );
 console.log("Tiktok Token Response:", tiktokTokenResponse);
 
 // Refresh Access Token
-const refreshedTiktokToken = await socialAuthServiceTiktok.tiktokStrategy.refreshAccessToken(tiktokTokenResponse.data.refreshToken);
+const refreshedTiktokToken =
+  await socialAuthServiceTiktok.tiktokStrategy.refreshAccessToken(
+    tiktokTokenResponse.data.refreshToken
+  );
 console.log("Tiktok Refresh Token Response:", tiktokRefreshedToken);
 
 // Fetch User Data
@@ -273,40 +352,54 @@ if (tiktokTokenResponse.status) {
 ```
 
 #### Twitter
+
 ```typescript
-import { SocialAuthService } from 'easy-social-auth';
+import { SocialAuthService } from "easy-social-auth";
 
 const socialAuthServiceTwitter = new SocialAuthService();
 
 // Generate Auth URL
-const twitterAuthUrl = socialAuthServiceTwitter.twitterStrategy.generateAuthUrl("http://localhost:3000/auth/twitter");
+const twitterAuthUrl = socialAuthServiceTwitter.twitterStrategy.generateAuthUrl(
+  "http://localhost:3000/auth/twitter"
+);
 console.log("Twitter Auth URL:", twitterAuthUrl);
 
 // Exchange Code for Token
-const twitterTokenResponse = await socialAuthServiceTwitter.twitterStrategy.exchangeCodeForToken("auth_code", "http://localhost:3000/auth/twitter");
+const twitterTokenResponse =
+  await socialAuthServiceTwitter.twitterStrategy.exchangeCodeForToken(
+    "auth_code",
+    "http://localhost:3000/auth/twitter"
+  );
 console.log("Twitter Token Response:", twitterTokenResponse);
 
 // Refresh Access Token
-const refreshedTwitterToken = await socialAuthServiceTwitter.twitterStrategy.refreshAccessToken(twitterTokenResponse.data.refreshToken);
+const refreshedTwitterToken =
+  await socialAuthServiceTwitter.twitterStrategy.refreshAccessToken(
+    twitterTokenResponse.data.refreshToken
+  );
 console.log("Twitter Refresh Token Response:", twitterRefreshedToken);
 
 // Request App Token
-const twitterAppToken = await socialAuthServiceTwitter.twitterStrategy.requestAppToken(
-  "scope",
-  "client_type (optional)",
-);
+const twitterAppToken =
+  await socialAuthServiceTwitter.twitterStrategy.requestAppToken(
+    "scope",
+    "client_type (optional)"
+  );
 console.log("Twitter App Token Response:", twitterAppToken);
 
 // Revoke Access Token
-const revokeTwitterTokenResponse = await socialAuthServiceTwitter.twitterStrategy.revokeToken(
-  "token",
-  "token_type_hint (optional (refresh_token || access_token))",
-);
+const revokeTwitterTokenResponse =
+  await socialAuthServiceTwitter.twitterStrategy.revokeToken(
+    "token",
+    "token_type_hint (optional (refresh_token || access_token))"
+  );
 console.log("Twitter Revoke Token Response:", revokeTwitterTokenResponse);
 
 // Fetch User Data
 if (twitterTokenResponse.status) {
-  const userData = await twitterStrategy.getUserData(twitterTokenResponse.data!);
+  const userData = await twitterStrategy.getUserData(
+    twitterTokenResponse.data!
+  );
   console.log("Twitter User Data:", userData);
 }
 ```
@@ -339,15 +432,20 @@ const customConfig: ILinkedinConfig = {
   tokenEndpoint: "https://www.linkedin.com/oauth/v2/accessToken",
   userInfoEndpoint: "https://api.linkedin.com/v2/userinfo",
   authUrl: "https://www.linkedin.com/oauth/v2/authorization",
-} 
+};
 
 linkedinStrategy = new LinkedinStrategy(customConfig);
 // Generate Auth URL
-const linkedinAuthUrl = linkedinStrategy.generateAuthUrl("http://localhost:3000/auth/linkedin");
+const linkedinAuthUrl = linkedinStrategy.generateAuthUrl(
+  "http://localhost:3000/auth/linkedin"
+);
 console.log("Linkedin Auth URL:", linkedinAuthUrl);
 
 // Exchange Code for Token
-const linkedinTokenResponse = await linkedinStrategy.exchangeCodeForToken("auth_code", "http://localhost:3000/auth/linkedin");
+const linkedinTokenResponse = await linkedinStrategy.exchangeCodeForToken(
+  "auth_code",
+  "http://localhost:3000/auth/linkedin"
+);
 console.log("Linkedin Token Response:", linkedinTokenResponse);
 
 // Request App Token
@@ -356,7 +454,9 @@ console.log("Linkedin App Token Response:", linkedinAppToken);
 
 // Fetch User Data
 if (linkedinTokenResponse.status) {
-  const userData = await linkedinStrategy.getUserData(linkedinTokenResponse.data!);
+  const userData = await linkedinStrategy.getUserData(
+    linkedinTokenResponse.data!
+  );
   console.log("Linkedin User Data:", userData);
 }
 ```
@@ -423,10 +523,12 @@ Returns:
 `Promise<SocialAuthResponse<ISocialUser>>`: A promise that resolves to the `SocialAuthResponse` containing the user data.
 
 ### Troubleshooting
+
 Invalid Redirect URI: Ensure the redirect URI matches the one configured in the provider console.
 Token Errors: Verify the client ID, secret, and token endpoint.
 
 ### Contributing
+
 Feel free to open issues or contribute improvements via pull requests on GitHub.
 
 ### End
