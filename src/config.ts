@@ -6,6 +6,7 @@ import {
   ITiktokConfig,
   ITwitterConfig,
   ILinkedinConfig,
+  IRedditConfig,
 } from "./interfaces/config.interface";
 
 export const config = {
@@ -115,4 +116,17 @@ export const config = {
       process.env.LINKEDIN_AUTH_URL ||
       "https://www.linkedin.com/oauth/v2/authorization",
   } as ILinkedinConfig,
+  reddit: {
+    clientId: process.env.REDDIT_CLIENT_ID || "",
+    clientSecret: process.env.REDDIT_CLIENT_SECRET || "",
+    tokenEndpoint:
+      process.env.REDDIT_TOKEN_ENDPOINT ||
+      "https://www.reddit.com/api/v1/access_token",
+    userInfoEndpoint:
+      process.env.REDDIT_USER_INFO_ENDPOINT ||
+      "https://oauth.reddit.com/api/v1/me",
+    authUrl:
+      process.env.REDDIT_AUTH_URL ||
+      "https://www.reddit.com/api/v1/authorize",
+  } as IRedditConfig,
 };
