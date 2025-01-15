@@ -16,22 +16,17 @@ export class RedditStrategy extends AuthStrategy {
     );
   }
 
-  async exchangeCodeForToken(
-    code: string,
-    redirectUri: string
+  private async postToTokenEndPoint(
+    params: Record<string, string>
   ): Promise<SocialAuthResponse<any>> {
-    try {
+    try{
       const { data } = await axios.post(this.tokenEndpoint, null, {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': 'Basic ' + Buffer.from(this.clientId + ':' + this.clientSecret).toString('base64'),
-          },
-          params: { 
-            grant_type: GrantType.AUTHORIZATION_CODE,
-            code: code,
-            redirect_uri: redirectUri,
-          }
-        });
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Basic ' + Buffer.from(this.clientId + ':' + this.clientSecret).toString('base64'),
+        },
+        params,
+      });
 
       if (data) return { status: true, data: data };
 
@@ -41,24 +36,22 @@ export class RedditStrategy extends AuthStrategy {
     }
   }
 
-  async refreshAccessToken(refreshToken: string): Promise<SocialAuthResponse<string>> {
-    try {
-      const { data } = await axios.post(this.tokenEndpoint, null, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Basic ' + Buffer.from(this.clientId + ':' + this.clientSecret).toString('base64'),
-        },
-        params: { 
-          grant_type: GrantType.REFRESH_TOKEN,
-          refresh_token: refreshToken,
-        }
-      });
-      if (data) return { status: true, data: data };
+  async exchangeCodeForToken(
+    code: string,
+    redirectUri: string
+  ): Promise<SocialAuthResponse<any>> {
+    return this.postToTokenEndPoint({
+      grant_type: GrantType.AUTHORIZATION_CODE,
+      code: code,
+      redirect_uri: redirectUri,
+    })
+  }
 
-      return { status: false, error: "unable to retrieve token" };
-    } catch (error: any) {
-      return { status: false, error: error.response?.data?.error_description || error.message };
-    }
+  async refreshAccessToken(refreshToken: string): Promise<SocialAuthResponse<string>> {
+    return this.postToTokenEndPoint({
+      grant_type: GrantType.REFRESH_TOKEN,
+      refresh_token: refreshToken,
+    })
   }
 
   async getUserData(accessToken: string): Promise<SocialAuthResponse<ISocialUser>> {
@@ -77,6 +70,3 @@ export class RedditStrategy extends AuthStrategy {
     }
   }
 }
-// exchangeCodeForToken
-// refreshAccessToken
-// getUserData
