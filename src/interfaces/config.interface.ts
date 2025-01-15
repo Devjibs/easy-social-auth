@@ -23,3 +23,4 @@ export interface IInstagramConfig extends BaseConfig {
 export interface ISpotifyConfig extends BaseConfig {}
 export interface ITiktokConfig extends BaseConfig {}
 export interface ILinkedinConfig extends BaseConfig {}
+export interface IRedditConfig extends BaseConfig {}
