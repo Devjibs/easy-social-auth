@@ -82,10 +82,16 @@ TIKTOK_TOKEN_ENDPOINT=https://open.tiktokapis.com/v2/oauth/token/
 TIKTOK_USER_INFO_ENDPOINT=https://open.tiktokapis.com/v2/user/info/?fields=open_id,union_id,avatar_url,display_name
 
 LINKEDIN_AUTH_URL=https://www.linkedin.com/oauth/v2/authorization
-LINKEDIN_CLIENT_KEY=your-linkedin-client-key
+LINKEDIN_CLIENT_ID=your-linkedin-client-key
 LINKEDIN_CLIENT_SECRET=your-linkedin-client-secret
 LINKEDIN_TOKEN_ENDPOINT=https://www.linkedin.com/oauth/v2/accessToken
 LINKEDIN_USER_INFO_ENDPOINT=https://api.linkedin.com/v2/userinfo
+
+REDDIT_AUTH_URL=https://www.reddit.com/api/v1/authorize
+REDDIT_CLIENT_ID=your-reddit-client-id
+REDDIT_CLIENT_SECRET=your-reddit-client-secret
+REDDIT_TOKEN_ENDPOINT=https://www.reddit.com/api/v1/access_token
+REDDIT_USER_INFO_ENDPOINT=https://oauth.reddit.com/api/v1/me
 ```
 
 **Note: Ensure your redirect URIs are registered in the respective developer consoles.**
@@ -401,6 +407,45 @@ if (twitterTokenResponse.status) {
     twitterTokenResponse.data!
   );
   console.log("Twitter User Data:", userData);
+}
+```
+
+#### Reddit
+```typescript
+import { SocialAuthService } from 'easy-social-auth';
+
+const socialAuthServiceReddit = new SocialAuthService();
+
+// Generate Auth URL
+const redditAuthUrl = socialAuthServiceReddit.redditStrategy.generateAuthUrl("http://localhost:3000/auth/reddit");
+console.log("Reddit Auth URL:", redditAuthUrl);
+
+// Exchange Code for Token
+const redditTokenResponse = await socialAuthServicereddit.redditStrategy.exchangeCodeForToken("auth_code", "http://localhost:3000/auth/reddit");
+console.log("reddit Token Response:", redditTokenResponse);
+
+// Refresh Access Token
+const refreshedRedditToken = await socialAuthServiceReddit.redditStrategy.refreshAccessToken(redditTokenResponse.data.refreshToken);
+console.log("Reddit Refresh Token Response:", redditRefreshedToken);
+
+// Request App Token
+const redditAppToken = await socialAuthServiceReddit.redditStrategy.requestAppToken(
+  "scope",
+  "client_type (optional)",
+);
+console.log("Reddit App Token Response:", redditAppToken);
+
+// Revoke Access Token
+const revokeRedditTokenResponse = await socialAuthServiceReddit.redditStrategy.revokeToken(
+  "token",
+  "token_type_hint (optional (refresh_token || access_token))",
+);
+console.log("Reddit Revoke Token Response:", revokeRedditTokenResponse);
+
+// Fetch User Data
+if (redditTokenResponse.status) {
+  const userData = await redditStrategy.getUserData(redditTokenResponse.data!);
+  console.log("Reddit User Data:", userData);
 }
 ```
 

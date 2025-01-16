@@ -5,6 +5,7 @@ import { SocialAuthResponse } from "../interfaces/easy-social-auth-response.inte
 import { AuthStrategy } from "./easy-social-auth.strategy";
 import { GrantType } from "../enums/grant-type.enum";
 import crypto from "crypto";
+import { TokenTypeEnum } from "../enums/token-type.enum";
 
 export class TwitterStrategy extends AuthStrategy {
   constructor(private readonly config: ITwitterConfig) {
@@ -143,10 +144,13 @@ export class TwitterStrategy extends AuthStrategy {
 
   async revokeAccessToken(
     token: string,
-    token_type_hint?: string
+    token_type_hint?: TokenTypeEnum
   ): Promise<SocialAuthResponse<any>> {
     try {
-      const { data } = await axios.post(this.config.revokeAccessUrl, null, {
+      const { data } = await axios.post(
+        this.config.revokeTokenUrl ?? "https://api.x.com/2/oauth2/revoke",
+        null,
+        {
         headers: {
           Authorization: `Basic ${Buffer.from(
             `${this.clientId}:${this.clientSecret}`
@@ -155,7 +159,7 @@ export class TwitterStrategy extends AuthStrategy {
         },
         params: {
           token: token,
-          token_type_hint: token_type_hint ?? "access_token",
+          token_type_hint: token_type_hint ?? TokenTypeEnum.ACCESS_TOKEN,
         },
       });
       return { status: true, data: data };

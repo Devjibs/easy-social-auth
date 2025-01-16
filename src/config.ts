@@ -48,7 +48,7 @@ export const config = {
       process.env.TWITTER_AUTH_URL || "https://twitter.com/i/oauth2/authorize",
     OAuth_1_0_AuthUrl:
       process.env.TWITTER_OAUTH_1_0_URL || "https://api.x.com/oauth/authorize",
-    revokeAccessUrl:
+    revokeTokenUrl:
       process.env.TWITTER_REVOKE_ACCESS_URL ||
       "https://api.x.com/2/oauth2/revoke",
     OAuth_1_0_AccessTokenUrl:
@@ -128,5 +128,8 @@ export const config = {
     authUrl:
       process.env.REDDIT_AUTH_URL ||
       "https://www.reddit.com/api/v1/authorize",
+    revokeTokenUrl:
+      process.env.REDDIT_REVOKE_TOKEN_URL ||
+      "https://www.reddit.com/api/v1/revoke_token"
   } as IRedditConfig,
 };
