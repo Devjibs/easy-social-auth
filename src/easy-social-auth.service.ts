@@ -6,6 +6,7 @@ import { TiktokStrategy } from './strategies/tiktok.strategy';
 import { SpotifyStrategy } from './strategies/spotify.strategy';
 import { LinkedinStrategy } from './strategies/linkedin.strategy';
 import { config } from './config';
+import { RedditStrategy } from './strategies/reddit.strategy';
 
 export class SocialAuthService {
   public googleStrategy?: GoogleStrategy;
@@ -15,6 +16,7 @@ export class SocialAuthService {
   public spotifyStrategy?: SpotifyStrategy;
   public tiktokStrategy?: TiktokStrategy;
   public linkedinStrategy?: LinkedinStrategy;
+  public redditStrategy?: RedditStrategy;
 
   constructor() {
     if (config.google) this.googleStrategy = new GoogleStrategy(config.google);
@@ -24,5 +26,6 @@ export class SocialAuthService {
     if (config.spotify) this.spotifyStrategy = new SpotifyStrategy(config.spotify);
     if (config.tiktok) this.tiktokStrategy = new TiktokStrategy(config.tiktok);
     if (config.linkedin) this.linkedinStrategy = new LinkedinStrategy(config.linkedin);
+    if (config.reddit) this.redditStrategy = new RedditStrategy(config.reddit);
   }
 }
