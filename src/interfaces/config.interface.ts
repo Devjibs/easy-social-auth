@@ -4,12 +4,12 @@ interface BaseConfig {
   tokenEndpoint: string;
   userInfoEndpoint: string;
   authUrl: string;
+  revokeTokenUrl?: string;
 }
 
 export interface IGoogleConfig extends BaseConfig {}
 export interface IFacebookConfig extends BaseConfig {}
 export interface ITwitterConfig extends BaseConfig {
-  revokeAccessUrl: string;
   OAuth_1_0_AuthUrl: string;
   OAuth_1_0_AccessTokenUrl: string;
   OAuth_1_0_RequestTokenUrl: string;
