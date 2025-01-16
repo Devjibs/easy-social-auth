@@ -34,7 +34,7 @@ describe("SocialAuthService", () => {
     userInfoEndpoint:
       "https://api.twitter.com/2/account/verify_credentials.json",
     authUrl: "https://twitter.com/i/oauth2/authorize",
-    revokeAccessUrl: "https://api.x.com/2/oauth2/revoke",
+    revokeTokenUrl: "https://api.x.com/2/oauth2/revoke",
     OAuth_1_0_AccessTokenUrl: "https://api.x.com/oauth/access_token",
     OAuth_1_0_AuthUrl: "https://api.x.com/oauth/authorize",
     OAuth_1_0_RequestTokenUrl: "https://api.x.com/oauth/request_token",
