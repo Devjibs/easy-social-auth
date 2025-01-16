@@ -4,9 +4,10 @@ import { SocialAuthResponse } from "../interfaces/easy-social-auth-response.inte
 import { ISocialUser } from "../interfaces/social-user.interface";
 import { AuthStrategy } from "./easy-social-auth.strategy";
 import { GrantType } from "../enums/grant-type.enum";
+import { TokenTypeEnum } from "../enums/token-type.enum";
 
 export class RedditStrategy extends AuthStrategy {
-  constructor(config: IRedditConfig) {
+  constructor(private readonly config: IRedditConfig) {
     super(
       config.clientId,
       config.clientSecret,
@@ -14,6 +15,15 @@ export class RedditStrategy extends AuthStrategy {
       config.tokenEndpoint,
       config.authUrl
     );
+  }
+
+  private get clientAuthorizationHeader(): Record<string, string> {
+    const credentials = Buffer.from(
+      `${this.clientId}:${this.clientSecret}`
+    ).toString("base64");
+    return {
+      Authorization: `Basic ${credentials}`,
+    };
   }
 
   private async makeRequest<T>(
@@ -38,7 +48,7 @@ export class RedditStrategy extends AuthStrategy {
   ): Promise<SocialAuthResponse<any>> {
       const  headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + Buffer.from(this.clientId + ':' + this.clientSecret).toString('base64'),
+        ...this.clientAuthorizationHeader,
       }
       return this.makeRequest({
         method: "post",
@@ -46,6 +56,12 @@ export class RedditStrategy extends AuthStrategy {
         headers: headers,
         params: params,
       });
+  }
+
+  async requestAppToken(): Promise<SocialAuthResponse<string>> {
+    return this.postToTokenEndPoint({
+      grant_type: GrantType.CLIENT_CREDENTIALS,
+    })
   }
 
   async exchangeCodeForToken(
@@ -64,6 +80,26 @@ export class RedditStrategy extends AuthStrategy {
       grant_type: GrantType.REFRESH_TOKEN,
       refresh_token: refreshToken,
     })
+  }
+
+  async revokeToken(
+    token: string,
+    tokenType?: TokenTypeEnum,
+  ): Promise<SocialAuthResponse<string>> {
+    this.makeRequest({
+      method: "post",
+      url: this.config.revokeTokenUrl ?? "https://www.reddit.com/api/v1/revoke_token",
+      headers: this.clientAuthorizationHeader,
+      params: {
+        token: token,
+        token_type_hint: tokenType ?? TokenTypeEnum.ACCESS_TOKEN
+      } 
+    })
+
+    return {
+      status: true,
+      data: "Token revoked successfully",
+    }
   }
 
   async getUserData(accessToken: string): Promise<SocialAuthResponse<ISocialUser>> {
