@@ -342,6 +342,13 @@ const redditAppToken = await socialAuthServiceReddit.redditStrategy.requestAppTo
 );
 console.log("Reddit App Token Response:", redditAppToken);
 
+// Revoke Access Token
+const revokeRedditTokenResponse = await socialAuthServiceReddit.redditStrategy.revokeToken(
+  "token",
+  "token_type_hint (optional (refresh_token || access_token))",
+);
+console.log("Reddit Revoke Token Response:", revokeRedditTokenResponse);
+
 // Fetch User Data
 if (redditTokenResponse.status) {
   const userData = await redditStrategy.getUserData(redditTokenResponse.data!);
