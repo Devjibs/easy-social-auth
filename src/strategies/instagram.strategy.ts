@@ -24,7 +24,7 @@ export class InstagramStrategy extends AuthStrategy {
       const params = new FormData();
       params.append("client_id", this.clientId);
       params.append("client_secret", this.clientSecret);
-      params.append("grant_type", this.grantType);
+      params.append("grant_type", GrantType.AUTHORIZATION_CODE);
       params.append("redirect_uri", redirectUri);
       params.append("code", code);
 
@@ -37,7 +37,7 @@ export class InstagramStrategy extends AuthStrategy {
     } catch (error: any) {
       return {
         status: false,
-        error: error.response?.data?.error_description || error.message,
+        error: error?.data?.error_message || error.response?.data?.error_description,
       };
     }
   }

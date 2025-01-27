@@ -77,7 +77,7 @@ export const config = {
       "https://graph.instagram.com/me?fields=id,username,account_type",
     authUrl:
       process.env.INSTAGRAM_AUTH_URL ||
-      "https://api.instagram.com/oauth/authorize",
+      "https://www.instagram.com/oauth/authorize",
   } as IInstagramConfig,
   spotify: {
     clientId: process.env.SPOTIFY_CLIENT_ID || "",
