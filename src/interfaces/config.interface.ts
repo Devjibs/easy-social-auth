@@ -24,3 +24,4 @@ export interface ISpotifyConfig extends BaseConfig {}
 export interface ITiktokConfig extends BaseConfig {}
 export interface ILinkedinConfig extends BaseConfig {}
 export interface IRedditConfig extends BaseConfig {}
+export interface IGmailConfig extends BaseConfig {}

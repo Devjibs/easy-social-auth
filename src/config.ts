@@ -7,6 +7,7 @@ import {
   ITwitterConfig,
   ILinkedinConfig,
   IRedditConfig,
+  IGmailConfig,
 } from "./interfaces/config.interface";
 
 export const config = {
@@ -52,13 +53,13 @@ export const config = {
       process.env.TWITTER_REVOKE_ACCESS_URL ||
       "https://api.x.com/2/oauth2/revoke",
     OAuth_1_0_AccessTokenUrl:
-      process.env.OAUTH_1_0_ACCESS_TOKEN_URL || "https://api.x.com/oauth/access_token",
+      process.env.OAUTH_1_0_ACCESS_TOKEN_URL ||
+      "https://api.x.com/oauth/access_token",
     OAuth_1_0_RequestTokenUrl:
-      process.env.OAUTH_1_0_REQUEST_TOKEN_URL || "https://api.x.com/oauth/request_token",
-    apiKey:
-      process.env.TWITTER_CONSUMER_KEY || "",
-    consumerSecret:
-      process.env.TWITTER_CONSUMER_SECRET || "",
+      process.env.OAUTH_1_0_REQUEST_TOKEN_URL ||
+      "https://api.x.com/oauth/request_token",
+    apiKey: process.env.TWITTER_CONSUMER_KEY || "",
+    consumerSecret: process.env.TWITTER_CONSUMER_SECRET || "",
   } as ITwitterConfig,
   instagram: {
     clientId: process.env.INSTAGRAM_CLIENT_ID || "",
@@ -126,10 +127,21 @@ export const config = {
       process.env.REDDIT_USER_INFO_ENDPOINT ||
       "https://oauth.reddit.com/api/v1/me",
     authUrl:
-      process.env.REDDIT_AUTH_URL ||
-      "https://www.reddit.com/api/v1/authorize",
+      process.env.REDDIT_AUTH_URL || "https://www.reddit.com/api/v1/authorize",
     revokeTokenUrl:
       process.env.REDDIT_REVOKE_TOKEN_URL ||
-      "https://www.reddit.com/api/v1/revoke_token"
+      "https://www.reddit.com/api/v1/revoke_token",
   } as IRedditConfig,
+  gmail: {
+    clientId: process.env.GMAIL_CLIENT_ID || "",
+    clientSecret: process.env.GMAIL_CLIENT_SECRET || "",
+    tokenEndpoint:
+      process.env.GMAIL_TOKEN_ENDPOINT || "https://oauth2.googleapis.com/token",
+    authUrl:
+      process.env.GMAIL_AUTH_URL ||
+      "https://accounts.google.com/o/oauth2/v2/auth",
+    userInfoEndpoint:
+      process.env.GMAIL_USER_INFO_ENDPOINT ||
+      "https://gmail.googleapis.com/gmail/v1/users/me/profile",
+  } as IGmailConfig,
 };
