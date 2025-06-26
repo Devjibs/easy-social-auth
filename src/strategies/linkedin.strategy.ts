@@ -4,6 +4,7 @@ import { ILinkedinConfig } from '../interfaces/config.interface';
 import { SocialAuthResponse } from '../interfaces/easy-social-auth-response.interface';
 import { AuthStrategy } from './easy-social-auth.strategy';
 import { GrantType } from '../enums/grant-type.enum';
+import { GrantType } from '../enums/grant-type.enum';
 
 export class LinkedinStrategy extends AuthStrategy {
   constructor(config: ILinkedinConfig) {
@@ -33,64 +34,14 @@ export class LinkedinStrategy extends AuthStrategy {
     }
   }
 
-  async exchangeCodeForToken(
-    code: string,
-    redirectUri: string,
-  ): Promise<SocialAuthResponse<string>> {
-    try{
-        const { data } = await axios.post(this.tokenEndpoint, null, {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          params: {
-            grant_type: GrantType.AUTHORIZATION_CODE,
-            code: code,
-            redirect_uri: redirectUri,
-            client_id: this.clientId,
-            client_secret: this.clientSecret,
-          }
-        });
-        return { status: true, data: data };
-      } catch (error: any) {
-        return { status: false, error: error.response?.data?.error_description || error.message };
-      }
-  }
-
-  async refreshAccessToken(refreshToken: string): Promise<SocialAuthResponse<string>> {
-    try{
-      const { data } = await axios.post(this.tokenEndpoint, null, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        params: {
-          grant_type: GrantType.REFRESH_TOKEN,
-          refresh_token: refreshToken,
-          client_id: this.clientId,
-          client_secret: this.clientSecret,
-        }
-      });
-      return { status: true, data: data };
-    } catch (error: any) {
-      return { status: false, error: error.response?.data?.error_description || error.message };
-    }
-  }
-
-  async requestAppToken(): Promise<SocialAuthResponse<string>> {
-    try {
-      const { data } = await axios.post(this.tokenEndpoint, null, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-        },
-        params: {
-          grant_type: GrantType.CLIENT_CREDENTIALS,
-          client_secret: this.clientSecret,
-          client_id: this.clientId,
-        }
-      });
-      return { status: true, data: data };
-    } catch (error: any) {
-      return { status: false, error: error.response?.data?.error_description || error.message };
-    }
+  async exchangeCodeForToken(code: string, redirectUri: string): Promise<SocialAuthResponse<any>> {
+    return await this.exchangeToken({
+      client_id: this.clientId,
+      client_secret: this.clientSecret,
+      grant_type: GrantType.AUTHORIZATION_CODE,
+      redirect_uri: redirectUri,
+      code
+    });
   }
 
   async getUserData(accessToken: string): Promise<SocialAuthResponse<ISocialUser>> {
