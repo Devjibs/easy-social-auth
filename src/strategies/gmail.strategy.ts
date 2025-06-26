@@ -3,6 +3,7 @@ import { ISocialUser } from "../interfaces/social-user.interface";
 import { IGmailConfig } from "../interfaces/config.interface";
 import { SocialAuthResponse } from "../interfaces/easy-social-auth-response.interface";
 import { AuthStrategy } from "./easy-social-auth.strategy";
+import { GrantType } from "../enums/grant-type.enum";
 
 export class GmailStrategy extends AuthStrategy {
   constructor(config: IGmailConfig) {
@@ -14,6 +15,44 @@ export class GmailStrategy extends AuthStrategy {
       config.authUrl
     );
   }
+
+  async exchangeCodeForToken(
+    code: string,
+    redirectUri: string,
+    additionalParams: Record<string, string> = {}
+  ): Promise<SocialAuthResponse<string>> {
+    try {
+      const form = new URLSearchParams();
+      form.append('code', code);
+      form.append('client_id', this.clientId);
+      form.append('client_secret', this.clientSecret);
+      form.append('redirect_uri', redirectUri);
+      form.append('grant_type', GrantType.AUTHORIZATION_CODE);
+  
+      for (const key in additionalParams) {
+        form.append(key, additionalParams[key]);
+      }
+  
+      const { data } = await axios.post(this.tokenEndpoint, form, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+  
+      (this as any)._lastToken = data;
+  
+      return {
+        status: true,
+        data: data.access_token,
+      };
+    } catch (error: any) {
+      return {
+        status: false,
+        error: error.response?.data?.error_description || error.message,
+      };
+    }
+  }
+  
 
   async getUserData(
     accessToken: string
@@ -32,7 +71,39 @@ export class GmailStrategy extends AuthStrategy {
         };
       }
 
-      return { status: true, data: data };
+      const user: ISocialUser = {
+        id: data.emailAddress,
+        email: data.emailAddress,
+        firstName: "",
+        lastName: "",
+        picture: "",
+        provider: "gmail",
+      }
+
+      return { status: true, data: user };
+    } catch (error: any) {
+      return {
+        status: false,
+        error: error.response?.data?.error_description || error.message,
+      };
+    }
+  }
+
+  async refreshAccessToken(refreshToken: string): Promise<SocialAuthResponse<any>> {
+    try {
+      const form = new URLSearchParams();
+      form.append('client_id', this.clientId);
+      form.append('client_secret', this.clientSecret);
+      form.append('refresh_token', refreshToken);
+      form.append('grant_type', GrantType.REFRESH_TOKEN);
+
+      const { data } = await axios.post(this.tokenEndpoint, form, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      return { status: true, data };
     } catch (error: any) {
       return {
         status: false,
