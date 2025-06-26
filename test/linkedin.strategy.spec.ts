@@ -36,7 +36,7 @@ describe('LinkedinStrategy', () => {
 
     const response = await linkedinStrategy.exchangeCodeForToken(mockCode, 'redirect-uri');
     expect(response.status).toBe(true);
-    expect(response.data).toBeDefined(Response);
+    expect(response.data).toBeDefined();
   });
 
   it('should refresh access token', async () => {

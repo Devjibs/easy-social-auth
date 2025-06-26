@@ -4,7 +4,6 @@ import { ILinkedinConfig } from '../interfaces/config.interface';
 import { SocialAuthResponse } from '../interfaces/easy-social-auth-response.interface';
 import { AuthStrategy } from './easy-social-auth.strategy';
 import { GrantType } from '../enums/grant-type.enum';
-import { GrantType } from '../enums/grant-type.enum';
 
 export class LinkedinStrategy extends AuthStrategy {
   constructor(config: ILinkedinConfig) {
