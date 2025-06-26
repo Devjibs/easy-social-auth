@@ -92,6 +92,12 @@ REDDIT_CLIENT_ID=your-reddit-client-id
 REDDIT_CLIENT_SECRET=your-reddit-client-secret
 REDDIT_TOKEN_ENDPOINT=https://www.reddit.com/api/v1/access_token
 REDDIT_USER_INFO_ENDPOINT=https://oauth.reddit.com/api/v1/me
+
+GMAIL_AUTH_URL=https://accounts.google.com/o/oauth2/v2/auth
+GMAIL_CLIENT_ID=your-gmail-client-id
+GMAIL_CLIENT_SECRET=your-gmail-client-secret
+GMAIL_TOKEN_ENDPOINT=https://oauth2.googleapis.com/token
+GMAIL_USER_INFO_ENDPOINT=https://gmail.googleapis.com/gmail/v1/users/me/profile
 ```
 
 **Note: Ensure your redirect URIs are registered in the respective developer consoles.**
