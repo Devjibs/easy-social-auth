@@ -23,24 +23,24 @@ export class GmailStrategy extends AuthStrategy {
   ): Promise<SocialAuthResponse<string>> {
     try {
       const form = new URLSearchParams();
-      form.append('code', code);
-      form.append('client_id', this.clientId);
-      form.append('client_secret', this.clientSecret);
-      form.append('redirect_uri', redirectUri);
-      form.append('grant_type', GrantType.AUTHORIZATION_CODE);
-  
+      form.append("code", code);
+      form.append("client_id", this.clientId);
+      form.append("client_secret", this.clientSecret);
+      form.append("redirect_uri", redirectUri);
+      form.append("grant_type", GrantType.AUTHORIZATION_CODE);
+
       for (const key in additionalParams) {
         form.append(key, additionalParams[key]);
       }
-  
+
       const { data } = await axios.post(this.tokenEndpoint, form, {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       });
-  
+
       (this as any)._lastToken = data;
-  
+
       return {
         status: true,
         data: data.access_token,
@@ -52,7 +52,6 @@ export class GmailStrategy extends AuthStrategy {
       };
     }
   }
-  
 
   async getUserData(
     accessToken: string
@@ -78,7 +77,7 @@ export class GmailStrategy extends AuthStrategy {
         lastName: "",
         picture: "",
         provider: "gmail",
-      }
+      };
 
       return { status: true, data: user };
     } catch (error: any) {
@@ -89,17 +88,19 @@ export class GmailStrategy extends AuthStrategy {
     }
   }
 
-  async refreshAccessToken(refreshToken: string): Promise<SocialAuthResponse<any>> {
+  async refreshAccessToken(
+    refreshToken: string
+  ): Promise<SocialAuthResponse<any>> {
     try {
       const form = new URLSearchParams();
-      form.append('client_id', this.clientId);
-      form.append('client_secret', this.clientSecret);
-      form.append('refresh_token', refreshToken);
-      form.append('grant_type', GrantType.REFRESH_TOKEN);
+      form.append("client_id", this.clientId);
+      form.append("client_secret", this.clientSecret);
+      form.append("refresh_token", refreshToken);
+      form.append("grant_type", GrantType.REFRESH_TOKEN);
 
       const { data } = await axios.post(this.tokenEndpoint, form, {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       });
 
