@@ -16,6 +16,7 @@
   <img src="https://img.icons8.com/fluency/48/000000/spotify.png" alt="Spotify Logo" width="40" height="40">
   <img src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn Logo" width="40" height="40">
   <img src="https://img.icons8.com/color/48/000000/reddit.png" alt="Reddit Logo" width="40" height="40">
+  <img src="https://img.icons8.com/color/48/000000/gmail.png" alt="Gmail Logo" width="40" height="40">
 </p>
 
 A flexible, standalone package for social authentication using Google, Facebook, Instagram, Tiktok, Spotify, LinkedIn, and Twitter(X).
@@ -92,6 +93,12 @@ REDDIT_CLIENT_ID=your-reddit-client-id
 REDDIT_CLIENT_SECRET=your-reddit-client-secret
 REDDIT_TOKEN_ENDPOINT=https://www.reddit.com/api/v1/access_token
 REDDIT_USER_INFO_ENDPOINT=https://oauth.reddit.com/api/v1/me
+
+GMAIL_AUTH_URL=https://accounts.google.com/o/oauth2/v2/auth
+GMAIL_CLIENT_ID=your-gmail-client-id
+GMAIL_CLIENT_SECRET=your-gmail-client-secret
+GMAIL_TOKEN_ENDPOINT=https://oauth2.googleapis.com/token
+GMAIL_USER_INFO_ENDPOINT=https://gmail.googleapis.com/gmail/v1/users/me/profile
 ```
 
 **Note: Ensure your redirect URIs are registered in the respective developer consoles.**
@@ -411,41 +418,102 @@ if (twitterTokenResponse.status) {
 ```
 
 #### Reddit
+
 ```typescript
-import { SocialAuthService } from 'easy-social-auth';
+import { SocialAuthService } from "easy-social-auth";
 
 const socialAuthServiceReddit = new SocialAuthService();
 
 // Generate Auth URL
-const redditAuthUrl = socialAuthServiceReddit.redditStrategy.generateAuthUrl("http://localhost:3000/auth/reddit");
+const redditAuthUrl = socialAuthServiceReddit.redditStrategy.generateAuthUrl(
+  "http://localhost:3000/auth/reddit"
+);
 console.log("Reddit Auth URL:", redditAuthUrl);
 
 // Exchange Code for Token
-const redditTokenResponse = await socialAuthServicereddit.redditStrategy.exchangeCodeForToken("auth_code", "http://localhost:3000/auth/reddit");
+const redditTokenResponse =
+  await socialAuthServicereddit.redditStrategy.exchangeCodeForToken(
+    "auth_code",
+    "http://localhost:3000/auth/reddit"
+  );
 console.log("reddit Token Response:", redditTokenResponse);
 
 // Refresh Access Token
-const refreshedRedditToken = await socialAuthServiceReddit.redditStrategy.refreshAccessToken(redditTokenResponse.data.refreshToken);
+const refreshedRedditToken =
+  await socialAuthServiceReddit.redditStrategy.refreshAccessToken(
+    redditTokenResponse.data.refreshToken
+  );
 console.log("Reddit Refresh Token Response:", redditRefreshedToken);
 
 // Request App Token
-const redditAppToken = await socialAuthServiceReddit.redditStrategy.requestAppToken(
-  "scope",
-  "client_type (optional)",
-);
+const redditAppToken =
+  await socialAuthServiceReddit.redditStrategy.requestAppToken(
+    "scope",
+    "client_type (optional)"
+  );
 console.log("Reddit App Token Response:", redditAppToken);
 
 // Revoke Access Token
-const revokeRedditTokenResponse = await socialAuthServiceReddit.redditStrategy.revokeToken(
-  "token",
-  "token_type_hint (optional (refresh_token || access_token))",
-);
+const revokeRedditTokenResponse =
+  await socialAuthServiceReddit.redditStrategy.revokeToken(
+    "token",
+    "token_type_hint (optional (refresh_token || access_token))"
+  );
 console.log("Reddit Revoke Token Response:", revokeRedditTokenResponse);
 
 // Fetch User Data
 if (redditTokenResponse.status) {
   const userData = await redditStrategy.getUserData(redditTokenResponse.data!);
   console.log("Reddit User Data:", userData);
+}
+```
+
+#### Gmail
+
+```typescript
+import { SocialAuthService } from "easy-social-auth";
+
+const socialAuthServiceGmail = new SocialAuthService();
+
+// Generate Auth URL
+const gmailAuthUrl = socialAuthServiceGmail.gmailStrategy.generateAuthUrl(
+  "http://localhost:3000/auth/gmail",
+  [
+    "openid",
+    "email",
+    "profile",
+    "https://www.googleapis.com/auth/gmail.readonly",
+    "https://www.googleapis.com/auth/gmail.send",
+  ].join(" "),
+  "code",
+  {
+    access_type: "offline",
+    prompt: "consent",
+  }
+);
+console.log("Gmail Auth URL:", gmailAuthUrl);
+
+// Exchange Code for Token
+const gmailTokenResponse =
+  await socialAuthServiceGmail.gmailStrategy.exchangeCodeForToken(
+    "auth_code",
+    "http://localhost:3000/auth/gmail"
+  );
+console.log("Gmail Token Response:", gmailTokenResponse);
+
+// Refresh Access Token
+const refreshedGmailToken =
+  await socialAuthServiceGmail.gmailStrategy.refreshAccessToken(
+    gmailTokenResponse.data.refresh_token
+  );
+console.log("Gmail Refresh Token Response:", refreshedGmailToken);
+
+// Fetch User Data
+if (gmailTokenResponse.status) {
+  const userData = await gmailStrategy.getUserData(
+    gmailTokenResponse.data.access_token
+  );
+  console.log("Gmail User Data:", userData);
 }
 ```
 
