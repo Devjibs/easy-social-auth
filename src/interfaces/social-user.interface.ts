@@ -4,6 +4,5 @@ export interface ISocialUser<T = any> {
   firstName?: string;
   lastName?: string;
   picture?: string;
-  provider?: string;
   additionalData?: T;
 }

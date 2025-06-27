@@ -76,7 +76,6 @@ export class GmailStrategy extends AuthStrategy {
         firstName: "",
         lastName: "",
         picture: "",
-        provider: "gmail",
       };
 
       return { status: true, data: user };
