@@ -4,4 +4,5 @@ export enum AuthType {
   INSTAGRAM = "instagram",
   TWITTER = "twitter",
   GMAIL = "gmail",
+  OUTLOOK = "outlook",
 }

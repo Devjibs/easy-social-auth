@@ -8,6 +8,8 @@ import {
   ILinkedinConfig,
   IRedditConfig,
   IGmailConfig,
+  IYahooConfig,
+  IOutlookConfig,
 } from "./interfaces/config.interface";
 
 export const config = {
@@ -144,4 +146,31 @@ export const config = {
       process.env.GMAIL_USER_INFO_ENDPOINT ||
       "https://gmail.googleapis.com/gmail/v1/users/me/profile",
   } as IGmailConfig,
+  yahoo: {
+    clientId: process.env.YAHOO_CLIENT_ID || "",
+    clientSecret: process.env.YAHOO_CLIENT_SECRET || "",
+    tokenEndpoint:
+      process.env.YAHOO_TOKEN_ENDPOINT ||
+      "https://api.login.yahoo.com/oauth2/get_token",
+    authUrl:
+      process.env.YAHOO_AUTH_URL ||
+      "https://api.login.yahoo.com/oauth2/request_auth",
+    userInfoEndpoint:
+      process.env.YAHOO_USER_INFO_ENDPOINT ||
+      "https://api.login.yahoo.com/openid/v1/userinfo",
+  } as IYahooConfig,
+
+  outlook: {
+    clientId: process.env.OUTLOOK_CLIENT_ID || "",
+    clientSecret: process.env.OUTLOOK_CLIENT_SECRET || "",
+    tokenEndpoint:
+      process.env.OUTLOOK_TOKEN_ENDPOINT ||
+      "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+    authUrl:
+      process.env.OUTLOOK_AUTH_URL ||
+      "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+    userInfoEndpoint:
+      process.env.OUTLOOK_USER_INFO_ENDPOINT ||
+      "https://graph.microsoft.com/v1.0/me",
+  } as IOutlookConfig,
 };

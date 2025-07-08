@@ -17,6 +17,8 @@
   <img src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn Logo" width="40" height="40">
   <img src="https://img.icons8.com/color/48/000000/reddit.png" alt="Reddit Logo" width="40" height="40">
   <img src="https://img.icons8.com/color/48/000000/gmail.png" alt="Gmail Logo" width="40" height="40">
+  <img src="https://img.icons8.com/color/48/000000/microsoft-outlook-2019.png" alt="Outlook Logo" width="40" height="40">
+  <img src="https://img.icons8.com/color/48/000000/yahoo.png" alt="Yahoo Logo" width="40" height="40">
 </p>
 
 A flexible, standalone package for social authentication using Google, Facebook, Instagram, Tiktok, Spotify, LinkedIn, and Twitter(X).
@@ -99,6 +101,18 @@ GMAIL_CLIENT_ID=your-gmail-client-id
 GMAIL_CLIENT_SECRET=your-gmail-client-secret
 GMAIL_TOKEN_ENDPOINT=https://oauth2.googleapis.com/token
 GMAIL_USER_INFO_ENDPOINT=https://gmail.googleapis.com/gmail/v1/users/me/profile
+
+OUTLOOK_AUTH_URL=https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+OUTLOOK_CLIENT_ID=your-outlook-client-id
+OUTLOOK_CLIENT_SECRET=your-outlook-client-secret
+OUTLOOK_TOKEN_ENDPOINT=https://login.microsoftonline.com/common/oauth2/v2.0/token
+OUTLOOK_USER_INFO_ENDPOINT=https://graph.microsoft.com/v1.0/me
+
+YAHOO_AUTH_URL=https://api.login.yahoo.com/oauth2/request_auth
+YAHOO_CLIENT_ID=your-yahoo-client-id
+YAHOO_CLIENT_SECRET=your-yahoo-client-secret
+YAHOO_TOKEN_ENDPOINT=https://api.login.yahoo.com/oauth2/get_token
+YAHOO_USER_INFO_ENDPOINT=https://api.login.yahoo.com/openid/v1/userinfo
 ```
 
 **Note: Ensure your redirect URIs are registered in the respective developer consoles.**
@@ -473,10 +487,10 @@ if (redditTokenResponse.status) {
 ```typescript
 import { SocialAuthService } from "easy-social-auth";
 
-const socialAuthServiceGmail = new SocialAuthService();
+const socialAuthService = new SocialAuthService();
 
 // Generate Auth URL
-const gmailAuthUrl = socialAuthServiceGmail.gmailStrategy.generateAuthUrl(
+const gmailAuthUrl = socialAuthService.gmailStrategy.generateAuthUrl(
   "http://localhost:3000/auth/gmail",
   [
     "openid",
@@ -495,7 +509,7 @@ console.log("Gmail Auth URL:", gmailAuthUrl);
 
 // Exchange Code for Token
 const gmailTokenResponse =
-  await socialAuthServiceGmail.gmailStrategy.exchangeCodeForToken(
+  await socialAuthService.gmailStrategy.exchangeCodeForToken(
     "auth_code",
     "http://localhost:3000/auth/gmail"
   );
@@ -503,7 +517,7 @@ console.log("Gmail Token Response:", gmailTokenResponse);
 
 // Refresh Access Token
 const refreshedGmailToken =
-  await socialAuthServiceGmail.gmailStrategy.refreshAccessToken(
+  await socialAuthService.gmailStrategy.refreshAccessToken(
     gmailTokenResponse.data.refresh_token
   );
 console.log("Gmail Refresh Token Response:", refreshedGmailToken);
@@ -514,6 +528,134 @@ if (gmailTokenResponse.status) {
     gmailTokenResponse.data.access_token
   );
   console.log("Gmail User Data:", userData);
+}
+```
+
+#### Outlook
+
+```typescript
+import { SocialAuthService } from "easy-social-auth";
+
+const socialAuthService = new SocialAuthService();
+const redirectUri = "http://localhost:3000/auth/outlook/callback";
+
+// Generate Auth URL
+const outlookAuthUrl = socialAuthService.outlookStrategy.generateAuthUrl(
+  redirectUri,
+  [
+    "openid",
+    "email",
+    "profile",
+    "offline_access",
+    "https://graph.microsoft.com/Mail.Send",
+    "https://graph.microsoft.com/User.Read",
+  ].join(" "),
+  "code",
+  {
+    prompt: "consent",
+  }
+);
+console.log("Outlook Auth URL:", outlookAuthUrl);
+
+// Exchange Code for Token
+const outlookTokenResponse =
+  await socialAuthService.outlookStrategy.exchangeCodeForToken(
+    "authorization_code",
+    redirectUri,
+    {
+      scope: "offline_access https://graph.microsoft.com/Mail.Send",
+    }
+  );
+console.log("Outlook Token Response:", outlookTokenResponse);
+
+// Refresh Access Token
+const refreshedOutlookToken =
+  await socialAuthService.outlookStrategy.refreshAccessToken(
+    outlookTokenResponse.data.refresh_token
+  );
+console.log("Outlook Refresh Token Response:", refreshedOutlookToken);
+
+// Fetch User Data
+if (outlookTokenResponse.status) {
+  const userData = await outlookStrategy.getUserData(
+    outlookTokenResponse.data.access_token
+  );
+  console.log("Outlook User Data:", userData);
+}
+```
+
+#### Outlook: Send Email (Optional)
+
+```typescript
+import axios from "axios";
+
+const payload = {
+  message: {
+    subject: "Test Email",
+    body: {
+      contentType: "Text",
+      content: "Hello from Easy Social Auth + Outlook 🎉",
+    },
+    toRecipients: [
+      {
+        emailAddress: { address: "recipient@example.com" },
+      },
+    ],
+  },
+  saveToSentItems: "true",
+};
+
+await axios.post("https://graph.microsoft.com/v1.0/me/sendMail", payload, {
+  headers: {
+    Authorization: `Bearer ${accessToken}`,
+    "Content-Type": "application/json",
+  },
+});
+```
+
+#### Yahoo
+
+The `YahooStrategy` allows authentication using Yahoo OAuth 2.0 and access to user profile information.
+
+```typescript
+import { SocialAuthService } from "easy-social-auth";
+
+const socialAuthService = new SocialAuthService();
+const redirectUri = "http://localhost:3000/auth/yahoo/callback";
+
+// Generate Auth URL
+const yahooAuthUrl = socialAuthService.yahooStrategy.generateAuthUrl(
+  redirectUri,
+  "openid email profile",
+  "code",
+  {
+    access_type: "offline",
+    prompt: "consent",
+  }
+);
+console.log("Yahoo Auth URL:", yahooAuthUrl);
+
+// Exchange Code for Token
+const yahooTokenResponse =
+  await socialAuthService.yahooStrategy.exchangeCodeForToken(
+    "authorization_code",
+    redirectUri
+  );
+console.log("Yahoo Token Response:", yahooTokenResponse);
+
+// Refresh Access Token
+const refreshedYahooToken =
+  await socialAuthService.yahooStrategy.refreshAccessToken(
+    yahooTokenResponse.data.refresh_token
+  );
+console.log("Yahoo Refresh Token Response:", refreshedYahooToken);
+
+// Fetch User Data
+if (yahooTokenResponse.status) {
+  const userData = await yahooStrategy.getUserData(
+    yahooTokenResponse.data.access_token
+  );
+  console.log("Yahoo User Data:", userData);
 }
 ```
 

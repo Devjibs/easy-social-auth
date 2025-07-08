@@ -53,6 +53,31 @@ export class GmailStrategy extends AuthStrategy {
     }
   }
 
+  async refreshAccessToken(
+    refreshToken: string
+  ): Promise<SocialAuthResponse<any>> {
+    try {
+      const form = new URLSearchParams();
+      form.append("client_id", this.clientId);
+      form.append("client_secret", this.clientSecret);
+      form.append("refresh_token", refreshToken);
+      form.append("grant_type", GrantType.REFRESH_TOKEN);
+
+      const { data } = await axios.post(this.tokenEndpoint, form, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+
+      return { status: true, data };
+    } catch (error: any) {
+      return {
+        status: false,
+        error: error.response?.data?.error_description || error.message,
+      };
+    }
+  }
+
   async getUserData(
     accessToken: string
   ): Promise<SocialAuthResponse<ISocialUser>> {
@@ -79,31 +104,6 @@ export class GmailStrategy extends AuthStrategy {
       };
 
       return { status: true, data: user };
-    } catch (error: any) {
-      return {
-        status: false,
-        error: error.response?.data?.error_description || error.message,
-      };
-    }
-  }
-
-  async refreshAccessToken(
-    refreshToken: string
-  ): Promise<SocialAuthResponse<any>> {
-    try {
-      const form = new URLSearchParams();
-      form.append("client_id", this.clientId);
-      form.append("client_secret", this.clientSecret);
-      form.append("refresh_token", refreshToken);
-      form.append("grant_type", GrantType.REFRESH_TOKEN);
-
-      const { data } = await axios.post(this.tokenEndpoint, form, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      });
-
-      return { status: true, data };
     } catch (error: any) {
       return {
         status: false,

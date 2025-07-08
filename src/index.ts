@@ -13,4 +13,6 @@ export * from "./strategies/spotify.strategy";
 export * from "./strategies/tiktok.strategy";
 export * from "./strategies/linkedin.strategy";
 export * from "./strategies/gmail.strategy";
+export * from "./strategies/yahoo.strategy";
+export * from "./strategies/outlook.strategy";
 export * from "./config";
