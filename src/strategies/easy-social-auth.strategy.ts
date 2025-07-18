@@ -25,8 +25,8 @@ export abstract class AuthStrategy {
     url.searchParams.set("response_type", responseType ?? "code");
     if (scope) url.searchParams.set("scope", scope);
     Object.keys(additionalParams).forEach((param) => {
-        url.searchParams.append(param, additionalParams[param]);
-      });
+      url.searchParams.append(param, additionalParams[param]);
+    });
     return url.toString();
   }
 

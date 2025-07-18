@@ -27,3 +27,4 @@ export interface IRedditConfig extends BaseConfig {}
 export interface IGmailConfig extends BaseConfig {}
 export interface IOutlookConfig extends BaseConfig {}
 export interface IYahooConfig extends BaseConfig {}
+export interface IHubSpotConfig extends BaseConfig {}

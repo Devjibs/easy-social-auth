@@ -19,6 +19,7 @@
   <img src="https://img.icons8.com/color/48/000000/gmail.png" alt="Gmail Logo" width="40" height="40">
   <img src="https://img.icons8.com/color/48/000000/microsoft-outlook-2019.png" alt="Outlook Logo" width="40" height="40">
   <img src="https://img.icons8.com/color/48/000000/yahoo.png" alt="Yahoo Logo" width="40" height="40">
+  <img src="https://img.icons8.com/?size=100&id=Xq3RA1kWzz3X&format=png&color=000000" alt="Hubspot Logo" width="40" height="40">
 </p>
 
 A flexible, standalone package for social authentication using Google, Facebook, Instagram, Tiktok, Spotify, LinkedIn, and Twitter(X).
@@ -113,6 +114,12 @@ YAHOO_CLIENT_ID=your-yahoo-client-id
 YAHOO_CLIENT_SECRET=your-yahoo-client-secret
 YAHOO_TOKEN_ENDPOINT=https://api.login.yahoo.com/oauth2/get_token
 YAHOO_USER_INFO_ENDPOINT=https://api.login.yahoo.com/openid/v1/userinfo
+
+HUBSPOT_AUTH_URL=https://app.hubspot.com/oauth/authorize
+HUBSPOT_CLIENT_ID=your-yahoo-client-id
+HUBSPOT_CLIENT_SECRET=your-yahoo-client-secret
+HUBSPOT_TOKEN_ENDPOINT=https://api.hubspot.com/oauth/v1/token
+HUBSPOT_USER_INFO_ENDPOINT=https://api.hubspot.com/oauth/v1/access-tokens
 ```
 
 **Note: Ensure your redirect URIs are registered in the respective developer consoles.**
@@ -656,6 +663,54 @@ if (yahooTokenResponse.status) {
     yahooTokenResponse.data.access_token
   );
   console.log("Yahoo User Data:", userData);
+}
+```
+
+#### HubSpot
+
+```typescript
+import { SocialAuthService } from "easy-social-auth";
+
+const socialAuthService = new SocialAuthService();
+const redirectUri = "http://localhost:3000/auth/hubspot/callback";
+
+// Generate Auth URL
+const hubspotAuthUrl = socialAuthService.hubspotStrategy.generateAuthUrl(
+  redirectUri,
+  [
+    "oauth",
+    "crm.objects.contacts.read",
+    "crm.objects.contacts.write",
+    "add other scopes",
+  ].join(" "),
+  "code",
+  {
+    state: "optional-state",
+  }
+);
+console.log("HubSport Auth URL:", hubspotAuthUrl);
+
+// Exchange Code for Token
+const hubspotTokenResponse =
+  await socialAuthService.hubspotStrategy.exchangeCodeForToken(
+    "authorization_code",
+    redirectUri
+  );
+console.log("HubSpot Token Response:", hubspotTokenResponse);
+
+// Refresh Access Token
+const refreshedHubSpotToken =
+  await socialAuthService.hubspotStrategy.refreshAccessToken(
+    hubspotTokenResponse.data.refresh_token
+  );
+console.log("HubSpot Refresh Token Response:", refreshedHubSpotToken);
+
+// Fetch User Data
+if (hubspotTokenResponse.status) {
+  const userData = await socialAuthService.hubspotStrategy.getUserData(
+    hubspotTokenResponse.data.access_token
+  );
+  console.log("HubSpot User Data:", userData);
 }
 ```
 

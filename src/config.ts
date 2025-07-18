@@ -10,6 +10,7 @@ import {
   IGmailConfig,
   IYahooConfig,
   IOutlookConfig,
+  IHubSpotConfig,
 } from "./interfaces/config.interface";
 
 export const config = {
@@ -159,7 +160,6 @@ export const config = {
       process.env.YAHOO_USER_INFO_ENDPOINT ||
       "https://api.login.yahoo.com/openid/v1/userinfo",
   } as IYahooConfig,
-
   outlook: {
     clientId: process.env.OUTLOOK_CLIENT_ID || "",
     clientSecret: process.env.OUTLOOK_CLIENT_SECRET || "",
@@ -173,4 +173,16 @@ export const config = {
       process.env.OUTLOOK_USER_INFO_ENDPOINT ||
       "https://graph.microsoft.com/v1.0/me",
   } as IOutlookConfig,
+  hubspot: {
+    clientId: process.env.HUBSPOT_CLIENT_ID || "",
+    clientSecret: process.env.HUBSPOT_CLIENT_SECRET || "",
+    tokenEndpoint:
+      process.env.HUBSPOT_TOKEN_ENDPOINT ||
+      "https://api.hubspot.com/oauth/v1/token",
+    authUrl:
+      process.env.HUBSPOT_AUTH_URL || "https://app.hubspot.com/oauth/authorize",
+    userInfoEndpoint:
+      process.env.HUBSPOT_USER_INFO_ENDPOINT ||
+      "https://api.hubspot.com/oauth/v1/access-tokens",
+  } as IHubSpotConfig,
 };

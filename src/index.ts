@@ -15,4 +15,5 @@ export * from "./strategies/linkedin.strategy";
 export * from "./strategies/gmail.strategy";
 export * from "./strategies/yahoo.strategy";
 export * from "./strategies/outlook.strategy";
+export * from "./strategies/hubspot.strategy";
 export * from "./config";
