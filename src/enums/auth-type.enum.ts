@@ -3,5 +3,4 @@ export enum AuthType {
   FACEBOOK = "facebook",
   INSTAGRAM = "instagram",
   TWITTER = "twitter",
-  GMAIL = "gmail",
 }

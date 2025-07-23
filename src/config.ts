@@ -7,7 +7,6 @@ import {
   ITwitterConfig,
   ILinkedinConfig,
   IRedditConfig,
-  IGmailConfig,
 } from "./interfaces/config.interface";
 
 export const config = {
@@ -23,6 +22,9 @@ export const config = {
     authUrl:
       process.env.GOOGLE_AUTH_URL ||
       "https://accounts.google.com/o/oauth2/v2/auth",
+    revokeTokenUrl:
+      process.env.GOOGLE_REVOKE_TOKEN_URL ||
+      "https://oauth2.googleapis.com/revoke",
   } as IGoogleConfig,
   facebook: {
     clientId: process.env.FACEBOOK_APP_ID || "",
@@ -132,16 +134,4 @@ export const config = {
       process.env.REDDIT_REVOKE_TOKEN_URL ||
       "https://www.reddit.com/api/v1/revoke_token",
   } as IRedditConfig,
-  gmail: {
-    clientId: process.env.GMAIL_CLIENT_ID || "",
-    clientSecret: process.env.GMAIL_CLIENT_SECRET || "",
-    tokenEndpoint:
-      process.env.GMAIL_TOKEN_ENDPOINT || "https://oauth2.googleapis.com/token",
-    authUrl:
-      process.env.GMAIL_AUTH_URL ||
-      "https://accounts.google.com/o/oauth2/v2/auth",
-    userInfoEndpoint:
-      process.env.GMAIL_USER_INFO_ENDPOINT ||
-      "https://gmail.googleapis.com/gmail/v1/users/me/profile",
-  } as IGmailConfig,
 };
