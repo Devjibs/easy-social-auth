@@ -3,6 +3,7 @@ import { ISocialUser } from '../interfaces/social-user.interface';
 import { IGoogleConfig } from '../interfaces/config.interface';
 import { SocialAuthResponse } from '../interfaces/easy-social-auth-response.interface';
 import { AuthStrategy } from './easy-social-auth.strategy';
+import { GrantType } from '../enums/grant-type.enum';
 
 export class GoogleStrategy extends AuthStrategy {
   constructor(config: IGoogleConfig) {
@@ -29,5 +30,21 @@ export class GoogleStrategy extends AuthStrategy {
     } catch (error: any) {
       return { status: false, error: error.response?.data?.error_description || error.message };
     }
+  }
+
+  async exchangeCodeForToken(
+    code: string,
+    redirectUri: string,
+    additionalParams?: Record<string, string>
+  ): Promise<SocialAuthResponse<string>> {
+    const params = {
+      client_id: this.clientId,
+      client_secret: this.clientSecret,
+      grant_type: GrantType.AUTHORIZATION_CODE,
+      ...additionalParams
+    };
+    return super.exchangeCodeForToken(
+      code, redirectUri, params
+    )
   }
 }
