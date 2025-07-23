@@ -22,6 +22,9 @@ export const config = {
     authUrl:
       process.env.GOOGLE_AUTH_URL ||
       "https://accounts.google.com/o/oauth2/v2/auth",
+    revokeTokenUrl:
+      process.env.GOOGLE_REVOKE_TOKEN_URL ||
+      "https://oauth2.googleapis.com/revoke",
   } as IGoogleConfig,
   facebook: {
     clientId: process.env.FACEBOOK_APP_ID || "",
