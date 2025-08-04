@@ -8,6 +8,7 @@ import {
   ILinkedinConfig,
   IRedditConfig,
   IGmailConfig,
+  ISlackConfig,
 } from "./interfaces/config.interface";
 
 export const config = {
@@ -144,4 +145,14 @@ export const config = {
       process.env.GMAIL_USER_INFO_ENDPOINT ||
       "https://gmail.googleapis.com/gmail/v1/users/me/profile",
   } as IGmailConfig,
+  slack: {
+    clientId: process.env.SLACK_CLIENT_ID || "",
+    clientSecret: process.env.SLACK_CLIENT_SECRET || "",
+    tokenEndpoint:
+      process.env.SLACK_TOKEN_ENDPOINT || "",
+    authUrl:
+      process.env.SLACK_AUTH_URL || "https://slack.com/oauth/v2/",
+    userInfoEndpoint:
+      process.env.SLACK_USER_INFO_ENDPOINT || "https://slack.com/api/users.identity",
+  } as ISlackConfig,
 };
