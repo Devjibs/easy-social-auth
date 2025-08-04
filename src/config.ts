@@ -149,10 +149,12 @@ export const config = {
     clientId: process.env.SLACK_CLIENT_ID || "",
     clientSecret: process.env.SLACK_CLIENT_SECRET || "",
     tokenEndpoint:
-      process.env.SLACK_TOKEN_ENDPOINT || "",
+      process.env.SLACK_TOKEN_ENDPOINT || "https://slack.com/api/oauth.v2.access",
     authUrl:
-      process.env.SLACK_AUTH_URL || "https://slack.com/oauth/v2/",
+      process.env.SLACK_AUTH_URL || "https://slack.com/oauth/v2/authorize",
     userInfoEndpoint:
       process.env.SLACK_USER_INFO_ENDPOINT || "https://slack.com/api/users.identity",
+    revokeTokenUrl:
+      process.env.SLACK_REVOKE_TOKEN_URL || "https://slack.com/api/auth.revoke",
   } as ISlackConfig,
 };
