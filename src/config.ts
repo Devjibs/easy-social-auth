@@ -11,7 +11,6 @@ import {
   ISlackConfig,
 } from "./interfaces/config.interface";
 
-
 export const config = {
   google: {
     clientId: process.env.GOOGLE_CLIENT_ID || "",
