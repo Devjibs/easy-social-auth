@@ -11,6 +11,7 @@ import {
   ISlackConfig,
 } from "./interfaces/config.interface";
 
+
 export const config = {
   google: {
     clientId: process.env.GOOGLE_CLIENT_ID || "",
@@ -45,7 +46,7 @@ export const config = {
       process.env.TWITTER_TOKEN_ENDPOINT || "https://api.x.com/2/oauth2/token",
     userInfoEndpoint:
       process.env.TWITTER_USER_INFO_ENDPOINT ||
-      "https://api.twitter.com/2/account/verify_credentials.json",
+      "https://api.x.com/2/users/me",
     authUrl:
       process.env.TWITTER_AUTH_URL || "https://twitter.com/i/oauth2/authorize",
     OAuth_1_0_AuthUrl:
