@@ -15,7 +15,7 @@ describe('SpotifyStrategy', () => {
     authUrl: 'https://accounts.spotify.com/authorize',
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     spotifyStrategy = new SpotifyStrategy(mockConfig);
     mock = new MockAdapter(axios);
   });

@@ -15,7 +15,7 @@ describe('GoogleStrategy', () => {
     authUrl: 'https://accounts.google.com/o/oauth2/v2/auth'
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     googleStrategy = new GoogleStrategy(mockConfig);
     mock = new MockAdapter(axios);
   });

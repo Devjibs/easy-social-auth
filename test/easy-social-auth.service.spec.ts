@@ -42,7 +42,7 @@ describe("SocialAuthService", () => {
     consumerSecret: "consumer-secret",
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     mock = new MockAdapter(axios);
   });
 
@@ -254,11 +254,13 @@ describe("SocialAuthService", () => {
         name: "Test User",
         email: "test@example.com",
       };
+      console.log('Twitter config: ', twitterConfig);
       mock.onGet(twitterConfig.userInfoEndpoint).reply(200, mockUserData);
 
       const response = await socialAuthService.twitterStrategy.getUserData(
         mockToken
       );
+      console.log("RESPONSE: ", response);
       expect(response.status).toBe(true);
       expect(response.data).toBeDefined();
     }
