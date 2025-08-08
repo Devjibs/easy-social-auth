@@ -32,7 +32,7 @@ export abstract class AuthStrategy {
 
   protected async exchangeToken(
     params: Record<string, string>,
-    useFormEncoding = false
+    useFormEncoding = true
   ): Promise<SocialAuthResponse<Record<string, any>>> {
     try {
       let body: any;
@@ -43,7 +43,10 @@ export abstract class AuthStrategy {
         for (const key in params) {
           body.append(key, params[key]);
         }
-        headers["Content-Type"] = "application/x-www-form-urlencoded";
+        headers = {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Cache-Control": "no-cache",
+        };
       } else {
         body = params; // plain JSON object
       }

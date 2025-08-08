@@ -30,7 +30,6 @@ export class HubSpotStrategy extends AuthStrategy {
         grant_type: GrantType.AUTHORIZATION_CODE,
         ...additionalParams,
       },
-      true,
     );
   }
 

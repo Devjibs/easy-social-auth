@@ -21,7 +21,7 @@ export class GoogleStrategy extends AuthStrategy {
     additionalParams: Record<string, string> = {}
   ): Promise<SocialAuthResponse<Record<string, any>>> {
     return await super.exchangeCodeForToken(
-      code, redirectUri, additionalParams, true
+      code, redirectUri, additionalParams
     )
   }
 
