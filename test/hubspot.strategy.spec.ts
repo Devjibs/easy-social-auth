@@ -61,7 +61,7 @@ describe("HubSpotStrategy", () => {
 
     const result = await strategy.refreshAccessToken(refreshToken);
     expect(result.status).toBe(true);
-    expect(result.data.access_token).toBe("new-token");
+    expect(result.data).toBe("new-token");
   });
 
   it("should get user data", async () => {

@@ -46,7 +46,7 @@ describe('LinkedinStrategy', () => {
 
     const response = await linkedinStrategy.refreshAccessToken(mockRefreshToken);
     expect(response.status).toBe(true);
-    expect(response.data).toEqual(mockTokenResponse);
+    expect(response.data).toEqual(mockTokenResponse.access_token);
   });
 
   it('should get user data', async () => {

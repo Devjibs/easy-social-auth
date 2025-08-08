@@ -41,27 +41,32 @@ describe("YahooStrategy", () => {
   });
 
   it("should exchange code for access token", async () => {
-    const mockToken = { access_token: "mock-access-token" };
-    mock.onPost(mockConfig.tokenEndpoint).reply(200, mockToken);
+    const mockToken = "mock-access-token";
+    mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockToken });
 
     const result = await yahooStrategy.exchangeCodeForToken(
       "code123",
-      "http://localhost/callback"
+      "http://localhost/callback",
+      {},
+      true,
     );
+
     expect(result.status).toBe(true);
-    expect(result.data).toEqual(mockToken);
+    expect(result.data).toEqual({ access_token: mockToken });
   });
 
   it("should refresh access token", async () => {
-    const mockRefresh = { access_token: "new-access-token" };
-    mock.onPost(mockConfig.tokenEndpoint).reply(200, mockRefresh);
+    const mockRefresh = "new-access-token";
+    mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockRefresh });
 
     const result = await yahooStrategy.refreshAccessToken(
       "mock-refresh-token",
-      "http://localhost/callback"
+      true,
+      "http://localhost/callback",
     );
+
     expect(result.status).toBe(true);
-    expect(result.data).toEqual(mockRefresh);
+    expect(result.data).toEqual("new-access-token");
   });
 
   it("should get user data", async () => {

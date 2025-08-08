@@ -16,52 +16,22 @@ export class HubSpotStrategy extends AuthStrategy {
     );
   }
 
-  async exchangeToken(
-    params: Record<string, string>
-  ): Promise<SocialAuthResponse<any>> {
-    try {
-      const form = new URLSearchParams();
-      Object.keys(params).forEach((key) => {
-        form.append(key, params[key]);
-      });
-      const { data } = await axios.post(this.tokenEndpoint, form, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      });
-      return { status: true, data: data };
-    } catch (error: any) {
-      return {
-        status: false,
-        error: error.response?.data?.error_description || error.message,
-      };
-    }
-  }
-
   async exchangeCodeForToken(
     code: string,
     redirectUri: string,
     additionalParams?: Record<string, string>
   ): Promise<SocialAuthResponse<any>> {
-    return await this.exchangeToken({
-      client_id: this.clientId,
-      client_secret: this.clientSecret,
-      code,
-      redirect_uri: redirectUri,
-      grant_type: GrantType.AUTHORIZATION_CODE,
-      ...additionalParams,
-    });
-  }
-
-  async refreshAccessToken(
-    refreshToken: string
-  ): Promise<SocialAuthResponse<any>> {
-    return await this.exchangeToken({
-      client_id: this.clientId,
-      client_secret: this.clientSecret,
-      grant_type: GrantType.REFRESH_TOKEN,
-      refresh_token: refreshToken,
-    });
+    return await this.exchangeToken(
+      {
+        client_id: this.clientId,
+        client_secret: this.clientSecret,
+        code,
+        redirect_uri: redirectUri,
+        grant_type: GrantType.AUTHORIZATION_CODE,
+        ...additionalParams,
+      },
+      true,
+    );
   }
 
   async getUserData(

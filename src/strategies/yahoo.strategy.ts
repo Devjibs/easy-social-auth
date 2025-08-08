@@ -16,54 +16,24 @@ export class YahooStrategy extends AuthStrategy {
     );
   }
 
-  async exchangeToken(
-    params: Record<string, string>
-  ): Promise<SocialAuthResponse<any>> {
-    try {
-      const form = new URLSearchParams();
-      Object.keys(params).forEach((key) => {
-        form.append(key, params[key]);
-      });
-
-      const { data } = await axios.post(this.tokenEndpoint, form, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      });
-
-      return { status: true, data: data };
-    } catch (error: any) {
-      return {
-        status: false,
-        error: error.response?.data?.error_description || error.message,
-      };
-    }
-  }
-
-  async exchangeCodeForToken(
-    code: string,
-    redirectUri: string
-  ): Promise<SocialAuthResponse<any>> {
-    return await this.exchangeToken({
-      client_id: this.clientId,
-      client_secret: this.clientSecret,
-      redirect_uri: redirectUri,
-      code,
-      grant_type: GrantType.AUTHORIZATION_CODE,
-    });
-  }
-
   async refreshAccessToken(
     refreshToken: string,
-    redirectUri?: string
-  ): Promise<SocialAuthResponse<any>> {
-    return await this.exchangeToken({
+    useFormEncoding?: boolean,
+    redirectUri?: string,
+  ): Promise<SocialAuthResponse<string>> {
+    const params = {
+      refresh_token: refreshToken,
       client_id: this.clientId,
       client_secret: this.clientSecret,
       grant_type: GrantType.REFRESH_TOKEN,
-      refresh_token: refreshToken,
-      redirect_uri: redirectUri as string,
-    });
+      redirect_uri: redirectUri || "",
+    };
+    const response = await this.exchangeToken(params, useFormEncoding);
+    if (response.status && response.data) {
+      return { status: true, data: response.data.access_token };
+    } else {
+      return { status: false, error: response.error || "Failed to refresh token" };
+    }
   }
 
   async getUserData(

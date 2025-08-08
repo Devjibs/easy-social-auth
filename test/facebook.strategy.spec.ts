@@ -31,8 +31,8 @@ describe('FacebookStrategy', () => {
 
   it('should exchange code for token', async () => {
     const mockCode = 'mockCode';
-    const mockToken = 'mockToken';
-    mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockToken });
+    const mockToken = { access_token: 'mockToken' }
+    mock.onPost(mockConfig.tokenEndpoint).reply(200, mockToken);
 
     const response = await facebookStrategy.exchangeCodeForToken(mockCode, 'redirect-uri');
     expect(response.status).toBe(true);
@@ -52,8 +52,8 @@ describe('FacebookStrategy', () => {
   it('should exchange password for token', async () => {
     const mockUsername = 'username';
     const mockPassword = 'password';
-    const mockToken = 'mockToken';
-    mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockToken });
+    const mockToken = { access_token: 'mockToken' }
+    mock.onPost(mockConfig.tokenEndpoint).reply(200, mockToken);
 
     const response = await facebookStrategy.exchangePasswordForToken(mockUsername, mockPassword);
     expect(response.status).toBe(true);

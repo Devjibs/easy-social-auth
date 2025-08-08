@@ -15,7 +15,7 @@ describe("SocialAuthService", () => {
     clientId: "client-id",
     clientSecret: "client-secret",
     tokenEndpoint: "https://oauth2.googleapis.com/token",
-    userInfoEndpoint: "https://www.googleapis.com/oauth2/v3/userinfo",
+    userInfoEndpoint: "https://gmail.googleapis.com/gmail/v1/users/me/profile",
     authUrl: "https://accounts.google.com/o/oauth2/v2/auth",
   };
 
@@ -96,10 +96,10 @@ describe("SocialAuthService", () => {
     socialAuthService = new SocialAuthService();
     if (socialAuthService.googleStrategy) {
       const mockCode = "mockCode";
-      const mockToken = "mockToken";
+      const mockToken = { access_token: "mockToken" };
       mock
         .onPost(googleConfig.tokenEndpoint)
-        .reply(200, { access_token: mockToken });
+        .reply(200, mockToken);
 
       const response =
         await socialAuthService.googleStrategy.exchangeCodeForToken(
@@ -115,10 +115,10 @@ describe("SocialAuthService", () => {
     socialAuthService = new SocialAuthService();
     if (socialAuthService.facebookStrategy) {
       const mockCode = "mockCode";
-      const mockToken = "mockToken";
+      const mockToken = { access_token: "mockToken" };
       mock
         .onPost(facebookConfig.tokenEndpoint)
-        .reply(200, { access_token: mockToken });
+        .reply(200, mockToken);
 
       const response =
         await socialAuthService.facebookStrategy.exchangeCodeForToken(

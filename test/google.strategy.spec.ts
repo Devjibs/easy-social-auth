@@ -36,7 +36,7 @@ describe('GoogleStrategy', () => {
 
     const response = await googleStrategy.exchangeCodeForToken(mockCode, 'redirect-uri');
     expect(response.status).toBe(true);
-    expect(response.data).toEqual(mockToken);
+    expect(response.data).toEqual({ access_token: mockToken });
   });
 
   it('should refresh access token', async () => {
@@ -57,7 +57,7 @@ describe('GoogleStrategy', () => {
 
     const response = await googleStrategy.exchangePasswordForToken(mockUsername, mockPassword);
     expect(response.status).toBe(true);
-    expect(response.data).toEqual(mockToken);
+    expect(response.data).toEqual({access_token: mockToken});
   });
 
   it('should get user data', async () => {

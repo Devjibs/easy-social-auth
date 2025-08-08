@@ -19,7 +19,7 @@ export class InstagramStrategy extends AuthStrategy {
     code: string,
     redirectUri: string,
     additionalParams: Record<string, string> = {}
-  ): Promise<SocialAuthResponse<string>> {
+  ): Promise<SocialAuthResponse<Record<string, any>>> {
     try {
       const params = new FormData();
       params.append("client_id", this.clientId);
@@ -33,7 +33,7 @@ export class InstagramStrategy extends AuthStrategy {
       });
 
       const { data } = await axios.post(this.tokenEndpoint, params);
-      return { status: true, data: data?.access_token };
+      return { status: true, data: data };
     } catch (error: any) {
       return {
         status: false,
