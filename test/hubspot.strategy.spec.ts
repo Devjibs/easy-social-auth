@@ -49,8 +49,10 @@ describe("HubSpotStrategy", () => {
     mock.onPost(mockConfig.tokenEndpoint).reply(200, mockToken);
 
     const result = await strategy.exchangeCodeForToken(code, redirectUri);
+    console.log("Result: ", result);
     expect(result.status).toBe(true);
-    expect(result.data.access_token).toBe("hubspot-token");
+    expect(result.data?.access_token).toBe("hubspot-token");
+    expect(result.data?.refresh_token).toBe("refresh-token");
   });
 
   it("should refresh access token", async () => {
