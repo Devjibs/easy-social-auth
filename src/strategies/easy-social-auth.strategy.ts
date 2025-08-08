@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { ISocialUser } from "../interfaces/social-user.interface";
 import { GrantType } from "../enums/grant-type.enum";
 import { SocialAuthResponse } from "../interfaces/easy-social-auth-response.interface";
@@ -31,10 +31,20 @@ export abstract class AuthStrategy {
   }
 
   protected async exchangeToken(
-    params: Record<string, string>
+    params: Record<string, string>,
+    useFormEncoding: boolean = true
   ): Promise<SocialAuthResponse<string>> {
     try {
-      const { data } = await axios.post(this.tokenEndpoint, params);
+      const body = useFormEncoding ? new URLSearchParams(params) : params;
+      const headers: AxiosRequestConfig = {
+        headers: {
+          'Content-Type': useFormEncoding
+            ? 'application/x-www-form-urlencoded'
+            : 'application/json',
+        },
+      };
+
+      const { data } = await axios.post(this.tokenEndpoint, body, headers);
       return { status: true, data: data?.access_token };
     } catch (error: any) {
       return {

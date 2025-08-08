@@ -43,7 +43,7 @@ export class GmailStrategy extends AuthStrategy {
 
       return {
         status: true,
-        data: data.access_token,
+        data: data?.access_token,
       };
     } catch (error: any) {
       return {

@@ -4,7 +4,7 @@ import { ITwitterConfig } from "../interfaces/config.interface";
 import { SocialAuthResponse } from "../interfaces/easy-social-auth-response.interface";
 import { AuthStrategy } from "./easy-social-auth.strategy";
 import { GrantType } from "../enums/grant-type.enum";
-import crypto from "crypto";
+import { createHmac } from "crypto";
 import { TokenTypeEnum } from "../enums/token-type.enum";
 
 export class TwitterStrategy extends AuthStrategy {
@@ -307,8 +307,7 @@ export class TwitterStrategy extends AuthStrategy {
 
     const signingKey = `${encodeURIComponent(this.config.consumerSecret)}&`;
 
-    return crypto
-      .createHmac("sha1", signingKey)
+    return createHmac("sha1", signingKey)
       .update(baseString)
       .digest("base64");
   }

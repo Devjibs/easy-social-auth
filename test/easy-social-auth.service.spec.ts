@@ -32,7 +32,7 @@ describe("SocialAuthService", () => {
     clientSecret: "client-secret",
     tokenEndpoint: "https://api.x.com/2/oauth2/token",
     userInfoEndpoint:
-      "https://api.twitter.com/2/account/verify_credentials.json",
+      "https://api.x.com/2/users/me",
     authUrl: "https://twitter.com/i/oauth2/authorize",
     revokeTokenUrl: "https://api.x.com/2/oauth2/revoke",
     OAuth_1_0_AccessTokenUrl: "https://api.x.com/oauth/access_token",
@@ -42,7 +42,7 @@ describe("SocialAuthService", () => {
     consumerSecret: "consumer-secret",
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     mock = new MockAdapter(axios);
   });
 
@@ -254,11 +254,13 @@ describe("SocialAuthService", () => {
         name: "Test User",
         email: "test@example.com",
       };
+      console.log('Twitter config: ', twitterConfig);
       mock.onGet(twitterConfig.userInfoEndpoint).reply(200, mockUserData);
 
       const response = await socialAuthService.twitterStrategy.getUserData(
         mockToken
       );
+      console.log("RESPONSE: ", response);
       expect(response.status).toBe(true);
       expect(response.data).toBeDefined();
     }
