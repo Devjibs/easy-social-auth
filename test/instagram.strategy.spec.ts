@@ -17,7 +17,7 @@ describe('InstagramStrategy', () => {
     authUrl: 'https://api.instagram.com/oauth/authorize'
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     instagramStrategy = new InstagramStrategy(mockConfig);
     mock = new MockAdapter(axios);
   });

@@ -15,7 +15,7 @@ describe('LinkedinStrategy', () => {
     authUrl: 'https://www.linkedin.com/oauth/v2/authorization'
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     linkedinStrategy = new LinkedinStrategy(mockConfig);
     mock = new MockAdapter(axios);
   });

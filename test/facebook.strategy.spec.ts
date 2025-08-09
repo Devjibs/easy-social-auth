@@ -15,7 +15,7 @@ describe('FacebookStrategy', () => {
     authUrl: 'https://www.facebook.com/v9.0/dialog/oauth'
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     facebookStrategy = new FacebookStrategy(mockConfig);
     mock = new MockAdapter(axios);
   });

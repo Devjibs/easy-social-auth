@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { ISocialUser } from "../interfaces/social-user.interface";
 import { GrantType } from "../enums/grant-type.enum";
 import { SocialAuthResponse } from "../interfaces/easy-social-auth-response.interface";

@@ -21,7 +21,7 @@ describe("TwitterStrategy", () => {
     consumerSecret: "consumer-secret",
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     twitterStrategy = new TwitterStrategy(mockConfig);
     mock = new MockAdapter(axios);
   });

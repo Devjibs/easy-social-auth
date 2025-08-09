@@ -15,7 +15,7 @@ describe('TiktokStrategy', () => {
     authUrl: 'https://www.tiktok.com/v2/auth/authorize'
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     tiktokStrategy = new TiktokStrategy(mockConfig);
     mock = new MockAdapter(axios);
   });

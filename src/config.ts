@@ -10,6 +10,7 @@ import {
   IYahooConfig,
   IOutlookConfig,
   IHubSpotConfig,
+  ISlackConfig,
 } from "./interfaces/config.interface";
 
 export const config = {
@@ -46,7 +47,7 @@ export const config = {
       process.env.TWITTER_TOKEN_ENDPOINT || "https://api.x.com/2/oauth2/token",
     userInfoEndpoint:
       process.env.TWITTER_USER_INFO_ENDPOINT ||
-      "https://api.twitter.com/2/account/verify_credentials.json",
+      "https://api.x.com/2/users/me",
     authUrl:
       process.env.TWITTER_AUTH_URL || "https://twitter.com/i/oauth2/authorize",
     OAuth_1_0_AuthUrl:
@@ -172,4 +173,16 @@ export const config = {
       process.env.HUBSPOT_USER_INFO_ENDPOINT ||
       "https://api.hubspot.com/oauth/v1/access-tokens",
   } as IHubSpotConfig,
+  slack: {
+    clientId: process.env.SLACK_CLIENT_ID || "",
+    clientSecret: process.env.SLACK_CLIENT_SECRET || "",
+    tokenEndpoint:
+      process.env.SLACK_TOKEN_ENDPOINT || "https://slack.com/api/oauth.v2.access",
+    authUrl:
+      process.env.SLACK_AUTH_URL || "https://slack.com/oauth/v2/authorize",
+    userInfoEndpoint:
+      process.env.SLACK_USER_INFO_ENDPOINT || "https://slack.com/api/users.identity",
+    revokeTokenUrl:
+      process.env.SLACK_REVOKE_TOKEN_URL || "https://slack.com/api/auth.revoke",
+  } as ISlackConfig,
 };

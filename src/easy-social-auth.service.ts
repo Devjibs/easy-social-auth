@@ -10,6 +10,7 @@ import { RedditStrategy } from "./strategies/reddit.strategy";
 import { YahooStrategy } from "./strategies/yahoo.strategy";
 import { OutlookStrategy } from "./strategies/outlook.strategy";
 import { HubSpotStrategy } from "./strategies/hubspot.strategy";
+import { SlackStrategy } from "./strategies/slack.strategy";
 
 export class SocialAuthService {
   public googleStrategy?: GoogleStrategy;
@@ -23,6 +24,7 @@ export class SocialAuthService {
   public yahooStrategy?: YahooStrategy;
   public outlookStrategy?: OutlookStrategy;
   public hubspotStrategy?: HubSpotStrategy;
+  public slackStrategy?: SlackStrategy;
 
   constructor() {
     if (config.google) this.googleStrategy = new GoogleStrategy(config.google);
@@ -43,5 +45,8 @@ export class SocialAuthService {
       this.outlookStrategy = new OutlookStrategy(config.outlook);
     if (config.hubspot)
       this.hubspotStrategy = new HubSpotStrategy(config.hubspot);
+    if (config.slack) {
+      this.slackStrategy = new SlackStrategy(config.slack);
+    }
   }
 }
