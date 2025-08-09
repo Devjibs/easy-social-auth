@@ -16,23 +16,6 @@ export class HubSpotStrategy extends AuthStrategy {
     );
   }
 
-  async exchangeCodeForToken(
-    code: string,
-    redirectUri: string,
-    additionalParams?: Record<string, string>
-  ): Promise<SocialAuthResponse<any>> {
-    return await this.exchangeToken(
-      {
-        client_id: this.clientId,
-        client_secret: this.clientSecret,
-        code,
-        redirect_uri: redirectUri,
-        grant_type: GrantType.AUTHORIZATION_CODE,
-        ...additionalParams,
-      },
-    );
-  }
-
   async getUserData(
     accessToken: string
   ): Promise<SocialAuthResponse<ISocialUser>> {

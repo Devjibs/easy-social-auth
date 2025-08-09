@@ -3,7 +3,6 @@ import { AuthStrategy } from "./easy-social-auth.strategy";
 import { ISocialUser } from "../interfaces/social-user.interface";
 import { IOutlookConfig } from "../interfaces/config.interface";
 import { SocialAuthResponse } from "../interfaces/easy-social-auth-response.interface";
-import { GrantType } from "../enums/grant-type.enum";
 
 export class OutlookStrategy extends AuthStrategy {
   constructor(config: IOutlookConfig) {
@@ -14,54 +13,6 @@ export class OutlookStrategy extends AuthStrategy {
       config.tokenEndpoint,
       config.authUrl
     );
-  }
-
-  async exchangeToken(
-    params: Record<string, string>
-  ): Promise<SocialAuthResponse<any>> {
-    try {
-      const form = new URLSearchParams();
-      Object.keys(params).forEach((key) => {
-        form.append(key, params[key]);
-      });
-      const { data } = await axios.post(this.tokenEndpoint, form, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      });
-      return { status: true, data: data };
-    } catch (error: any) {
-      return {
-        status: false,
-        error: error.response?.data?.error_description || error.message,
-      };
-    }
-  }
-
-  async exchangeCodeForToken(
-    code: string,
-    redirectUri: string,
-    additionalParams: Record<string, string>
-  ): Promise<SocialAuthResponse<any>> {
-    return await this.exchangeToken({
-      client_id: this.clientId,
-      client_secret: this.clientSecret,
-      code,
-      redirect_uri: redirectUri,
-      grant_type: GrantType.AUTHORIZATION_CODE,
-      ...additionalParams,
-    });
-  }
-
-  async refreshAccessToken(
-    refreshToken: string
-  ): Promise<SocialAuthResponse<any>> {
-    return await this.exchangeToken({
-      client_id: this.clientId,
-      client_secret: this.clientSecret,
-      grant_type: GrantType.REFRESH_TOKEN,
-      refresh_token: refreshToken,
-    });
   }
 
   async getUserData(

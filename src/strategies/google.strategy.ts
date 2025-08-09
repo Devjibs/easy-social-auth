@@ -15,16 +15,6 @@ export class GoogleStrategy extends AuthStrategy {
     );
   }
 
-  async exchangeCodeForToken(
-    code: string,
-    redirectUri: string,
-    additionalParams: Record<string, string> = {}
-  ): Promise<SocialAuthResponse<Record<string, any>>> {
-    return await super.exchangeCodeForToken(
-      code, redirectUri, additionalParams
-    )
-  }
-
   async getUserData(accessToken: string): Promise<SocialAuthResponse<ISocialUser>> {
     try {
       const { data } = await axios.get(this.userInfoEndpoint, {
