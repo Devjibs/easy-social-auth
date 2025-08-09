@@ -58,9 +58,10 @@ describe("OutlookStrategy", () => {
       scope: "offline_access https://graph.microsoft.com/Mail.Send",
     });
 
+
     expect(result.status).toBe(true);
-    expect(result.data.access_token).toBe("mockAccessToken");
-    expect(result.data.refresh_token).toBe("mockRefreshToken");
+    expect(result.data?.access_token).toBe("mockAccessToken");
+    expect(result.data?.refresh_token).toBe("mockRefreshToken");
   });
 
   it("should return error if token exchange fails", async () => {
@@ -87,7 +88,7 @@ describe("OutlookStrategy", () => {
 
     const result = await strategy.refreshAccessToken("mockRefreshToken");
     expect(result.status).toBe(true);
-    expect(result.data.access_token).toBe("newAccessToken");
+    expect(result.data).toBe("newAccessToken");
   });
 
   it("should return error if refresh fails", async () => {
