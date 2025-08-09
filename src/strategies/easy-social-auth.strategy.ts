@@ -25,27 +25,35 @@ export abstract class AuthStrategy {
     url.searchParams.set("response_type", responseType ?? "code");
     if (scope) url.searchParams.set("scope", scope);
     Object.keys(additionalParams).forEach((param) => {
-        url.searchParams.append(param, additionalParams[param]);
-      });
+      url.searchParams.append(param, additionalParams[param]);
+    });
     return url.toString();
   }
 
   protected async exchangeToken(
     params: Record<string, string>,
-    useFormEncoding: boolean = true
-  ): Promise<SocialAuthResponse<string>> {
+    useFormEncoding = true
+  ): Promise<SocialAuthResponse<Record<string, any>>> {
     try {
-      const body = useFormEncoding ? new URLSearchParams(params) : params;
-      const headers: AxiosRequestConfig = {
-        headers: {
-          'Content-Type': useFormEncoding
-            ? 'application/x-www-form-urlencoded'
-            : 'application/json',
-        },
-      };
+      let body: any;
+      let headers: Record<string, string> = {};
 
-      const { data } = await axios.post(this.tokenEndpoint, body, headers);
-      return { status: true, data: data?.access_token };
+      if (useFormEncoding) {
+        body = new URLSearchParams();
+        for (const key in params) {
+          body.append(key, params[key]);
+        }
+        headers = {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Cache-Control": "no-cache",
+        };
+      } else {
+        body = params; // plain JSON object
+      }
+
+      const { data } = await axios.post(this.tokenEndpoint, body, { headers });
+
+      return { status: true, data: data };
     } catch (error: any) {
       return {
         status: false,
@@ -57,8 +65,9 @@ export abstract class AuthStrategy {
   async exchangeCodeForToken(
     code: string,
     redirectUri: string,
-    additionalParams: Record<string, string> = {}
-  ): Promise<SocialAuthResponse<string>> {
+    additionalParams: Record<string, string> = {},
+    useFormEncoding?: boolean,
+  ): Promise<SocialAuthResponse<Record<string, any>>> {
     const params = {
       code,
       client_id: this.clientId,
@@ -67,11 +76,13 @@ export abstract class AuthStrategy {
       grant_type: this.grantType,
       ...additionalParams,
     };
-    return this.exchangeToken(params);
+
+    return await this.exchangeToken(params, useFormEncoding);
   }
 
   async refreshAccessToken(
-    refreshToken: string
+    refreshToken: string,
+    useFormEncoding?: boolean,
   ): Promise<SocialAuthResponse<string>> {
     const params = {
       refresh_token: refreshToken,
@@ -79,13 +90,18 @@ export abstract class AuthStrategy {
       client_secret: this.clientSecret,
       grant_type: GrantType.REFRESH_TOKEN,
     };
-    return this.exchangeToken(params);
+    const response = await this.exchangeToken(params, useFormEncoding);
+    if (response.status && response.data) {
+      return { status: true, data: response.data.access_token };
+    } else {
+      return { status: false, error: response.error || "Failed to refresh token" };
+    }
   }
 
   async exchangePasswordForToken(
     username: string,
     password: string
-  ): Promise<SocialAuthResponse<string>> {
+  ): Promise<SocialAuthResponse<Record<string, any>>> {
     const params = {
       username,
       password,

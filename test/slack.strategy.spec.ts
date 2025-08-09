@@ -34,8 +34,8 @@ describe('SlackStrategy', () => {
 
   it('should exchange code for token', async () => {
     const mockCode = 'mockCode';
-    const mockToken = 'mockToken';
-    mock.onPost(mockConfig.tokenEndpoint).reply(200, { access_token: mockToken });
+    const mockToken = { access_token: 'mockToken' };
+    mock.onPost(mockConfig.tokenEndpoint).reply(200, mockToken);
 
     const response = await slackStrategy.exchangeCodeForToken(mockCode, 'redirect-uri');
     expect(response.status).toBe(true);

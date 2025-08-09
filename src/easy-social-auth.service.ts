@@ -1,3 +1,4 @@
+import { config } from "./config";
 import { GoogleStrategy } from "./strategies/google.strategy";
 import { FacebookStrategy } from "./strategies/facebook.strategy";
 import { TwitterStrategy } from "./strategies/twitter.strategy";
@@ -5,9 +6,10 @@ import { InstagramStrategy } from "./strategies/instagram.strategy";
 import { TiktokStrategy } from "./strategies/tiktok.strategy";
 import { SpotifyStrategy } from "./strategies/spotify.strategy";
 import { LinkedinStrategy } from "./strategies/linkedin.strategy";
-import { config } from "./config";
 import { RedditStrategy } from "./strategies/reddit.strategy";
-import { GmailStrategy } from "./strategies/gmail.strategy";
+import { YahooStrategy } from "./strategies/yahoo.strategy";
+import { OutlookStrategy } from "./strategies/outlook.strategy";
+import { HubSpotStrategy } from "./strategies/hubspot.strategy";
 import { SlackStrategy } from "./strategies/slack.strategy";
 
 export class SocialAuthService {
@@ -19,7 +21,9 @@ export class SocialAuthService {
   public tiktokStrategy?: TiktokStrategy;
   public linkedinStrategy?: LinkedinStrategy;
   public redditStrategy?: RedditStrategy;
-  public gmailStrategy?: GmailStrategy;
+  public yahooStrategy?: YahooStrategy;
+  public outlookStrategy?: OutlookStrategy;
+  public hubspotStrategy?: HubSpotStrategy;
   public slackStrategy?: SlackStrategy;
 
   constructor() {
@@ -36,7 +40,11 @@ export class SocialAuthService {
     if (config.linkedin)
       this.linkedinStrategy = new LinkedinStrategy(config.linkedin);
     if (config.reddit) this.redditStrategy = new RedditStrategy(config.reddit);
-    if (config.gmail) this.gmailStrategy = new GmailStrategy(config.gmail);
+    if (config.yahoo) this.yahooStrategy = new YahooStrategy(config.yahoo);
+    if (config.outlook)
+      this.outlookStrategy = new OutlookStrategy(config.outlook);
+    if (config.hubspot)
+      this.hubspotStrategy = new HubSpotStrategy(config.hubspot);
     if (config.slack) {
       this.slackStrategy = new SlackStrategy(config.slack);
     }

@@ -46,6 +46,7 @@ export class TwitterStrategy extends AuthStrategy {
     code: string,
     redirectUri: string,
     additionalParams: Record<string, string> = {},
+    useFormEncoding = false,
     clientType?: "PUBLIC" | "CONFIDENTIAL"
   ): Promise<SocialAuthResponse<any>> {
     try {
