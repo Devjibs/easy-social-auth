@@ -19,10 +19,11 @@
   <img src="https://img.icons8.com/color/48/000000/gmail.png" alt="Gmail Logo" width="40" height="40">
   <img src="https://img.icons8.com/color/48/000000/microsoft-outlook-2019.png" alt="Outlook Logo" width="40" height="40">
   <img src="https://img.icons8.com/color/48/000000/yahoo.png" alt="Yahoo Logo" width="40" height="40">
-  <img src="https://img.icons8.com/?size=100&id=Xq3RA1kWzz3X&format=png&color=000000" alt="Hubspot Logo" width="40" height="40">
+  <img src="https://img.icons8.com/?size=100&id=Xq3RA1kWzz3X&format=png&color=000000" alt="HubSpot Logo" width="40" height="40">
+  <img src="https://img.icons8.com/color/48/000000/slack-new.png" alt="Slack Logo" width="40" height="40">
 </p>
 
-A flexible, standalone package for social authentication using Google, Facebook, Instagram, Tiktok, Spotify, LinkedIn, and Twitter(X).
+A flexible, standalone package for social authentication using Google, Facebook, Instagram, Tiktok, Spotify, LinkedIn, Twitter(X), Reddit, Yahoo, Hubspot, Outlook, and Slack.
 
 ## Installation
 
@@ -120,6 +121,12 @@ HUBSPOT_CLIENT_ID=your-yahoo-client-id
 HUBSPOT_CLIENT_SECRET=your-yahoo-client-secret
 HUBSPOT_TOKEN_ENDPOINT=https://api.hubspot.com/oauth/v1/token
 HUBSPOT_USER_INFO_ENDPOINT=https://api.hubspot.com/oauth/v1/access-tokens
+
+SLACK_AUTH_URL=https://slack.com/oauth/v2/authorize
+SLACK_CLIENT_ID=your-slack-client-id
+SLACK_CLIENT_SECRET=your-slack-client-secret
+SLACK_TOKEN_ENDPOINT=https://slack.com/api/oauth.v2.access
+SLACK_USER_INFO_ENDPOINT=https://slack.com/api/users.identity
 ```
 
 **Note: Ensure your redirect URIs are registered in the respective developer consoles.**
@@ -489,55 +496,6 @@ if (redditTokenResponse.status) {
 }
 ```
 
-#### Gmail
-
-```typescript
-import { SocialAuthService } from "easy-social-auth";
-
-const socialAuthService = new SocialAuthService();
-
-// Generate Auth URL
-const gmailAuthUrl = socialAuthService.gmailStrategy.generateAuthUrl(
-  "http://localhost:3000/auth/gmail",
-  [
-    "openid",
-    "email",
-    "profile",
-    "https://www.googleapis.com/auth/gmail.readonly",
-    "https://www.googleapis.com/auth/gmail.send",
-  ].join(" "),
-  "code",
-  {
-    access_type: "offline",
-    prompt: "consent",
-  }
-);
-console.log("Gmail Auth URL:", gmailAuthUrl);
-
-// Exchange Code for Token
-const gmailTokenResponse =
-  await socialAuthService.gmailStrategy.exchangeCodeForToken(
-    "auth_code",
-    "http://localhost:3000/auth/gmail"
-  );
-console.log("Gmail Token Response:", gmailTokenResponse);
-
-// Refresh Access Token
-const refreshedGmailToken =
-  await socialAuthService.gmailStrategy.refreshAccessToken(
-    gmailTokenResponse.data.refresh_token
-  );
-console.log("Gmail Refresh Token Response:", refreshedGmailToken);
-
-// Fetch User Data
-if (gmailTokenResponse.status) {
-  const userData = await gmailStrategy.getUserData(
-    gmailTokenResponse.data.access_token
-  );
-  console.log("Gmail User Data:", userData);
-}
-```
-
 #### Outlook
 
 ```typescript
@@ -589,35 +547,6 @@ if (outlookTokenResponse.status) {
   );
   console.log("Outlook User Data:", userData);
 }
-```
-
-#### Outlook: Send Email (Optional)
-
-```typescript
-import axios from "axios";
-
-const payload = {
-  message: {
-    subject: "Test Email",
-    body: {
-      contentType: "Text",
-      content: "Hello from Easy Social Auth + Outlook 🎉",
-    },
-    toRecipients: [
-      {
-        emailAddress: { address: "recipient@example.com" },
-      },
-    ],
-  },
-  saveToSentItems: "true",
-};
-
-await axios.post("https://graph.microsoft.com/v1.0/me/sendMail", payload, {
-  headers: {
-    Authorization: `Bearer ${accessToken}`,
-    "Content-Type": "application/json",
-  },
-});
 ```
 
 #### Yahoo
@@ -711,6 +640,46 @@ if (hubspotTokenResponse.status) {
     hubspotTokenResponse.data.access_token
   );
   console.log("HubSpot User Data:", userData);
+}
+```
+
+#### Slack
+```typescript
+import { SocialAuthService } from "easy-social-auth";
+
+const socialAuthService = new SocialAuthService();
+const redirectUri = "http://localhost:3000/auth/slack/callback";
+
+// Generate Auth URL
+const slackAuthUrl = socialAuthService.slackStrategy.generateAuthUrl(
+  redirectUri,
+  [
+    "identity.basic",
+    "identity.email",
+    "identity.avatar",
+    // add other Slack scopes if needed
+  ].join(" "),
+  "code",
+  {
+    state: "optional-state",
+  }
+);
+console.log("Slack Auth URL:", slackAuthUrl);
+
+// Exchange Code for Token
+const slackTokenResponse =
+  await socialAuthService.slackStrategy.exchangeCodeForToken(
+    "authorization_code",
+    redirectUri
+  );
+console.log("Slack Token Response:", slackTokenResponse);
+
+// Fetch User Data
+if (slackTokenResponse.status) {
+  const userData = await socialAuthService.slackStrategy.getUserData(
+    slackTokenResponse.data.access_token
+  );
+  console.log("Slack User Data:", userData);
 }
 ```
 
